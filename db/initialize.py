@@ -2,6 +2,8 @@ import csv
 import sqlite3
 import re
 
+
+
 conn = sqlite3.connect("recipes.db")
 cursor = conn.cursor()
 cursor.execute("""
@@ -9,14 +11,80 @@ cursor.execute("""
         Title TEXT,
         Ingredients TEXT,
         CleanIngredients TEXT,
+        IngredientAmount REAL,
+        IngredientUnit TEXT,
         Instructions TEXT,
         ImageSrc TEXT, 
-        CookingTime TEXT,
+        CookingTimeMinutes INTEGER,
         Rating REAL,
         RatingCount INTEGER
     );
     """)
 cursor.execute("CREATE TABLE IF NOT EXISTS Ingredients (Ingredient TEXT);")
+
+convert_unit = {
+    'cup': 'ml',
+    'cups': 'ml',
+    'teaspoons': 'ml',
+    'teaspoon': 'ml',
+    'tablespoon': 'ml',
+    'tablespoons': 'ml',
+    'pint': 'ml',
+    'pints': 'ml',
+    'fluid ounce': 'ml',
+    'fluid ounces': 'ml',
+    'quart': 'ml',
+    'quarts': 'ml',
+    'dash': 'ml',
+    'dashes': 'ml',
+    'drop': 'ml',
+    'drops': 'ml',
+    
+    'pinch': 'gram',
+    'pinches': 'gram',
+    'ounce': 'gram',
+    'ounces': 'gram',
+    'pound': 'gram',
+    'pounds': 'gram',
+
+    'clove': 'count',
+    'cloves': 'count',
+    'slice': 'count',
+    'slices': 'count',
+    'count': 'count'
+}
+
+convert_amount = {
+    'cup': 240,
+    'cups': 240,
+    'teaspoons': 4.92892,
+    'teaspoon': 4.92892,
+    'tablespoon': 14.7868,
+    'tablespoons': 14.7868,
+    'pint': 473.176,
+    'pints': 473.176,
+    'fluid ounce': 29.5735,
+    'fluid ounces': 29.5735,
+    'quart': 946.353,
+    'quarts': 946.353,
+    'dash': 2,
+    'dashes': 2,
+    'drop': 2,
+    'drops': 2,
+    
+    'pinch': 0,
+    'pinches': 0,
+    'ounce': 28.3495,
+    'ounces': 28.3495,
+    'pound': 453.592,
+    'pounds': 453.592,
+
+    'clove': 0.12,
+    'cloves': 0.12,
+    'slice': 0.15,
+    'slices': 0.15,
+    'count': 1
+}
 
 def clean_ingredient(ingredient):
     remove_patterns = [" cup ", " cups ", " tablespoons ", "package ", "packages ", "'", "\"", ":", "fluid ounces", "fluid ounce"]
@@ -26,6 +94,41 @@ def clean_ingredient(ingredient):
     for pattern in regex_patterns:
         ingredient = re.sub(pattern, '', ingredient)
     return ingredient.strip().lower()
+
+def parse_ingredients(ingredients):
+    amounts = []
+    units = []
+    allowed_units = convert_unit.keys()
+    for ingredient in ingredients:
+        amount = 0
+        unit = "count"
+        if '(' in ingredient and any(x for x in ingredient[ingredient.index('(') + 1:ingredient.index(')')] if x.isdigit()):
+            inner = ingredient[ingredient.index('(') + 1:ingredient.index(')')]
+            try:
+                unit = inner.split(" ")[1]
+                if unit not in allowed_units:
+                    unit = "count"
+                amount = convert_amount[unit] * eval(inner.split(" ")[0])
+            except:
+                return None, None
+        else:
+            try:
+                for word in ingredient.split(" "):
+                    if word in allowed_units:
+                        unit = word
+                        break
+            
+                for word in ingredient.split(" "):
+                    if any(c.isdigit() for c in word):
+                        amount += convert_amount[unit] * eval(word)
+                    else:
+                        break
+            except:
+                return None, None
+        units.append(convert_unit[unit])
+        amounts.append(amount)
+
+    return units, amounts
 
 clean_ingredients_recipes = {}
 with open('data/clean_recipes.csv', 'r', encoding='utf8') as file:
@@ -47,7 +150,6 @@ rating_counts = dict()
 with open('data/clean_reviews.csv', 'r', encoding='unicode_escape') as file:
     csv_reader = csv.DictReader(file)
     next(csv_reader, None)
-    current_id = -1
     for row in csv_reader:
         if not ratings.get(row['RecipeID']):
             ratings[row['RecipeID']] = []
@@ -65,17 +167,26 @@ with open('data/recipes.csv', 'r', encoding='unicode_escape') as file:
         # not have clean ingredients. This removes around 75% of recipes
         if not ratings.get(ID) or row['Total Time'] == 'X' or ID not in clean_ingredients_recipes.keys():
             continue
-        parsedRow = [row['Recipe Name'], row['Ingredients'], clean_ingredients_recipes[ID], row['Directions'] , row['Recipe Photo'], row['Total Time'], ratings[ID], int(rating_counts[ID])]
+
+        ingredients = row['Ingredients'].replace('\'','').replace('(optional)', '').split('**')
+        units, amounts = parse_ingredients(ingredients)
+        if not units:
+            continue
+
+        minutes = eval(row['Total Time'].replace(' d', '*24*60').replace(' h', '*60').replace(' m', '').replace(" ","+"))
+        parsedRow = [row['Recipe Name'], row['Ingredients'], clean_ingredients_recipes[ID], str(amounts), str(units), row['Directions'].replace('\'', '') , row['Recipe Photo'], minutes, ratings[ID], int(rating_counts[ID])]
         cursor.execute('''
                  INSERT INTO Recipes (Title,
                                      Ingredients,
                                      CleanIngredients,
+                                     IngredientAmount,
+                                     IngredientUnit,
                                      Instructions,
                                      ImageSrc, 
-                                     CookingTime,
+                                     CookingTimeMinutes,
                                      Rating,
                                      RatingCount)
-                 VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
                  ''', parsedRow)
 
 conn.commit()

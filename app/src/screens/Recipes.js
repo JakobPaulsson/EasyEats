@@ -7,6 +7,7 @@ import Recipe from '../components/Recipe.js';
 function Recipes() {
   const {pageNumber} = useParams();
   const [page, setPage] = useState(pageNumber);
+  
   const [recipes, setRecipes] = useState([]);
   const [currentRecipe, setCurrentRecipe] = useState(null);
   const navigate = useNavigate();
@@ -15,8 +16,11 @@ function Recipes() {
     fetchRecipes();
   }, [page]); 
 
+  useEffect(() => {
+      setPage(pageNumber)
+  },[pageNumber])
+
   const navigateToRecipe = (recipe) => {
-    console.log(recipe)
     navigate(`/recipes/${encodeURIComponent(recipe.Title)}`, {state: {recipe}});
   }
 
@@ -50,7 +54,7 @@ function Recipes() {
 
   const handlePageChange = (newPage) => {
     if (newPage > 0) { 
-      setPage(newPage)
+      console.log(newPage)
       navigate(`/recipes/page/${newPage}`) ;
     }
   };
@@ -65,11 +69,11 @@ function Recipes() {
             {recipes.length > 0 ? recipes : <p>No recipes found.</p>}
           </div>
           <div className="buttonNavigationContainer">
-            <button className="button" onClick={() => handlePageChange(page - 1)}>
+            <button className="button" onClick={() => handlePageChange(+page - 1)}>
               Previous Page
             </button>
             <div>{`Page ${page}`}</div>
-            <button className="button" onClick={() => handlePageChange(page + 1)}>
+            <button className="button" onClick={() => handlePageChange(+page + 1)}>
               Next Page
             </button>
           </div>

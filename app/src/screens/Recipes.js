@@ -1,16 +1,23 @@
 import axios from 'axios';
 import './Recipes.css';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Recipe from '../components/Recipe.js';
 
 function Recipes() {
   const [page, setPage] = useState(0);
   const [recipes, setRecipes] = useState([]);
   const [currentRecipe, setCurrentRecipe] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchRecipes();
   }, [page]); 
+
+  const navigateToRecipe = (recipe) => {
+    console.log(recipe)
+    navigate(`/recipes/${encodeURIComponent(recipe.Title)}`, {state: {recipe}});
+  }
 
   const fetchRecipes = async () => {
     const ingredients = ['tomato', 'egg']; // This should be dynamic based on user input
@@ -26,7 +33,7 @@ function Recipes() {
           <div key={recipe.Title} className="card">
             <div className="title">{recipe['Title']}</div>
             <div className="cardContainer">
-              <img onClick={() => setCurrentRecipe(recipe)} className="image" src={recipe['ImageSrc']} alt='' />
+              <img onClick={() => navigateToRecipe(recipe)} className="image" src={recipe['ImageSrc']} alt='' />
               <div className="completenessContainer">
                 <div className="completeness">Ingredients</div>
               </div>

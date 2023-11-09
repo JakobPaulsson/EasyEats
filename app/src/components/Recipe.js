@@ -1,8 +1,11 @@
 import './Recipe.css'
 import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 
-function Recipe({ recipe }) {
+function Recipe() {
+  const recipe = useLocation().state.recipe;
+  console.log(recipe)
   let imperialIngredients = recipe['Ingredients'].replaceAll("'", "").split("**")
   let instructions = recipe['Instructions'].replaceAll("'", "").split("**").slice(0, -1)
   const [ingredients, toggleIngredientsUnits] = useState(imperialIngredients);

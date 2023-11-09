@@ -5,6 +5,7 @@ import Ingredients from './screens/Ingredients';
 import Account from './screens/Account';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
+import Recipe from './components/Recipe';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 function App() {
@@ -19,8 +20,7 @@ function App() {
             <Route path="/ingredients" element={<Ingredients />} />
             <Route path="/recipes" element={<Recipes />} />
             <Route path="/account" element={<Account />} />
-            {/* Add a route for any other paths you want to handle */}
-            {/* <Route path="/some-path" element={<SomeComponent />} /> */}
+            <Route path="/recipes/:recipe" element ={<Recipe/>}/> 
           </Routes>
         </div>
       </div>

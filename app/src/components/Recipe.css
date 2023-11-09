@@ -8,6 +8,7 @@
   flex-direction: column;
   row-gap: 25px;
   width: 600px;
+  margin: 0 auto;
 }
 
 .recipe * {

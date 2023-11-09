@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Recipe from '../components/Recipe.js';
 
 function Recipes() {
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [recipes, setRecipes] = useState([]);
   const [currentRecipe, setCurrentRecipe] = useState(null);
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ function Recipes() {
   }
 
   const fetchRecipes = async () => {
-    const ingredients = ['tomato', 'egg']; // This should be dynamic based on user input
+    const ingredients = ['milk', 'egg']; // This should be dynamic based on user input
     const ingredientsQuery = ingredients.map(ing => `ingredients=${ing}`).join('&');
     
     try {
@@ -48,7 +48,7 @@ function Recipes() {
   };
 
   const handlePageChange = (newPage) => {
-    if (newPage >= 0) setPage(newPage);
+    if (newPage > 0) setPage(newPage);
   };
 
   return (
@@ -64,7 +64,7 @@ function Recipes() {
             <button className="button" onClick={() => handlePageChange(page - 1)}>
               Previous Page
             </button>
-            <div>{`Page ${page + 1}`}</div>
+            <div>{`Page ${page}`}</div>
             <button className="button" onClick={() => handlePageChange(page + 1)}>
               Next Page
             </button>

@@ -1,38 +1,31 @@
-import './App.css'
-import Recipes from './screens/Recipes'
-import Dashboard from './screens/Dashboard'
-import Ingredients from './screens/Ingredients'
-import Account from './screens/Account'
-import Sidebar from './components/Sidebar'
-import Header from './components/Header'
-import { useState } from 'react';
-
+import './App.css';
+import Recipes from './screens/Recipes';
+import Dashboard from './screens/Dashboard';
+import Ingredients from './screens/Ingredients';
+import Account from './screens/Account';
+import Sidebar from './components/Sidebar';
+import Header from './components/Header';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 function App() {
-  const [currentPage, setCurrentPage] = useState('Dashboard');
-
-  function getCurrentPage() {
-    switch (currentPage) {
-      case 'Dashboard':
-        return <Dashboard />
-      case 'Ingredients':
-        return <Ingredients />
-      case 'Recipes':
-        return <Recipes />
-      case 'Account':
-        return <Account />
-    }
-  }
-
   return (
-    <div className="outerContainer">
-      <Sidebar setCurrentPage={setCurrentPage}></Sidebar>
-      <div className="innerContainer">
-        <Header></Header>
-        {getCurrentPage()}
+      <div className="outerContainer">
+        <Sidebar />
+        <div className="innerContainer">
+          <Header />
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/ingredients" element={<Ingredients />} />
+            <Route path="/recipes" element={<Recipes />} />
+            <Route path="/account" element={<Account />} />
+            {/* Add a route for any other paths you want to handle */}
+            {/* <Route path="/some-path" element={<SomeComponent />} /> */}
+          </Routes>
+        </div>
       </div>
-    </div>
   );
 }
 
 export default App;
+

@@ -1,15 +1,16 @@
 import './Sidebar.css'
 import logo from '../img/logo.png'
+import { Link } from 'react-router-dom';
 
 function Sidebar({ setCurrentPage }) {
   return (
     <div className="sidebar">
         <img className='logo' src={logo}></img>
         <div className='sidebarButtonContainer'>
-          <button onClick={() => setCurrentPage('Dashboard')} className='sidebarButton'>Dashboard</button>
-          <button onClick={() => setCurrentPage('Ingredients')} className='sidebarButton'>Ingredients</button>
-          <button onClick={() => setCurrentPage('Recipes')} className='sidebarButton'>Recipes</button>
-          <button onClick={() => setCurrentPage('Account')} className='sidebarButton'>Account</button>
+          <Link to = '/dashboard' className='sidebarButton'>Dashboard </Link>
+          <Link to = '/ingredients' className='sidebarButton'>Ingredients </Link>
+          <Link to = '/recipes' className='sidebarButton'>Recipes</Link>
+          <Link to = '/account' className='sidebarButton'>Account</Link>
         </div>
     </div>
   );

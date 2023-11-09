@@ -10,16 +10,14 @@ function Recipe({ recipe }) {
   
   let metricIngredients = []
   for (var i = 0; i < eval(recipe['CleanIngredients']).length; i++) {
-    let ingredientString = ''
     let amount = (Math.round(eval(recipe['IngredientAmount'])[i]))
     let unit = eval(recipe['IngredientUnit'])[i]
     let ingredient = eval(recipe['CleanIngredients'])[i]
     if (unit == 'count') {
-      ingredientString = imperialIngredients[i];
+      metricIngredients.push(imperialIngredients[i]);
     } else {
-      ingredientString = `${amount == 0 ? '' : amount + ' '}${unit == 'count' ? '' : unit + ' '}${ingredient}`
+      metricIngredients.push(`${amount == 0 ? '' : amount + ' '}${unit == 'count' ? '' : unit + ' '}${ingredient}`);
     }
-    metricIngredients.push(ingredientString)
   }
 
 

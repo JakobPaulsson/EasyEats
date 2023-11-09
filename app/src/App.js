@@ -16,9 +16,8 @@ function App() {
           <Header />
           <Routes>
             <Route path="/" element={<Dashboard />} />
-            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/ingredients" element={<Ingredients />} />
-            <Route path="/recipes" element={<Recipes />} />
+            <Route path="/recipes/page/:pageNumber" element ={<Recipes/>}/> 
             <Route path="/account" element={<Account />} />
             <Route path="/recipes/:recipe" element ={<Recipe/>}/> 
           </Routes>

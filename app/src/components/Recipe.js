@@ -12,8 +12,8 @@ function Recipe() {
   
   
   let metricIngredients = []
-  for (var i = 0; i < eval(recipe['CleanIngredients']).length; i++) {
-    let amount = (Math.round(eval(recipe['IngredientAmount'])[i]))
+  for (var i = 0; i < (recipe['CleanIngredients']).length; i++) {
+    let amount = (Math.round((recipe['IngredientAmount'])[i]))
     let unit = eval(recipe['IngredientUnit'])[i]
     let ingredient = eval(recipe['CleanIngredients'])[i]
     if (unit == 'count') {

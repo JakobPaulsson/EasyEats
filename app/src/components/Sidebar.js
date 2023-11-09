@@ -9,7 +9,7 @@ function Sidebar({ setCurrentPage }) {
         <div className='sidebarButtonContainer'>
           <Link to = '/dashboard' className='sidebarButton'>Dashboard </Link>
           <Link to = '/ingredients' className='sidebarButton'>Ingredients </Link>
-          <Link to = '/recipes' className='sidebarButton'>Recipes</Link>
+          <Link to = {`recipes/page/1`} className='sidebarButton'>Recipes</Link>
           <Link to = '/account' className='sidebarButton'>Account</Link>
         </div>
     </div>

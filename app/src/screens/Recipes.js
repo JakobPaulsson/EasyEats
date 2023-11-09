@@ -1,11 +1,12 @@
 import axios from 'axios';
 import './Recipes.css';
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Recipe from '../components/Recipe.js';
 
 function Recipes() {
-  const [page, setPage] = useState(1);
+  const {pageNumber} = useParams();
+  const [page, setPage] = useState(pageNumber);
   const [recipes, setRecipes] = useState([]);
   const [currentRecipe, setCurrentRecipe] = useState(null);
   const navigate = useNavigate();
@@ -48,7 +49,10 @@ function Recipes() {
   };
 
   const handlePageChange = (newPage) => {
-    if (newPage > 0) setPage(newPage);
+    if (newPage > 0) { 
+      setPage(newPage)
+      navigate(`/recipes/page/${newPage}`) ;
+    }
   };
 
   return (

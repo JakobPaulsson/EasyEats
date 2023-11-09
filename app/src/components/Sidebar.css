@@ -1,0 +1,34 @@
+.sidebar {
+  top: 0;
+  height: 100vh;
+  position: sticky;
+  background-color: white;
+  width: 10%;
+  min-height: 100%;
+}
+
+.sidebarButtonContainer {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+  
+}
+
+.sidebarButton {
+  height: 40px;
+  border-radius: 5px;
+  background-color: white;
+  border: none;
+  color: #7C7C8D;
+}
+
+.sidebarButton:hover {
+  cursor: pointer;
+  background-color: #e2e2e2;
+}
+
+.logo {
+  width: 100%;
+  margin-top: 8px;
+}

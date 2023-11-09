@@ -136,7 +136,7 @@ with open('data/clean_recipes.csv', 'r', encoding='utf8') as file:
     csv_reader = csv.DictReader(file, delimiter=';')
     next(csv_reader, None)
     for row in csv_reader:
-        clean_ingredients_recipes[row['RecipeID']] = row['Ingredients']
+        clean_ingredients_recipes[row['RecipeID']] = str(row["Ingredients"].split(','))
         for ingredient in row['Ingredients'].split(','):
             if not len(ingredient) == 0 and not len(ingredient.split(' ')) > 4:
                 ingredients.add(clean_ingredient(ingredient))

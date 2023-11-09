@@ -1,66 +1,35 @@
-import axios from 'axios';
 import './App.css'
-import { useState, useEffect } from 'react';
+import Recipes from './screens/Recipes'
+import Dashboard from './screens/Dashboard'
+import Ingredients from './screens/Ingredients'
+import Account from './screens/Account'
+import Sidebar from './components/Sidebar'
+import Header from './components/Header'
+import { useState } from 'react';
 
 
 function App() {
-  const [page, setPage] = useState(0);
-  const [recipes, setRecipes] = useState(null)
+  const [currentPage, setCurrentPage] = useState('Dashboard');
 
-  useEffect(() => {
-    getRecipes(1);
-  }, []);
-
-  async function getRecipes(amount) {
-    let ingredients = ['flour', 'egg', 'sugar'] // TODO: This should be based on ingredients specified by the user
-    let ingredientsQuery = ''
-    for (var ingredient of ingredients) {
-      ingredientsQuery += `ingredients=${ingredient}&`
+  function getCurrentPage() {
+    switch (currentPage) {
+      case 'Dashboard':
+        return <Dashboard />
+      case 'Ingredients':
+        return <Ingredients />
+      case 'Recipes':
+        return <Recipes />
+      case 'Account':
+        return <Account />
     }
-    ingredientsQuery = ingredientsQuery.slice(0, -1)
-    const hasItems = await axios.get(`http://localhost:8080/recipes?page=${page + amount}&${ingredientsQuery}`).then((response) => {
-      let children = []
-      if (response.data.length == 0) {
-        return false
-      }
-      for (var recipe of response.data) {
-        children.push(
-          <div key={recipe.Title} className="card">
-            <div className="title">{recipe['Title']}</div>
-            <div className="cardContainer">
-              <img className="image" src={recipe['ImageSrc']} alt='' />
-              <div className="completenessContainer">
-                <div className="completeness">Ingredients</div>
-              </div>
-            </div>
-          </div>)
-      }
-      setRecipes(children);
-      return true
-    })
-    if (hasItems && (page != 1 || amount != -1)) {
-      setPage(page + amount);
-    }
-    
   }
 
   return (
-    <div className="container">
-      <div className="buttonNavigationContainer">
-        <button className="button" onClick={() => {
-          getRecipes(-1)
-        }}>{`Previous Page`}
-        </button>
-        <div>{`Page ${page}`}</div>
-        <button className="button" onClick={() => {
-          getRecipes(1)
-        }}>{`Next Page`}
-        </button>
-      </div>
-      <div className="cardsContainer">
-        {recipes ?
-          recipes :
-          null}
+    <div className="outerContainer">
+      <Sidebar setCurrentPage={setCurrentPage}></Sidebar>
+      <div className="innerContainer">
+        <Header></Header>
+        {getCurrentPage()}
       </div>
     </div>
   );

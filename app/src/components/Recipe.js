@@ -15,7 +15,7 @@ function Recipe() {
     let amount = (Math.round((recipe['IngredientAmount'])[i]))
     let unit = eval(recipe['IngredientUnit'])[i]
     let ingredient = eval(recipe['CleanIngredients'])[i]
-    if (unit == 'count') {
+    if (unit === 'count') {
       metricIngredients.push(imperialIngredients[i]);
     } else {
       metricIngredients.push(`${amount == 0 ? '' : amount + ' '}${unit == 'count' ? '' : unit + ' '}${ingredient}`);

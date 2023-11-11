@@ -7,6 +7,7 @@ import Search from "../components/Search";
 function Recipes() {
   const { pageNumber } = useParams();
   const [page, setPage] = useState(pageNumber);
+  const [searchCount, setSearchCount] = useState(0);
   const [searchParams] = useSearchParams();
   const ingredients = ["milk", "egg"]; // This should be dynamic based on user input
   const [recipes, setRecipes] = useState([]);
@@ -53,8 +54,9 @@ function Recipes() {
           `http://localhost:8080/recipes/search?page=${page}&${ingredientsQuery}`,
       );
       if (response && response.data) {
-        console.log(response);
-        return response.data;
+        setSearchCount(response.data.count[0]["COUNT(*)"]);
+        console.log(searchCount);
+        return response.data.result;
       }
     } catch (error) {
       console.error("Failed to fetch search query", error);
@@ -91,7 +93,7 @@ function Recipes() {
         navigate(`/recipes/page/${newPage}`);
       }
       else {
-        console.log(search)
+        if(searchCount/newPage > 8)
         navigate(`/recipes/page/${newPage}?search=${search}`)
       }
     }
@@ -113,6 +115,7 @@ function Recipes() {
         handleSearch={handleSearch}
         key={page}
       ></Search>
+      {searchCount > 0? (<h3>Total results: {searchCount}</h3>) : null}
       {currentRecipe ? (
         <Recipe recipe={currentRecipe} />
       ) : (

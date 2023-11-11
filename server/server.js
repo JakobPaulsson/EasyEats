@@ -44,8 +44,9 @@ app.get('/recipes/search', async (req, res) => {
         driver: sqlite3.Database
     })
   
-  const result = await db.all(`SELECT * FROM recipes WHERE Title LIKE ? LIMIT ? OFFSET ? `, ['%' + titleContains + '%', limit, (page-1)*8])
-  res.send(result)
-  await db.close()
+    const result = await db.all(`SELECT * FROM recipes WHERE Title LIKE ? LIMIT ? OFFSET ? `, ['%' + titleContains + '%', limit, (page-1)*8])
+    const count = await db.all(`SELECT COUNT(*) FROM recipes WHERE Title LIKE? LIMIT?`, ['%' + titleContains + '%', limit])
+    res.send({result, count})
+    await db.close()
 })
 

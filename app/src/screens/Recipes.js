@@ -10,6 +10,8 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
+import { Pagination} from "@mui/material";
+import PaginationItem from '@mui/material/PaginationItem';
 import Recipe from "../components/Recipe.js";
 import Search from "../components/Search";
 function Recipes() {
@@ -20,7 +22,7 @@ function Recipes() {
   const ingredients = ["milk", "egg"]; // This should be dynamic based on user input
   const [recipes, setRecipes] = useState([]);
   const [currentRecipe, setCurrentRecipe] = useState(null);
-  const [search, setSearch] = useState(searchParams.get("search") || "");
+  const [search, setSearch] = useState(searchParams.get("search") || " ");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -85,13 +87,13 @@ function Recipes() {
     </div>
   ));
 
-  const handlePageChange = (newPage) => {
-    if (newPage > 0) {
+  const handlePageChange = (event, page) => {
+    if (page > 0) {
       if (!search) {
-        navigate(`/recipes/page/${newPage}`);
+        navigate(`/recipes/page/${page}`);
       } else {
-        if (searchCount / newPage > 8)
-          navigate(`/recipes/page/${newPage}?search=${search}`);
+        if (searchCount / page> 8)
+          navigate(`/recipes/page/${page}?search=${page}`);
       }
     }
   };
@@ -114,7 +116,14 @@ function Recipes() {
         handleSearch={handleSearch}
         key={page}
       ></Search>
-      {searchCount > 0 ? <h3>Total results: {searchCount}</h3> : null}
+      {searchCount > 0 ?
+
+      <div className="buttonNavigationContainer">
+        <Pagination count={Math.floor(searchCount/8)}
+                    variant="outlined"
+                    onChange={handlePageChange}
+        />
+      </div> : null}
       {currentRecipe ? (
         <Recipe recipe={currentRecipe} />
       ) : (
@@ -125,21 +134,6 @@ function Recipes() {
             ) : (
               <p>No recipes found.</p>
             )}
-          </div>
-          <div className="buttonNavigationContainer">
-            <button
-              className="button"
-              onClick={() => handlePageChange(+page - 1)}
-            >
-              Previous Page
-            </button>
-            <div>{`Page ${page}`}</div>
-            <button
-              className="button"
-              onClick={() => handlePageChange(+page + 1)}
-            >
-              Next Page
-            </button>
           </div>
         </>
       )}

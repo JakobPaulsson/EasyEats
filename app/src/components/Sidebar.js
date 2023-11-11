@@ -49,8 +49,23 @@ export default function Sidebar() {
       <CssBaseline />
       <AppBar
         position="fixed"
-        sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
-      ></AppBar>
+        sx={{
+          width: `calc(100% - ${drawerWidth}px)`,
+          ml: `${drawerWidth}px`,
+          backgroundColor: "white",
+        }}
+      >
+        <Toolbar>
+          <Typography
+            sx={{ color: "rgba(0, 0, 0, 0.54)" }}
+            variant="h6"
+            noWrap
+            component="div"
+          >
+            Easy Eats
+          </Typography>
+        </Toolbar>
+      </AppBar>
       <Drawer
         sx={{
           width: drawerWidth,

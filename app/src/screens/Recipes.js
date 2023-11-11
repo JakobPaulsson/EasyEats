@@ -3,6 +3,13 @@ import "./Recipes.css";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { fetchRecipes, fetchSearchResults } from "../services/RecipeService";
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import { CardActionArea } from '@mui/material';
 import Recipe from "../components/Recipe.js";
 import Search from "../components/Search";
 function Recipes() {
@@ -35,6 +42,31 @@ function Recipes() {
       state: { recipe },
     });
   };
+
+  const recipeElements2 = recipes.map((recipe) => (
+      <Card variant = 'outlined' sx = {{maxWidth: 245}}>
+        <CardActionArea>
+        <CardMedia
+            sx={{ height: 140, color: "black" }}
+            image={recipe["ImageSrc"]}
+          title={recipe["Title"]}
+        />
+        <CardContent>
+          <Typography gutterBottom variant="h6" component="div">
+            {recipe["Title"]}
+          </Typography>
+          <Typography variant="body2" color="text.secondary" noWrap={true}>
+            {recipe["Instructions"]}
+          </Typography>
+        </CardContent>
+        <CardActions>
+          <Button size="small" onClick={() => navigateToRecipe(recipe)}>
+            Learn More
+          </Button>
+        </CardActions>
+        </CardActionArea>
+      </Card>
+  ))
 
   const recipeElements = recipes.map((recipe) => (
     <div key={recipe.Title} className="card">
@@ -88,8 +120,8 @@ function Recipes() {
       ) : (
         <>
           <div className="cardsContainer">
-            {recipeElements.length > 0 ? (
-              recipeElements
+            {recipeElements2.length > 0 ? (
+              recipeElements2
             ) : (
               <p>No recipes found.</p>
             )}

@@ -17,16 +17,8 @@ code {
   flex-direction: column;
   align-items: center;
   padding: 20px;
-  row-gap: 80px;
+  row-gap: 40px;
   justify-content: space-between;
-}
-
-.button {
-  padding: 0px;
-  width: 100px;
-  height: 40px;
-  border-radius: 10px;
-  border: 1px solid black;
 }
 
 .button:hover {
@@ -38,7 +30,6 @@ code {
   display: flex;
   align-items: center;
   justify-content: center;
-  column-gap: 45px;
   width: 100%;
 }
 
@@ -48,11 +39,3 @@ code {
   row-gap: 20px;
   column-gap: 40px;
 }
-
-
-
-
-
-
-
-

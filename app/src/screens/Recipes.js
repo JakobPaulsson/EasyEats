@@ -1,17 +1,17 @@
 import axios from "axios";
-import "./Recipes.css";
+import styles from "./Recipes.css";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { fetchRecipes, fetchSearchResults } from "../services/RecipeService";
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import { CardActionArea } from '@mui/material';
-import { Pagination} from "@mui/material";
-import PaginationItem from '@mui/material/PaginationItem';
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import { CardActionArea } from "@mui/material";
+import { Pagination } from "@mui/material";
+import PaginationItem from "@mui/material/PaginationItem";
 import Recipe from "../components/Recipe.js";
 import Search from "../components/Search";
 function Recipes() {
@@ -22,7 +22,7 @@ function Recipes() {
   const ingredients = ["milk", "egg"]; // This should be dynamic based on user input
   const [recipes, setRecipes] = useState([]);
   const [currentRecipe, setCurrentRecipe] = useState(null);
-  const [search, setSearch] = useState(searchParams.get("search") || " ");
+  const [search, setSearch] = useState(searchParams.get("search") || "");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -46,11 +46,11 @@ function Recipes() {
   };
 
   const recipeElements2 = recipes.map((recipe) => (
-      <Card variant = 'outlined' sx = {{maxWidth: 245}}>
-        <CardActionArea>
+    <Card variant="outlined" sx={{ maxWidth: 245 }}>
+      <CardActionArea>
         <CardMedia
-            sx={{ height: 140, color: "black" }}
-            image={recipe["ImageSrc"]}
+          sx={{ height: 140, color: "black" }}
+          image={recipe["ImageSrc"]}
           title={recipe["Title"]}
         />
         <CardContent>
@@ -66,9 +66,9 @@ function Recipes() {
             Learn More
           </Button>
         </CardActions>
-        </CardActionArea>
-      </Card>
-  ))
+      </CardActionArea>
+    </Card>
+  ));
 
   const recipeElements = recipes.map((recipe) => (
     <div key={recipe.Title} className="card">
@@ -92,7 +92,7 @@ function Recipes() {
       if (!search) {
         navigate(`/recipes/page/${page}`);
       } else {
-        if (searchCount / page> 8)
+        if (searchCount / page > 8)
           navigate(`/recipes/page/${page}?search=${page}`);
       }
     }
@@ -110,20 +110,20 @@ function Recipes() {
   return (
     <div className="container">
       <Search
+        className={styles.searchBar}
         string={search}
         page={page}
         currentSearch={search}
         handleSearch={handleSearch}
         key={page}
       ></Search>
-      {searchCount > 0 ?
-
       <div className="buttonNavigationContainer">
-        <Pagination count={Math.floor(searchCount/8)}
-                    variant="outlined"
-                    onChange={handlePageChange}
+        <Pagination
+          count={Math.floor(searchCount / 8)}
+          variant="outlined"
+          onChange={handlePageChange}
         />
-      </div> : null}
+      </div>
       {currentRecipe ? (
         <Recipe recipe={currentRecipe} />
       ) : (

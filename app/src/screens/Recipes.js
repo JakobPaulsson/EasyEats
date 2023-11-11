@@ -1,16 +1,17 @@
 import axios from "axios";
 import "./Recipes.css";
 import { useState, useEffect } from "react";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useNavigate, useParams, useLocation, useSearchParams } from "react-router-dom";
 import Recipe from "../components/Recipe.js";
 import Search from "../components/Search";
 function Recipes() {
   const { pageNumber } = useParams();
   const [page, setPage] = useState(pageNumber);
+  const [searchParams] = useSearchParams();
   const ingredients = ["milk", "egg"]; // This should be dynamic based on user input
   const [recipes, setRecipes] = useState([]);
   const [currentRecipe, setCurrentRecipe] = useState(null);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(searchParams.get("search") || "");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,13 +36,30 @@ function Recipes() {
       };
       loadRecipes();
     } else {
-      setSearch(search);
+      fetchSearchResults(search).then(r => setRecipes(r));
     }
   }, [page]); // Add ingredients to the dependency array
 
   useEffect(() => {
     setPage(pageNumber);
   }, [pageNumber]);
+
+  const fetchSearchResults = async (string) => {
+    try {
+      console.log(string);
+      const ingredientsQuery = `title=${string}`;
+      console.log(ingredientsQuery);
+      const response = await axios.get(
+          `http://localhost:8080/recipes/search?page=${page}&${ingredientsQuery}`,
+      );
+      if (response && response.data) {
+        console.log(response);
+        return response.data;
+      }
+    } catch (error) {
+      console.error("Failed to fetch search query", error);
+    }
+  };
 
   const navigateToRecipe = (recipe) => {
     navigate(`/recipes/${encodeURIComponent(recipe.Title)}`, {
@@ -67,20 +85,24 @@ function Recipes() {
   ));
 
   const handlePageChange = (newPage) => {
+    console.log(search)
     if (newPage > 0) {
-      navigate(`/recipes/page/${newPage}`);
+      if(!search) {
+        navigate(`/recipes/page/${newPage}`);
+      }
+      else {
+        console.log(search)
+        navigate(`/recipes/page/${newPage}?search=${search}`)
+      }
     }
-  };
+  }
 
-  const handleSearch = (value) => {
-    console.log(value);
-    if (Array.isArray(value.value)) {
-      setRecipes(value.value);
-    } else {
-      console.error("Search response is not an array");
-      setRecipes([]);
-    }
-    setSearch(value.query);
+  const handleSearch = async (value) => {
+    const searchResults = await fetchSearchResults(value.searchValue);
+    setRecipes(searchResults);
+    setSearch(value.searchValue);
+    setPage(1);
+    navigate(`/recipes/page/${1}?search=${value.searchValue}`);
   };
   return (
     <div className="container">

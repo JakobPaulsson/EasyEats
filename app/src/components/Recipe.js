@@ -14,7 +14,7 @@ function Recipe() {
   const [ingredients, toggleIngredientsUnits] = useState(imperialIngredients);
 
   let metricIngredients = [];
-  for (var i = 0; i < recipe["CleanIngredients"].length; i++) {
+  for (let i = 0; i < recipe["CleanIngredients"].length; i++) {
     let amount = Math.round(recipe["IngredientAmount"][i]);
     let unit = eval(recipe["IngredientUnit"])[i];
     let ingredient = eval(recipe["CleanIngredients"])[i];

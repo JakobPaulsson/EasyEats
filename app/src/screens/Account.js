@@ -1,12 +1,7 @@
-import './Account.css'
+import "./Account.css";
 
 function Account() {
-  
-  return (
-    <div>
-      TODO Account
-    </div>
-  );
+  return <div>TODO Account</div>;
 }
 
 export default Account;

@@ -1,6 +1,6 @@
-import { useParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 function RecipeDetails() {
   const { recipeId } = useParams();
@@ -32,4 +32,3 @@ function RecipeDetails() {
 }
 
 export default RecipeDetails;
-

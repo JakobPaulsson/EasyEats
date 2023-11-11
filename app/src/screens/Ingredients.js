@@ -1,10 +1,12 @@
-import './Ingredients.css'
+import "./Ingredients.css";
+import InputForm from "../components/InputForm";
 
 function Ingredients() {
-  
   return (
-    <div>
-      TODO Ingredients
+    <div className="ingredientsContainer">
+      <div className="addIngredientsContainer">
+        <div className="inputContainer"></div>
+      </div>
     </div>
   );
 }

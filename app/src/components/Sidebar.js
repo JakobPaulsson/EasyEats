@@ -1,17 +1,25 @@
-import './Sidebar.css'
-import logo from '../img/logo.png'
-import { Link } from 'react-router-dom';
+import "./Sidebar.css";
+import logo from "../img/logo.png";
+import { Link } from "react-router-dom";
 
 function Sidebar({ setCurrentPage }) {
   return (
     <div className="sidebar">
-        <img className='logo' src={logo}></img>
-        <div className='sidebarButtonContainer'>
-          <Link to = '/dashboard' className='sidebarButton'>Dashboard </Link>
-          <Link to = '/ingredients' className='sidebarButton'>Ingredients </Link>
-          <Link to = {`recipes/page/1`} className='sidebarButton'>Recipes</Link>
-          <Link to = '/account' className='sidebarButton'>Account</Link>
-        </div>
+      <img className="logo" src={logo}></img>
+      <div className="sidebarButtonContainer">
+        <Link to="/dashboard" className="sidebarButton">
+          Dashboard{" "}
+        </Link>
+        <Link to="/ingredients" className="sidebarButton">
+          Ingredients{" "}
+        </Link>
+        <Link to={`recipes/page/1`} className="sidebarButton">
+          Recipes
+        </Link>
+        <Link to="/account" className="sidebarButton">
+          Account
+        </Link>
+      </div>
     </div>
   );
 }

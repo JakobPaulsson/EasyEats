@@ -1,7 +1,8 @@
 import axios from "axios";
 import "./Recipes.css";
-import { useState, useEffect } from "react";
-import { useNavigate, useParams, useLocation, useSearchParams } from "react-router-dom";
+import { useState, useEffect, useRef} from "react";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import {fetchRecipes, fetchSearchResults} from "../services/RecipeService";
 import Recipe from "../components/Recipe.js";
 import Search from "../components/Search";
 function Recipes() {
@@ -17,52 +18,18 @@ function Recipes() {
 
   useEffect(() => {
     if (search.length === 0) {
-      const loadRecipes = async () => {
-        try {
-          const ingredientsQuery = ingredients
-            .map((ing) => `ingredients=${ing}`)
-            .join("&");
-          const response = await axios.get(
-            `http://localhost:8080/recipes/?page=${page}&${ingredientsQuery}`,
-          );
-          if (response && response.data) {
-            setRecipes(response.data);
-          } else {
-            setRecipes([]);
-          }
-        } catch (error) {
-          console.error("Failed to fetch recipes:", error);
-          setRecipes([]);
-        }
-      };
-      loadRecipes();
+      fetchRecipes(ingredients, page).then(r => setRecipes(r.data));
     } else {
-      fetchSearchResults(search).then(r => setRecipes(r));
+      fetchSearchResults(search,page).then(function response(data) {
+        setRecipes(data.data.result);
+        setSearchCount(data.data.count);
+      });
     }
   }, [page]); // Add ingredients to the dependency array
 
   useEffect(() => {
     setPage(pageNumber);
   }, [pageNumber]);
-
-  const fetchSearchResults = async (string) => {
-    try {
-      console.log(string);
-      const ingredientsQuery = `title=${string}`;
-      console.log(ingredientsQuery);
-      const response = await axios.get(
-          `http://localhost:8080/recipes/search?page=${page}&${ingredientsQuery}`,
-      );
-      if (response && response.data) {
-        setSearchCount(response.data.count[0]["COUNT(*)"]);
-        console.log(searchCount);
-        return response.data.result;
-      }
-    } catch (error) {
-      console.error("Failed to fetch search query", error);
-    }
-  };
-
   const navigateToRecipe = (recipe) => {
     navigate(`/recipes/${encodeURIComponent(recipe.Title)}`, {
       state: { recipe },
@@ -87,7 +54,6 @@ function Recipes() {
   ));
 
   const handlePageChange = (newPage) => {
-    console.log(search)
     if (newPage > 0) {
       if(!search) {
         navigate(`/recipes/page/${newPage}`);
@@ -100,11 +66,13 @@ function Recipes() {
   }
 
   const handleSearch = async (value) => {
-    const searchResults = await fetchSearchResults(value.searchValue);
-    setRecipes(searchResults);
+    const searchResults = await fetchSearchResults(value.searchValue, page);
+    setSearchCount(searchResults.data.count);
+    setRecipes(searchResults.data.result);
     setSearch(value.searchValue);
     setPage(1);
     navigate(`/recipes/page/${1}?search=${value.searchValue}`);
+    console.log(searchCount)
   };
   return (
     <div className="container">

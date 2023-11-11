@@ -1,8 +1,8 @@
 import { React, useState } from "react";
 import axios from "axios";
 
-function Search({handleSearch }) {
-  const [searchValue, setSearchValue] = useState('');
+function Search({currentSearch, handleSearch }) {
+  const [searchValue, setSearchValue] = useState(currentSearch);
 
   const handleSubmit = async (event) => {
     event.preventDefault();

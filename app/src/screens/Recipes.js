@@ -109,6 +109,7 @@ function Recipes() {
       <Search
         string={search}
         page={page}
+        currentSearch={search}
         handleSearch={handleSearch}
         key={page}
       ></Search>

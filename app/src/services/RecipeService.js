@@ -22,7 +22,7 @@ export const fetchSearchResults = async (ingredients, page) => {
   try {
     const ingredientsQuery = `title=${ingredients}`;
     const response = await axios.get(
-        `http://localhost:8080/recipes/search?page=${page}&${ingredientsQuery}`,
+      `http://localhost:8080/recipes/search?page=${page}&${ingredientsQuery}`,
     );
     if (response && response.data) {
       return response;

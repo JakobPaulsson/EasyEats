@@ -1,0 +1,13 @@
+.pageContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.addIngredientsContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputBox {
+  background-color: white;
+}

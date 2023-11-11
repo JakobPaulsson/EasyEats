@@ -1,12 +1,12 @@
 import { React, useState } from "react";
 import axios from "axios";
 
-function Search({currentSearch, handleSearch }) {
+function Search({ currentSearch, handleSearch }) {
   const [searchValue, setSearchValue] = useState(currentSearch);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    handleSearch({searchValue});
+    handleSearch({ searchValue });
   };
 
   const handleChange = (event) => {
@@ -17,7 +17,8 @@ function Search({currentSearch, handleSearch }) {
       <form onSubmit={handleSubmit}>
         <input type="text" value={searchValue} onChange={handleChange} />
         <button type="submit">Search</button>
-      </form>    </div>
+      </form>{" "}
+    </div>
   );
 }
 

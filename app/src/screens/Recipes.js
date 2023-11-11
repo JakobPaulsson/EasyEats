@@ -1,8 +1,8 @@
 import axios from "axios";
 import "./Recipes.css";
-import { useState, useEffect, useRef} from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import {fetchRecipes, fetchSearchResults} from "../services/RecipeService";
+import { fetchRecipes, fetchSearchResults } from "../services/RecipeService";
 import Recipe from "../components/Recipe.js";
 import Search from "../components/Search";
 function Recipes() {
@@ -18,9 +18,9 @@ function Recipes() {
 
   useEffect(() => {
     if (search.length === 0) {
-      fetchRecipes(ingredients, page).then(r => setRecipes(r.data));
+      fetchRecipes(ingredients, page).then((r) => setRecipes(r.data));
     } else {
-      fetchSearchResults(search,page).then(function response(data) {
+      fetchSearchResults(search, page).then(function response(data) {
         setRecipes(data.data.result);
         setSearchCount(data.data.count);
       });
@@ -55,15 +55,14 @@ function Recipes() {
 
   const handlePageChange = (newPage) => {
     if (newPage > 0) {
-      if(!search) {
+      if (!search) {
         navigate(`/recipes/page/${newPage}`);
-      }
-      else {
-        if(searchCount/newPage > 8)
-        navigate(`/recipes/page/${newPage}?search=${search}`)
+      } else {
+        if (searchCount / newPage > 8)
+          navigate(`/recipes/page/${newPage}?search=${search}`);
       }
     }
-  }
+  };
 
   const handleSearch = async (value) => {
     const searchResults = await fetchSearchResults(value.searchValue, page);
@@ -72,7 +71,7 @@ function Recipes() {
     setSearch(value.searchValue);
     setPage(1);
     navigate(`/recipes/page/${1}?search=${value.searchValue}`);
-    console.log(searchCount)
+    console.log(searchCount);
   };
   return (
     <div className="container">
@@ -83,7 +82,7 @@ function Recipes() {
         handleSearch={handleSearch}
         key={page}
       ></Search>
-      {searchCount > 0? (<h3>Total results: {searchCount}</h3>) : null}
+      {searchCount > 0 ? <h3>Total results: {searchCount}</h3> : null}
       {currentRecipe ? (
         <Recipe recipe={currentRecipe} />
       ) : (

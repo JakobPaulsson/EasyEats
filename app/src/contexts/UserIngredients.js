@@ -1,45 +1,38 @@
-import {
-    createContext,
-    useState,
-    useMemo,
-    useContext,
-    useEffect,
-} from 'react'
+import { createContext, useState, useMemo, useContext, useEffect } from "react";
 
 const defaultContext = {
-    userIngredients: [],
-    addIngredient: () => {},
-    removeIngredient: (title) => {}
-}
+  userIngredients: [],
+  addIngredient: () => {},
+  removeIngredient: (title) => {},
+};
 
-const RecipeContext = createContext(defaultContext)
+const RecipeContext = createContext(defaultContext);
 
-const UserIngredients= ({ children }) => {
-    const [userIngredients, setUserRecipes] = useState([])
+const UserIngredients = ({ children }) => {
+  const [userIngredients, setUserRecipes] = useState([]);
 
-    const contextValue = useMemo(() => {
-        const addIngredient= () => {
-            setUserRecipes([...userIngredients, defaultContext.userIngredients])
-        }
+  const contextValue = useMemo(() => {
+    const addIngredient = () => {
+      setUserRecipes([...userIngredients, defaultContext.userIngredients]);
+    };
 
-        const removeIngredient= (title) => {
-            if(userIngredients)
-            setUserRecipes(userIngredients.filter(i => i !== title))
-        }
+    const removeIngredient = (title) => {
+      if (userIngredients)
+        setUserRecipes(userIngredients.filter((i) => i !== title));
+    };
 
-        return {
-            userIngredients,
-            addIngredient,
-            removeIngredient
-        }
+    return {
+      userIngredients,
+      addIngredient,
+      removeIngredient,
+    };
+  }, [userIngredients]);
 
-    }, [userIngredients])
+  return (
+    <RecipeContext.Provider value={{ contextValue }}>
+      {children}
+    </RecipeContext.Provider>
+  );
+};
 
-    return (
-        <RecipeContext.Provider value={{ contextValue }}>
-            {children}
-        </RecipeContext.Provider>
-    )
-}
-
-export default UserIngredients
+export default UserIngredients;

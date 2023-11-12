@@ -1,11 +1,11 @@
 import "./Recipe.css";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
-import InstructionStepper from "../components/InstructionStepper"
+import InstructionStepper from "../components/InstructionStepper";
 
 function Recipe() {
   const recipe = useLocation().state.recipe;
-  console.log(recipe)
+  console.log(recipe);
   let imperialIngredients = recipe["Ingredients"]
     .replaceAll("'", "")
     .split("**");
@@ -14,7 +14,7 @@ function Recipe() {
     .split("**")
     .slice(0, -1);
   const [ingredients, toggleIngredientsUnits] = useState(imperialIngredients);
-  
+
   const handleComplete = () => {
     const a = 0;
     //navigate(`recipes/${recipe.Title}`)
@@ -70,15 +70,13 @@ function Recipe() {
         </div>
         <div className="instructionContainer">
           <h2>Instructions</h2>
-          <InstructionStepper 
-            instructions=
-            {instructions.map((instruction, index) => (
-              {
-                label:`Step ${index + 1}`,
-                description:`${instruction}`
-              }
-            ))} 
-            handle = {handleComplete}/>
+          <InstructionStepper
+            instructions={instructions.map((instruction, index) => ({
+              label: `Step ${index + 1}`,
+              description: `${instruction}`,
+            }))}
+            handle={handleComplete}
+          />
         </div>
       </div>
     </div>

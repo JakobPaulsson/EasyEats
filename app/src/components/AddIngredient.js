@@ -10,7 +10,12 @@ import {
   Typography,
 } from "@mui/material";
 import { Add } from "@mui/icons-material";
-function AddIngredient() {
+import { useState } from "react";
+import { Unstable_NumberInput as NumberInput } from "@mui/base/Unstable_NumberInput";
+function AddIngredient({ handleIngredientAdd }) {
+  const [ingredient, setIngredient] = useState("");
+  const [amount, setAmount] = useState("");
+  const [unit, setUnit] = useState("");
   return (
     <Box
       component="form"
@@ -46,6 +51,8 @@ function AddIngredient() {
               label="Ingredient"
               variant={"standard"}
               placeholder={"Add ingredient"}
+              value={ingredient}
+              onChange={(e) => setIngredient(e.target.value)}
             />
             <TextField
               className="inputBox"
@@ -53,6 +60,9 @@ function AddIngredient() {
               label="Amount"
               variant={"standard"}
               placeholder={"Add amount"}
+              type={"number"}
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
             />
             <TextField
               id="outlined-select-currency"
@@ -61,6 +71,8 @@ function AddIngredient() {
               helperText="Select the unit of measurement"
               variant={"standard"}
               className={"inputBox"}
+              value={unit}
+              onChange={(e) => setUnit(e.target.value)}
             >
               <MenuItem value="ml">ml</MenuItem>
               <MenuItem value="gram">gram</MenuItem>
@@ -76,7 +88,17 @@ function AddIngredient() {
             }}
           >
             <Tooltip title="Add ingredient to inventory" arrow>
-              <Fab color="primary" aria-label="add" size={"small"}>
+              <Fab
+                color="primary"
+                aria-label="add"
+                size={"small"}
+                onClick={() => {
+                  setIngredient("");
+                  setAmount("");
+                  setUnit("");
+                  handleIngredientAdd(ingredient, amount, unit);
+                }}
+              >
                 <Add />
               </Fab>
             </Tooltip>

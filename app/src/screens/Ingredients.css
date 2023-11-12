@@ -3,10 +3,9 @@
   flex-direction: row;
   align-items: flex-start;
   justify-content: center;
-
 }
 
-.pageContainer .MuiPaper-root{
+.pageContainer .MuiPaper-root {
   align-self: center;
 }
 
@@ -20,14 +19,12 @@
 .inputBox {
 }
 
-
 .inventoryHeader {
   display: flex;
-  height:50px;
-  background-color: #A4A4A4;
+  height: 50px;
+  background-color: #a4a4a4;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
-  align-items:center;
+  align-items: center;
   justify-content: center;
-
 }

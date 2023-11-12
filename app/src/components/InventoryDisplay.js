@@ -1,6 +1,45 @@
-import { Box, Container, Divider, Paper, Typography } from "@mui/material";
+import { useState } from "react";
+import {
+  Box,
+  Container,
+  Divider,
+  IconButton,
+  Paper,
+  Typography,
+} from "@mui/material";
+import { Delete } from "@mui/icons-material";
 
-function InventoryDisplay() {
+function InventoryDisplay({ inventory, handleIngredientRemove }) {
+  const inventoryItem = inventory
+    ? inventory.map((item, index) => (
+        <>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              ml: 3,
+              "& button": {
+                alignSelf: "flex-end",
+              },
+            }}
+          >
+            <Typography variant="subtitle">
+              {item.name} {item.amount}x {item.unit}
+            </Typography>
+            <IconButton
+              aria-label="delete"
+              id={item.name}
+              onClick={() => handleIngredientRemove(item.name)}
+            >
+              <Delete />
+            </IconButton>
+          </Box>
+          <Divider />
+        </>
+      ))
+    : null;
+
   return (
     <Paper
       elevation={8}
@@ -32,9 +71,7 @@ function InventoryDisplay() {
           </Typography>
         </Container>
       </Box>
-      <Divider />
-      <div className="inventoryBody" />
-      <div className="inventoryFooter" />
+      <Box>{inventoryItem ? inventoryItem : null}</Box>
     </Paper>
   );
 }

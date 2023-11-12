@@ -12,7 +12,7 @@ import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
 import { Pagination } from "@mui/material";
 import PaginationItem from "@mui/material/PaginationItem";
-import Recipe from "../components/Recipe.js";
+import Recipe from "./Recipe.js";
 import Search from "../components/Search";
 function Recipes() {
   const { pageNumber } = useParams();

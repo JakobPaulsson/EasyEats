@@ -6,7 +6,7 @@ import Account from "./screens/Account";
 import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
 import Recipe from "./components/Recipe";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 function App() {
   return (

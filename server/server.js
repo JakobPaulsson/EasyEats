@@ -1,9 +1,9 @@
-const sqlite3 = require('sqlite3')
-const sqlite = require('sqlite')
-const express = require('express');
-const cors = require('cors')
+const sqlite3 = require("sqlite3");
+const sqlite = require("sqlite");
+const express = require("express");
+const cors = require("cors");
 const app = express();
-app.use(cors())
+app.use(cors());
 
 async function connect() {
     const db = await sqlite.open({
@@ -14,8 +14,8 @@ async function connect() {
 }
 
 app.listen(8080, () => {
-      console.log('server listening on port 8080')
-})
+  console.log("server listening on port 8080");
+});
 
 app.post('/recipes/score', async (req, res) => {
     let db = await connect();
@@ -95,4 +95,3 @@ app.get('/recipes/search', async (req, res) => {
     res.send({result, count})
     await db.close()
 })
-

@@ -6,6 +6,9 @@ import {
   addIngredient,
   removeIngredient,
 } from "../services/IngredientService";
+import {
+  updateScores
+} from "../services/ScoreService";
 import { useState, useEffect } from "react";
 
 function Ingredients() {
@@ -41,6 +44,7 @@ function Ingredients() {
   const handleIngredientAdd = (name, amount, unit) => {
     addIngredient(1, name, amount, unit).then(function response(data) {
       getAndSetIngredients();
+      updateScores(1);
     });
   };
 
@@ -48,6 +52,7 @@ function Ingredients() {
   const handleIngredientRemove = (name) => {
     removeIngredient(1, name).then(function response(data) {
       getAndSetIngredients();
+      updateScores(1);
     });
   };
 

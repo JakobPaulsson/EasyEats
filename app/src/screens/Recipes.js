@@ -1,4 +1,3 @@
-import axios from "axios";
 import styles from "./Recipes.css";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
@@ -11,15 +10,14 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { CardActionArea, CardHeader } from "@mui/material";
 import { Pagination } from "@mui/material";
-import PaginationItem from "@mui/material/PaginationItem";
 import Recipe from "./Recipe.js";
 import Search from "../components/Search";
+
 function Recipes() {
   const { pageNumber } = useParams();
   const [page, setPage] = useState(pageNumber);
   const [searchCount, setSearchCount] = useState(0);
   const [searchParams] = useSearchParams();
-  const ingredients = ["milk", "egg"]; // This should be dynamic based on user input
   const [recipes, setRecipes] = useState([]);
   const [currentRecipe, setCurrentRecipe] = useState(null);
   const [search, setSearch] = useState(searchParams.get("search") || "");
@@ -48,7 +46,7 @@ function Recipes() {
     });
   };
 
-  const recipeElements2 = recipes.map((recipe) => (
+  const recipeElements = recipes.map((recipe) => (
     <Card variant="outlined" sx={{ maxWidth: 245 }}>
       {recipe["Score"] ? (
         <CardHeader title={`Score ${recipe["Score"]}`} />
@@ -72,23 +70,6 @@ function Recipes() {
         </CardActions>
       </CardActionArea>
     </Card>
-  ));
-
-  const recipeElements = recipes.map((recipe) => (
-    <div key={recipe.Title} className="card">
-      <div className="title">{recipe["Title"]}</div>
-      <div className="cardContainer">
-        <img
-          onClick={() => navigateToRecipe(recipe)}
-          className="image"
-          src={recipe["ImageSrc"]}
-          alt=""
-        />
-        <div className="completenessContainer">
-          <div className="completeness">Ingredients</div>
-        </div>
-      </div>
-    </div>
   ));
 
   const handlePageChange = (event, page) => {
@@ -132,8 +113,8 @@ function Recipes() {
       ) : (
         <>
           <div className="cardsContainer">
-            {recipeElements2.length > 0 ? (
-              recipeElements2
+            {recipeElements.length > 0 ? (
+              recipeElements
             ) : (
               <p>No recipes found.</p>
             )}

@@ -73,13 +73,18 @@ app.get('/recipes', async (req, res) => {
     count = count[0]['COUNT(*)']
     let recipeIDs = scoreQuery.map(function(d) { return d['RecipeID']; });
     let scores = scoreQuery.map(function(d) { return d['Score']; });
-    let queryString = "("
-    for(var i = 0; i < recipeIDs.length; i++)
-        queryString += `${recipeIDs[i]}, `
-    queryString = queryString.slice(0, -2) + `)`
-    const result = await db.all(`SELECT * FROM Recipes WHERE RecipeID IN ${queryString}`)
-    for(var i = 0; i < result.length; i++)
-        result[i]['Score'] = scores[i]
+    let result;
+    if (recipeIDs.length === 0) {
+        result = await db.all(`SELECT * FROM Recipes LIMIT 8 OFFSET ${(page - 1) * 8, page * 8}`)
+    } else {
+        let queryString = "("
+        for(var i = 0; i < recipeIDs.length; i++)
+            queryString += `${recipeIDs[i]}, `
+        queryString = queryString.slice(0, -2) + `)`
+        result = await db.all(`SELECT * FROM Recipes WHERE RecipeID IN ${queryString}`)
+        for(var i = 0; i < result.length; i++)
+            result[i]['Score'] = scores[i]
+    }
     res.send({result, count})
     await db.close()
 })

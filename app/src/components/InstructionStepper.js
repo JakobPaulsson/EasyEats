@@ -30,7 +30,7 @@ function InstructionStepper({ instructions, handleComplete }) {
           <Step key={step.label}>
             <StepLabel
               optional={
-                index === 2 ? (
+                index === instructions.length - 1 ? (
                   <Typography variant="caption">Last step</Typography>
                 ) : null
               }

@@ -5,7 +5,6 @@ import InstructionStepper from "../components/InstructionStepper";
 
 function Recipe() {
   const recipe = useLocation().state.recipe;
-  console.log(recipe);
   let imperialIngredients = recipe["Ingredients"]
     .replaceAll("'", "")
     .split("**");

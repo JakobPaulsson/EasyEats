@@ -11,7 +11,6 @@ function Search({ currentSearch, handleSearch }) {
   const [searchValue, setSearchValue] = useState(currentSearch);
 
   const handleSubmit = async (event) => {
-    console.log(event);
     event.preventDefault();
     handleSearch({ searchValue });
   };

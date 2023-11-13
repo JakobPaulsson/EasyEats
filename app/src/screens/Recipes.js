@@ -2,14 +2,14 @@ import axios from "axios";
 import styles from "./Recipes.css";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { fetchRecipes, fetchSearchResults } from "../services/RecipeService";
+import { fetchSearchResults, fetchScored } from "../services/RecipeService";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { CardActionArea } from "@mui/material";
+import { CardActionArea, CardHeader } from "@mui/material";
 import { Pagination } from "@mui/material";
 import PaginationItem from "@mui/material/PaginationItem";
 import Recipe from "./Recipe.js";
@@ -26,10 +26,13 @@ function Recipes() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (search.length === 0) {
-      fetchRecipes(ingredients, page).then((r) => setRecipes(r.data));
-    } else {
+    if (search) {
       fetchSearchResults(search, page).then(function response(data) {
+        setRecipes(data.data.result);
+        setSearchCount(data.data.count);
+      });
+    } else {
+      fetchScored(page).then(function response(data) {
         setRecipes(data.data.result);
         setSearchCount(data.data.count);
       });
@@ -47,9 +50,10 @@ function Recipes() {
 
   const recipeElements2 = recipes.map((recipe) => (
     <Card variant="outlined" sx={{ maxWidth: 245 }}>
-      <CardActionArea>
+      {recipe["Score"] ? <CardHeader title={`Score ${recipe["Score"]}`} /> : null}
+      <CardActionArea onClick={() => navigateToRecipe(recipe)}>
         <CardMedia
-          sx={{ height: 140, color: "black" }}
+          sx={{ height: 140}}
           image={recipe["ImageSrc"]}
           title={recipe["Title"]}
         />
@@ -62,7 +66,7 @@ function Recipes() {
           </Typography>
         </CardContent>
         <CardActions>
-          <Button size="small" onClick={() => navigateToRecipe(recipe)}>
+          <Button size="small">
             Learn More
           </Button>
         </CardActions>
@@ -105,7 +109,6 @@ function Recipes() {
     setSearch(value.searchValue);
     setPage(1);
     navigate(`/recipes/page/${1}?search=${value.searchValue}`);
-    console.log(searchCount);
   };
   return (
     <div className="container">

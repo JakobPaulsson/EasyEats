@@ -1,13 +1,16 @@
 import csv
 import sqlite3
 import re
+import os 
 
-
+if os.path.exists("recipes.db"):
+    os.remove("recipes.db")
 
 conn = sqlite3.connect("recipes.db")
 cursor = conn.cursor()
 cursor.execute("""
     CREATE TABLE IF NOT EXISTS Recipes (
+        RecipeID INTEGER,
         Title TEXT,
         Ingredients TEXT,
         CleanIngredients TEXT,
@@ -18,6 +21,22 @@ cursor.execute("""
         CookingTimeMinutes INTEGER,
         Rating REAL,
         RatingCount INTEGER
+    );
+    """)
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS Users (
+        UserID INTEGER PRIMARY KEY,
+        Ingredients TEXT,
+        PreviousRecipes TEXT,
+        Allergies TEXT,
+        Name TEXT
+    );
+    """)
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS Scores (
+        UserID INTEGER,
+        RecipeID INTEGER,
+        Score REAL
     );
     """)
 cursor.execute("CREATE TABLE IF NOT EXISTS Ingredients (Ingredient TEXT);")
@@ -174,19 +193,20 @@ with open('data/recipes.csv', 'r', encoding='unicode_escape') as file:
             continue
 
         minutes = eval(row['Total Time'].replace(' d', '*24*60').replace(' h', '*60').replace(' m', '').replace(" ","+"))
-        parsedRow = [row['Recipe Name'], row['Ingredients'], clean_ingredients_recipes[ID], str(amounts), str(units), row['Directions'].replace('\'', '') , row['Recipe Photo'], minutes, ratings[ID], int(rating_counts[ID])]
+        parsedRow = [row['RecipeID'], row['Recipe Name'], row['Ingredients'], clean_ingredients_recipes[ID], str(amounts), str(units), row['Directions'].replace('\'', '') , row['Recipe Photo'], minutes, ratings[ID], int(rating_counts[ID])]
         cursor.execute('''
-                 INSERT INTO Recipes (Title,
-                                     Ingredients,
-                                     CleanIngredients,
-                                     IngredientAmount,
-                                     IngredientUnit,
-                                     Instructions,
-                                     ImageSrc, 
-                                     CookingTimeMinutes,
-                                     Rating,
-                                     RatingCount)
-                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+                 INSERT INTO Recipes (RecipeID,
+                                        Title,
+                                        Ingredients,
+                                        CleanIngredients,
+                                        IngredientAmount,
+                                        IngredientUnit,
+                                        Instructions,
+                                        ImageSrc, 
+                                        CookingTimeMinutes,
+                                        Rating,
+                                        RatingCount)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
                  ''', parsedRow)
 
 conn.commit()

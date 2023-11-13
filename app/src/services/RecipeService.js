@@ -1,21 +1,16 @@
 import axios from "axios";
 
-export const fetchRecipes = async (ingredients, page) => {
-  const ingredientsQuery = ingredients
-    .map((ing) => `ingredients=${ing}`)
-    .join("&");
-  console.log(ingredientsQuery);
+export const fetchScored = async (page) => {
   try {
     const response = await axios.get(
-      `http://localhost:8080/recipes?page=${page}&${ingredientsQuery}`,
+      `http://localhost:8080/recipes?userID=1&page=${page}`,
     );
-
-    if (response.data.length === 0) {
-      return 1;
-    } else {
+    if (response && response.data) {
       return response;
     }
-  } catch (error) {}
+  } catch (error) {
+    console.error("Failed to fetch search query", error);
+  }
 };
 
 export const fetchSearchResults = async (ingredients, page) => {

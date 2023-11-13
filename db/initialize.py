@@ -34,6 +34,18 @@ cursor.execute("""
         Name TEXT
     );
     """)
+
+# TODO: This should not be created, just an example user
+cursor.execute("""
+    INSERT INTO Users (UserID,
+                        Ingredients,
+                        IngredientAmount,
+                        IngredientUnit,
+                        PreviousRecipes,
+                        Allergies,
+                        Name)
+    VALUES (1, '', '', '','', '', '');
+        """)
 cursor.execute("""
     CREATE TABLE IF NOT EXISTS Scores (
         UserID INTEGER,

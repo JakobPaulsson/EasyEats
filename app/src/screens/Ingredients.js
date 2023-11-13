@@ -6,9 +6,7 @@ import {
   addIngredient,
   removeIngredient,
 } from "../services/IngredientService";
-import {
-  updateScores
-} from "../services/ScoreService";
+import { updateScores } from "../services/ScoreService";
 import { useState, useEffect } from "react";
 
 function Ingredients() {

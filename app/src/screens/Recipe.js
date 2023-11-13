@@ -22,14 +22,15 @@ function Recipe() {
   let metricIngredients = [];
   for (let i = 0; i < recipe["CleanIngredients"].length; i++) {
     let amount = Math.round(recipe["IngredientAmount"][i]);
-    let unit = recipe["IngredientUnit"].split(',')[i];
-    let ingredient = recipe["CleanIngredients"].split(',')[i];
+    let unit = recipe["IngredientUnit"].split(",")[i];
+    let ingredient = recipe["CleanIngredients"].split(",")[i];
 
     if (unit === "count") {
       metricIngredients.push(imperialIngredients[i]);
     } else {
       metricIngredients.push(
-        `${amount == 0 ? "" : amount + " "}${unit == "count" ? "" : unit + " "
+        `${amount == 0 ? "" : amount + " "}${
+          unit == "count" ? "" : unit + " "
         }${ingredient}`,
       );
     }

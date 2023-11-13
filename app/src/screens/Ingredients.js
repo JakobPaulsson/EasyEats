@@ -1,9 +1,12 @@
 import Box from "@mui/material/Box";
 import AddIngredient from "../components/AddIngredient";
 import InventoryDisplay from "../components/InventoryDisplay";
-import { getIngredients, addIngredient, removeIngredient } from "../services/IngredientService";
+import {
+  getIngredients,
+  addIngredient,
+  removeIngredient,
+} from "../services/IngredientService";
 import { useState, useEffect } from "react";
-
 
 function Ingredients() {
   const [ingredients, setIngredients] = useState([]);
@@ -11,20 +14,24 @@ function Ingredients() {
   // TODO: Hardcoded for userID 1
   const getAndSetIngredients = () => {
     getIngredients(1).then(function response(data) {
-      let currentIngredients = []
+      let currentIngredients = [];
       for (var i = 0; i < data.data.ingredients.length; i++) {
-        let name = data.data.ingredients[i]
-        let amount = data.data.ingredientAmounts[i]
-        let unit = data.data.ingredientUnit[i]
-        currentIngredients.push({"name": name, "amount": amount, "unit": unit === "count" ? "" : unit})
+        let name = data.data.ingredients[i];
+        let amount = data.data.ingredientAmounts[i];
+        let unit = data.data.ingredientUnit[i];
+        currentIngredients.push({
+          name: name,
+          amount: amount,
+          unit: unit === "count" ? "" : unit,
+        });
       }
-      if (currentIngredients[0].name == '') {
-        setIngredients([])
+      if (currentIngredients[0].name == "") {
+        setIngredients([]);
       } else {
-        setIngredients(currentIngredients)
+        setIngredients(currentIngredients);
       }
     });
-  }
+  };
 
   useEffect(() => {
     getAndSetIngredients();

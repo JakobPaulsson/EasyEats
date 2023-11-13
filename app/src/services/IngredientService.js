@@ -13,7 +13,12 @@ export const getIngredients = async (userID) => {
   }
 };
 
-export const addIngredient = async (userID, ingredient, ingredientAmount, ingredientUnit) => {
+export const addIngredient = async (
+  userID,
+  ingredient,
+  ingredientAmount,
+  ingredientUnit,
+) => {
   try {
     const response = await axios.post(
       `http://localhost:8080/ingredient?userID=${userID}&ingredient=${ingredient}&ingredientAmount=${ingredientAmount}&ingredientUnit=${ingredientUnit}`,

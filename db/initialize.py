@@ -27,6 +27,8 @@ cursor.execute("""
     CREATE TABLE IF NOT EXISTS Users (
         UserID INTEGER PRIMARY KEY,
         Ingredients TEXT,
+        IngredientAmount REAL,
+        IngredientUnit TEXT,
         PreviousRecipes TEXT,
         Allergies TEXT,
         Name TEXT
@@ -155,7 +157,7 @@ with open('data/clean_recipes.csv', 'r', encoding='utf8') as file:
     csv_reader = csv.DictReader(file, delimiter=';')
     next(csv_reader, None)
     for row in csv_reader:
-        clean_ingredients_recipes[row['RecipeID']] = str(row["Ingredients"].split(','))
+        clean_ingredients_recipes[row['RecipeID']] = row["Ingredients"]
         for ingredient in row['Ingredients'].split(','):
             if not len(ingredient) == 0 and not len(ingredient.split(' ')) > 4:
                 ingredients.add(clean_ingredient(ingredient))
@@ -191,9 +193,9 @@ with open('data/recipes.csv', 'r', encoding='unicode_escape') as file:
         units, amounts = parse_ingredients(ingredients)
         if not units:
             continue
-
+        
         minutes = eval(row['Total Time'].replace(' d', '*24*60').replace(' h', '*60').replace(' m', '').replace(" ","+"))
-        parsedRow = [row['RecipeID'], row['Recipe Name'], row['Ingredients'], clean_ingredients_recipes[ID], str(amounts), str(units), row['Directions'].replace('\'', '') , row['Recipe Photo'], minutes, ratings[ID], int(rating_counts[ID])]
+        parsedRow = [row['RecipeID'], row['Recipe Name'], row['Ingredients'], clean_ingredients_recipes[ID], ",".join([str(x) for x in amounts]), ",".join(units), row['Directions'].replace('\'', '') , row['Recipe Photo'], minutes, ratings[ID], int(rating_counts[ID])]
         cursor.execute('''
                  INSERT INTO Recipes (RecipeID,
                                         Title,

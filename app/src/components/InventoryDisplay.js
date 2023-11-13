@@ -25,7 +25,7 @@ function InventoryDisplay({ inventory, handleIngredientRemove }) {
             }}
           >
             <Typography variant="subtitle">
-              {item.name} {item.amount}x {item.unit}
+              {item.name} {item.amount} {item.unit}
             </Typography>
             <IconButton
               aria-label="delete"

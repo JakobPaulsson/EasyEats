@@ -50,10 +50,12 @@ function Recipes() {
 
   const recipeElements2 = recipes.map((recipe) => (
     <Card variant="outlined" sx={{ maxWidth: 245 }}>
-      {recipe["Score"] ? <CardHeader title={`Score ${recipe["Score"]}`} /> : null}
+      {recipe["Score"] ? (
+        <CardHeader title={`Score ${recipe["Score"]}`} />
+      ) : null}
       <CardActionArea onClick={() => navigateToRecipe(recipe)}>
         <CardMedia
-          sx={{ height: 140}}
+          sx={{ height: 140 }}
           image={recipe["ImageSrc"]}
           title={recipe["Title"]}
         />
@@ -66,9 +68,7 @@ function Recipes() {
           </Typography>
         </CardContent>
         <CardActions>
-          <Button size="small">
-            Learn More
-          </Button>
+          <Button size="small">Learn More</Button>
         </CardActions>
       </CardActionArea>
     </Card>

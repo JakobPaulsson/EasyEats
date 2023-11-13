@@ -6,64 +6,75 @@ const app = express();
 app.use(cors());
 
 async function connect() {
-    const db = await sqlite.open({
-        filename: '../db/recipes.db',
-        driver: sqlite3.Database
-    })
-    return db
+  const db = await sqlite.open({
+    filename: "../db/recipes.db",
+    driver: sqlite3.Database,
+  });
+  return db;
 }
 
 app.listen(8080, () => {
   console.log("server listening on port 8080");
 });
 
-app.post('/recipes/score', async (req, res) => {
-    let db = await connect();
-    await db.run(`DELETE FROM Scores WHERE UserID=${req.query.userID}`);
-    let userIngredients =  await db.get(`SELECT Ingredients FROM Users WHERE UserID=${req.query.userID}`);
-    userIngredients = eval(userIngredients['Ingredients'])
+app.post("/recipes/score", async (req, res) => {
+  let db = await connect();
+  await db.run(`DELETE FROM Scores WHERE UserID=${req.query.userID}`);
+  let userIngredients = await db.get(
+    `SELECT Ingredients FROM Users WHERE UserID=${req.query.userID}`,
+  );
+  userIngredients = eval(userIngredients["Ingredients"]);
 
-    let recipes =  await db.all(`SELECT RecipeID FROM Recipes`);
-    const results = []
+  let recipes = await db.all(`SELECT RecipeID FROM Recipes`);
+  const results = [];
 
-    let recipeIDs = recipes.map(function(d) { return d['RecipeID']; });
-    let recipesIngredients = await db.all(`SELECT CleanIngredients FROM Recipes WHERE RecipeID IN (${recipeIDs.toString()})`)
-    recipesIngredients = recipesIngredients.map(function(d) { return eval(d['CleanIngredients']); })
+  let recipeIDs = recipes.map(function (d) {
+    return d["RecipeID"];
+  });
+  let recipesIngredients = await db.all(
+    `SELECT CleanIngredients FROM Recipes WHERE RecipeID IN (${recipeIDs.toString()})`,
+  );
+  recipesIngredients = recipesIngredients.map(function (d) {
+    return eval(d["CleanIngredients"]);
+  });
 
-    let scores = Array(recipes.length).fill(0)
-    for(var i = 0; i < recipes.length; i++) {
-        for(var j = 0; j < recipesIngredients[i].length; j++) {
-            if (userIngredients.includes(recipesIngredients[i][j]))
-            scores[i]++;
-        }
+  let scores = Array(recipes.length).fill(0);
+  for (var i = 0; i < recipes.length; i++) {
+    for (var j = 0; j < recipesIngredients[i].length; j++) {
+      if (userIngredients.includes(recipesIngredients[i][j])) scores[i]++;
     }
+  }
 
-    let queryString = ""
-    for(var i = 0; i < recipes.length; i++)
-        queryString += `(${req.query.userID}, ${recipeIDs[i]}, ${scores[i]}), `
+  let queryString = "";
+  for (var i = 0; i < recipes.length; i++)
+    queryString += `(${req.query.userID}, ${recipeIDs[i]}, ${scores[i]}), `;
 
-    queryString = queryString.slice(0, -2)
-    const result = await db.run(`INSERT INTO Scores VALUES ${queryString};`)
-    results.push(result)
-    res.send(results)
-    await db.close()
-})
+  queryString = queryString.slice(0, -2);
+  const result = await db.run(`INSERT INTO Scores VALUES ${queryString};`);
+  results.push(result);
+  res.send(results);
+  await db.close();
+});
 
-app.get('/recipes/score', async (req, res) => {
-    let db = await connect();
-    const result = await db.all(`SELECT * FROM Scores WHERE userID=${req.query.userID} ORDER BY Score DESC;`)
-    res.send(result)
-    await db.close()
-})
+app.get("/recipes/score", async (req, res) => {
+  let db = await connect();
+  const result = await db.all(
+    `SELECT * FROM Scores WHERE userID=${req.query.userID} ORDER BY Score DESC;`,
+  );
+  res.send(result);
+  await db.close();
+});
 
-app.post('/user', async (req, res) => {
-    let db = await connect();
-    const max = await db.get(`SELECT MAX(UserID) FROM Users;`)
-    let usersQuery = `(${max['MAX(UserID)'] + 1}, ${req.query.ingredients}, ${req.query.previousRecipes}, ${req.query.allergies}, ${req.query.name})`
-    const result = await db.all(`INSERT INTO Users VALUES ${usersQuery};`)
-    res.send(result)
-    await db.close()
-})
+app.post("/user", async (req, res) => {
+  let db = await connect();
+  const max = await db.get(`SELECT MAX(UserID) FROM Users;`);
+  let usersQuery = `(${max["MAX(UserID)"] + 1}, ${req.query.ingredients}, ${
+    req.query.previousRecipes
+  }, ${req.query.allergies}, ${req.query.name})`;
+  const result = await db.all(`INSERT INTO Users VALUES ${usersQuery};`);
+  res.send(result);
+  await db.close();
+});
 
 app.get('/recipes', async (req, res) => {
     let db = await connect();
@@ -89,14 +100,20 @@ app.get('/recipes', async (req, res) => {
     await db.close()
 })
 
-app.get('/recipes/search', async (req, res) => {
-    let db = await connect();
-    const page = req.query.page
-    let titleContains = req.query.title || ''; // Default to an empty string if no name provided
-    let limit = parseInt(req.query.limit, 8) || 8; // Default to 10 if no limit provided
-    const result = await db.all(`SELECT * FROM recipes WHERE Title LIKE ? LIMIT ? OFFSET ? `, ['%' + titleContains + '%', limit, (page-1)*8])
-    const countQuery = await db.all(`SELECT COUNT(*) FROM recipes WHERE Title LIKE? LIMIT?`, ['%' + titleContains + '%', limit])
-    const count = countQuery[0]['COUNT(*)']
-    res.send({result, count})
-    await db.close()
-})
+app.get("/recipes/search", async (req, res) => {
+  let db = await connect();
+  const page = req.query.page;
+  let titleContains = req.query.title || ""; // Default to an empty string if no name provided
+  let limit = parseInt(req.query.limit, 8) || 8; // Default to 10 if no limit provided
+  const result = await db.all(
+    `SELECT * FROM recipes WHERE Title LIKE ? LIMIT ? OFFSET ? `,
+    ["%" + titleContains + "%", limit, (page - 1) * 8],
+  );
+  const countQuery = await db.all(
+    `SELECT COUNT(*) FROM recipes WHERE Title LIKE? LIMIT?`,
+    ["%" + titleContains + "%", limit],
+  );
+  const count = countQuery[0]["COUNT(*)"];
+  res.send({ result, count });
+  await db.close();
+});

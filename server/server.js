@@ -76,7 +76,7 @@ app.post("/user", async (req, res) => {
 });
 
 app.delete("/ingredient", async (req, res) => {
-  let db = await connect();
+  let db = await connect(); 
   const query = await db.get(`SELECT Ingredients, IngredientAmount, IngredientUnit FROM Users WHERE userID=${req.query.userID};`);
   let ingredients = [], ingredientAmounts = [], ingredientUnits = []
   if (query['Ingredients'].includes(',')) {

@@ -206,8 +206,17 @@ with open('data/recipes.csv', 'r', encoding='unicode_escape') as file:
         if not units:
             continue
         
+        clean_ingredients = eval('[\'' + clean_ingredients_recipes[ID].replace('\'','').replace(',','\',\'') + '\']')
+
+        if 'olive oil' in row['Ingredients']:
+            for i in range(len(clean_ingredients)):
+                if clean_ingredients[i] == 'olive':
+                    clean_ingredients[i] = 'olive oil'
+                    break
+
+
         minutes = eval(row['Total Time'].replace(' d', '*24*60').replace(' h', '*60').replace(' m', '').replace(" ","+"))
-        parsedRow = [row['RecipeID'], row['Recipe Name'], row['Ingredients'], clean_ingredients_recipes[ID], ",".join([str(x) for x in amounts]), ",".join(units), row['Directions'].replace('\'', '') , row['Recipe Photo'], minutes, ratings[ID], int(rating_counts[ID])]
+        parsedRow = [row['RecipeID'], row['Recipe Name'], row['Ingredients'], ','.join(clean_ingredients), ",".join([str(x) for x in amounts]), ",".join(units), row['Directions'].replace('\'', '') , row['Recipe Photo'], minutes, ratings[ID], int(rating_counts[ID])]
         cursor.execute('''
                  INSERT INTO Recipes (RecipeID,
                                         Title,

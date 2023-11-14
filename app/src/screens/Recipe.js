@@ -2,8 +2,14 @@ import "./Recipe.css";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import InstructionStepper from "../components/InstructionStepper";
-import { List, ListItem, ListItemText, Paper, Checkbox, Grid } from "@mui/material";
-
+import {
+  List,
+  ListItem,
+  ListItemText,
+  Paper,
+  Checkbox,
+  Grid,
+} from "@mui/material";
 
 function Recipe() {
   const recipe = useLocation().state.recipe;
@@ -21,10 +27,7 @@ function Recipe() {
     //navigate(`recipes/${recipe.Title}`)
   };
 
-  const setIngredientsUnit = () => {
-
-  }
-
+  const setIngredientsUnit = () => {};
 
   useEffect(() => {
     let metricIngredients = [];
@@ -37,12 +40,13 @@ function Recipe() {
         metricIngredients.push(imperialIngredients[i]);
       } else {
         metricIngredients.push(
-          `${amount == 0 ? "" : amount + " "}${unit == "count" ? "" : unit + " "
+          `${amount == 0 ? "" : amount + " "}${
+            unit == "count" ? "" : unit + " "
           }${ingredient}`,
         );
       }
     }
-  }, [])
+  }, []);
 
   return (
     <div className="recipe">
@@ -58,15 +62,13 @@ function Recipe() {
       <div className="descriptionContainer">
         <div className="ingredientContainer">
           <h2>Ingredients</h2>
-          <Paper sx={{ marginTop: "20px", marginRight: "20px", width: "90%" }} elevation={8}>
-            <List sx={{ width: '100%' }}>
+          <Paper
+            sx={{ marginTop: "20px", marginRight: "20px", width: "90%" }}
+            elevation={8}
+          >
+            <List sx={{ width: "100%" }}>
               {ingredients.map((value) => (
-                <ListItem
-                  key={value}
-                  secondaryAction={
-                    <Checkbox />
-                  }
-                >
+                <ListItem key={value} secondaryAction={<Checkbox />}>
                   <ListItemText primary={value} />
                 </ListItem>
               ))}

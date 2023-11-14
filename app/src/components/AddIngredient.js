@@ -13,17 +13,16 @@ import { Add } from "@mui/icons-material";
 import { useState } from "react";
 import { getSearchSuggestions } from "../services/SearchSuggestionService";
 
-
 function AddIngredient({ handleIngredientAdd }) {
   const [ingredient, setIngredient] = useState("");
   const [amount, setAmount] = useState("");
   const [unit, setUnit] = useState("");
-  const [options, setOptions] = useState([])
+  const [options, setOptions] = useState([]);
 
   const fetchSuggestions = async (searchTerm) => {
-    let data = await getSearchSuggestions(searchTerm)
-    setOptions(data.data.searchResults)
-  }
+    let data = await getSearchSuggestions(searchTerm);
+    setOptions(data.data.searchResults);
+  };
 
   return (
     <Box
@@ -58,15 +57,20 @@ function AddIngredient({ handleIngredientAdd }) {
               id="grouped-demo"
               options={options.sort((a, b) => a.length - b.length)}
               groupBy={(option) => option.firstLetter}
-              ListboxProps={{ style: { maxHeight: 160, overflow: 'auto' } }}
+              ListboxProps={{ style: { maxHeight: 160, overflow: "auto" } }}
               onChange={(event, newValue) => {
                 setIngredient(newValue);
               }}
-              renderInput={(params) => <TextField
-                variant={"standard"}
-                onChange={(e) => {
-                  fetchSuggestions(e.target.value)
-                }} {...params} label="Ingredient" />}
+              renderInput={(params) => (
+                <TextField
+                  variant={"standard"}
+                  onChange={(e) => {
+                    fetchSuggestions(e.target.value);
+                  }}
+                  {...params}
+                  label="Ingredient"
+                />
+              )}
             />
             <TextField
               className="inputBox"

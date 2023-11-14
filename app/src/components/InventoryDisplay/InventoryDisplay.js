@@ -71,7 +71,7 @@ function InventoryDisplay({ inventory, handleIngredientRemove }) {
           </Typography>
         </Container>
       </Box>
-      <Box>{inventoryItem ? inventoryItem : null}</Box>
+      <Box data-cy={"inventory"}>{inventoryItem ? inventoryItem : null}</Box>
     </Paper>
   );
 }

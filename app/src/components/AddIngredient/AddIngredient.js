@@ -64,6 +64,7 @@ function AddIngredient({ handleIngredientAdd }) {
               renderInput={(params) => (
                 <TextField
                   variant={"standard"}
+                  data-cy={"addIngredient"}
                   onChange={(e) => {
                     fetchSuggestions(e.target.value);
                   }}
@@ -81,6 +82,7 @@ function AddIngredient({ handleIngredientAdd }) {
               type={"number"}
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
+              data-cy={"addAmount"}
             />
             <TextField
               id="outlined-select-currency"
@@ -91,6 +93,7 @@ function AddIngredient({ handleIngredientAdd }) {
               className={"inputBox"}
               value={unit}
               onChange={(e) => setUnit(e.target.value)}
+              data-cy={"addUnit"}
             >
               <MenuItem value="ml">ml</MenuItem>
               <MenuItem value="gram">gram</MenuItem>
@@ -110,6 +113,7 @@ function AddIngredient({ handleIngredientAdd }) {
                 color="primary"
                 aria-label="add"
                 size={"small"}
+                data-cy={"addButton"}
                 onClick={() => {
                   setIngredient("");
                   setAmount("");

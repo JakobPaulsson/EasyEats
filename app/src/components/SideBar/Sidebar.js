@@ -83,7 +83,7 @@ export default function Sidebar() {
         <List>
           {["Dashboard", "Recipes", "Ingredients", "Account"].map(
             (text, index) => (
-              <ListItem key={text} disablePadding>
+              <ListItem data-cy={text} key={text} disablePadding>
                 <ListItemButton
                   onClick={(event) => {
                     handleSideBarClick(event);

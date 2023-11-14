@@ -29,7 +29,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "prepare": "cd .. && husky install app/.husky",
-    "precommit": "npm run lint"
+    "precommit": "npx prettier . --write && npm run lint"
   },
   "eslintConfig": {
     "extends": [

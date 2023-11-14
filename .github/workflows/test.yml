@@ -8,6 +8,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      
+      - name: Initialize Database
+        working-directory: ./db
+        run: python initialize.py
 
       - name: Install Server
         working-directory: ./server

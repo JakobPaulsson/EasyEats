@@ -15,6 +15,7 @@ screenshots
 
 #cypress
 /cypress/screenshots
+videos
 # misc
 .DS_Store
 .env.local

@@ -16,6 +16,7 @@ jobs:
           browser: chrome
           build: npm build
           start: npm start
+          working-directory: ./src
           wait-on: "http://localhost:3000"
 
           

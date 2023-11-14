@@ -1,15 +1,7 @@
 import "./Recipe.css";
-import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import InstructionStepper from "../../components/InstructionStepper/InstructionStepper";
-import {
-  List,
-  ListItem,
-  ListItemText,
-  Paper,
-  Checkbox,
-  Grid,
-} from "@mui/material";
+import { List, ListItem, ListItemText, Paper, Checkbox } from "@mui/material";
 
 function Recipe() {
   const recipe = useLocation().state.recipe;
@@ -20,33 +12,7 @@ function Recipe() {
     .replaceAll("'", "")
     .split("**")
     .slice(0, -1);
-  const [ingredients, toggleIngredientsUnits] = useState(imperialIngredients);
-
-  const handleComplete = () => {
-    const a = 0;
-    //navigate(`recipes/${recipe.Title}`)
-  };
-
-  const setIngredientsUnit = () => {};
-
-  useEffect(() => {
-    let metricIngredients = [];
-    for (let i = 0; i < recipe["CleanIngredients"].length; i++) {
-      let amount = Math.round(recipe["IngredientAmount"][i]);
-      let unit = recipe["IngredientUnit"].split(",")[i];
-      let ingredient = recipe["CleanIngredients"].split(",")[i];
-
-      if (unit === "count") {
-        metricIngredients.push(imperialIngredients[i]);
-      } else {
-        metricIngredients.push(
-          `${amount == 0 ? "" : amount + " "}${
-            unit == "count" ? "" : unit + " "
-          }${ingredient}`,
-        );
-      }
-    }
-  }, []);
+  const ingredients = imperialIngredients;
 
   return (
     <div className="recipe">
@@ -82,7 +48,6 @@ function Recipe() {
               label: `Step ${index + 1}`,
               description: `${instruction}`,
             }))}
-            handle={handleComplete}
           />
         </div>
       </div>

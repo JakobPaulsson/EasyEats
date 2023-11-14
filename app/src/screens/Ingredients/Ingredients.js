@@ -26,7 +26,7 @@ function Ingredients() {
           unit: unit === "count" ? "" : unit,
         });
       }
-      if (currentIngredients[0].name == "") {
+      if (currentIngredients[0].name === "") {
         setIngredients([]);
       } else {
         setIngredients(currentIngredients);

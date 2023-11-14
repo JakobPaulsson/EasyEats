@@ -1,4 +1,4 @@
-import { createContext, useState, useMemo, useContext, useEffect } from "react";
+import { createContext, useState, useMemo } from "react";
 
 const defaultContext = {
   userIngredients: [],

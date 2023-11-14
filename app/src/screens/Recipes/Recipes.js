@@ -1,7 +1,7 @@
 import styles from "./Recipes.css";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { fetchSearchResults, fetchScored } from "../../services/RecipeService";
+import { fetchSearchResults } from "../../services/RecipeService";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -10,7 +10,6 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { CardActionArea, CardHeader } from "@mui/material";
 import { Pagination } from "@mui/material";
-import Recipe from "../Recipe/Recipe.js";
 import Search from "../../components/Search/Search";
 
 function Recipes() {
@@ -19,7 +18,6 @@ function Recipes() {
   const [searchCount, setSearchCount] = useState(0);
   const [searchParams] = useSearchParams();
   const [recipes, setRecipes] = useState([]);
-  const [currentRecipe, setCurrentRecipe] = useState(null);
   const [search, setSearch] = useState(searchParams.get("search") || "");
   const navigate = useNavigate();
 
@@ -29,13 +27,8 @@ function Recipes() {
         setRecipes(data.data.result);
         setSearchCount(data.data.count);
       });
-    } else {
-      fetchScored(page).then(function response(data) {
-        setRecipes(data.data.result);
-        setSearchCount(data.data.count);
-      });
     }
-  }, [page]); // Add ingredients to the dependency array
+  }, [search, page]); // Add ingredients to the dependency array
 
   useEffect(() => {
     setPage(pageNumber);
@@ -108,19 +101,16 @@ function Recipes() {
           onChange={handlePageChange}
         />
       </div>
-      {currentRecipe ? (
-        <Recipe recipe={currentRecipe} />
-      ) : (
-        <>
-          <div className="cardsContainer">
-            {recipeElements.length > 0 ? (
-              recipeElements
-            ) : (
-              <p>No recipes found.</p>
-            )}
-          </div>
-        </>
-      )}
+      <>
+        <div className="cardsContainer">
+          {recipeElements.length > 0 ? (
+            recipeElements
+          ) : (
+            <p>No recipes found.</p>
+          )}
+        </div>
+      </>
+      )
     </div>
   );
 }

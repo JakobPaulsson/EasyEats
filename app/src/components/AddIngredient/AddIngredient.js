@@ -7,7 +7,6 @@ import {
   TextField,
   Tooltip,
   Autocomplete,
-  Typography,
 } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import { useState } from "react";

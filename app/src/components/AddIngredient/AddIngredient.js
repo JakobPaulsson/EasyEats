@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import { useState } from "react";
-import { getSearchSuggestions } from "../services/SearchSuggestionService";
+import { getSearchSuggestions } from "../../services/SearchSuggestionService";
 
 function AddIngredient({ handleIngredientAdd }) {
   const [ingredient, setIngredient] = useState("");

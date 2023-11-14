@@ -1,7 +1,7 @@
 import styles from "./Recipes.css";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { fetchSearchResults, fetchScored } from "../services/RecipeService";
+import { fetchSearchResults, fetchScored } from "../../services/RecipeService";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -10,8 +10,8 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { CardActionArea, CardHeader } from "@mui/material";
 import { Pagination } from "@mui/material";
-import Recipe from "./Recipe.js";
-import Search from "../components/Search";
+import Recipe from "../Recipe/Recipe.js";
+import Search from "../../components/Search/Search";
 
 function Recipes() {
   const { pageNumber } = useParams();

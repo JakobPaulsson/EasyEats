@@ -1,7 +1,7 @@
 import "./Recipe.css";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import InstructionStepper from "../components/InstructionStepper";
+import InstructionStepper from "../../components/InstructionStepper/InstructionStepper";
 import {
   List,
   ListItem,

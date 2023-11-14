@@ -1,12 +1,12 @@
 import Box from "@mui/material/Box";
-import AddIngredient from "../components/AddIngredient";
-import InventoryDisplay from "../components/InventoryDisplay";
+import AddIngredient from "../../components/AddIngredient/AddIngredient";
+import InventoryDisplay from "../../components/InventoryDisplay/InventoryDisplay";
 import {
   getIngredients,
   addIngredient,
   removeIngredient,
-} from "../services/IngredientService";
-import { updateScores } from "../services/ScoreService";
+} from "../../services/IngredientService";
+import { updateScores } from "../../services/ScoreService";
 import { useState, useEffect } from "react";
 
 function Ingredients() {

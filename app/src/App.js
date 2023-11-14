@@ -1,11 +1,11 @@
 import "./App.css";
-import Recipes from "./screens/Recipes";
-import Dashboard from "./screens/Dashboard";
-import Ingredients from "./screens/Ingredients";
-import Account from "./screens/Account";
-import Sidebar from "./components/Sidebar";
-import Header from "./components/Header";
-import Recipe from "./screens/Recipe";
+import Recipes from "./screens/Recipes/Recipes";
+import Dashboard from "./screens/Dashboard/Dashboard";
+import Ingredients from "./screens/Ingredients/Ingredients";
+import Account from "./screens/Account/Account";
+import Sidebar from "./components/SideBar/Sidebar";
+import Header from "./components/Header/Header";
+import Recipe from "./screens/Recipe/Recipe";
 import { Route, Routes } from "react-router-dom";
 
 function App() {

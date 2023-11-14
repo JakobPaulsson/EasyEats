@@ -1,7 +1,7 @@
 import styles from "./Recipes.css";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { fetchSearchResults } from "../../services/RecipeService";
+import { fetchSearchResults, fetchScored } from "../../services/RecipeService";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -24,6 +24,11 @@ function Recipes() {
   useEffect(() => {
     if (search) {
       fetchSearchResults(search, page).then(function response(data) {
+        setRecipes(data.data.result);
+        setSearchCount(data.data.count);
+      });
+    } else {
+      fetchScored(page).then(function response(data) {
         setRecipes(data.data.result);
         setSearchCount(data.data.count);
       });

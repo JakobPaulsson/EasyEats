@@ -1,21 +1,30 @@
 import Box from "@mui/material/Box";
 import {
   Container,
-  Divider,
   Fab,
   MenuItem,
   Paper,
   TextField,
   Tooltip,
+  Autocomplete,
   Typography,
 } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import { useState } from "react";
-import { Unstable_NumberInput as NumberInput } from "@mui/base/Unstable_NumberInput";
+import { getSearchSuggestions } from "../services/SearchSuggestionService";
+
+
 function AddIngredient({ handleIngredientAdd }) {
   const [ingredient, setIngredient] = useState("");
   const [amount, setAmount] = useState("");
   const [unit, setUnit] = useState("");
+  const [options, setOptions] = useState([])
+
+  const fetchSuggestions = async (searchTerm) => {
+    let data = await getSearchSuggestions(searchTerm)
+    setOptions(data.data.searchResults)
+  }
+
   return (
     <Box
       component="form"
@@ -45,14 +54,19 @@ function AddIngredient({ handleIngredientAdd }) {
       >
         <Container>
           <div className="addIngredientsContainer">
-            <TextField
-              className="inputBox"
-              id="filled-basic"
-              label="Ingredient"
-              variant={"standard"}
-              placeholder={"Add ingredient"}
-              value={ingredient}
-              onChange={(e) => setIngredient(e.target.value)}
+            <Autocomplete
+              id="grouped-demo"
+              options={options.sort((a, b) => a.length - b.length)}
+              groupBy={(option) => option.firstLetter}
+              ListboxProps={{ style: { maxHeight: 160, overflow: 'auto' } }}
+              onChange={(event, newValue) => {
+                setIngredient(newValue);
+              }}
+              renderInput={(params) => <TextField
+                variant={"standard"}
+                onChange={(e) => {
+                  fetchSuggestions(e.target.value)
+                }} {...params} label="Ingredient" />}
             />
             <TextField
               className="inputBox"

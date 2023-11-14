@@ -67,11 +67,9 @@ app.get("/recipes/score", async (req, res) => {
 app.post("/user", async (req, res) => {
   let db = await connect();
   const max = await db.get(`SELECT MAX(UserID) FROM Users;`);
-  let usersQuery = `(${max["MAX(UserID)"] + 1}, ${req.query.ingredients}, ${
-    req.query.ingredientAmount
-  }, ${req.query.IngredientUnit}, ${req.query.previousRecipes}, ${
-    req.query.allergies
-  }, ${req.query.name})`;
+  let usersQuery = `(${max["MAX(UserID)"] + 1}, ${req.query.ingredients}, ${req.query.ingredientAmount
+    }, ${req.query.IngredientUnit}, ${req.query.previousRecipes}, ${req.query.allergies
+    }, ${req.query.name})`;
   const result = await db.all(`INSERT INTO Users VALUES ${usersQuery};`);
   res.send(result);
   await db.close();
@@ -177,8 +175,7 @@ app.get("/recipes", async (req, res) => {
   let db = await connect();
   const page = req.query.page;
   let scoreQuery = await db.all(
-    `SELECT RecipeID, Score FROM Scores ORDER BY score DESC LIMIT 8 OFFSET ${
-      (page - 1) * 8
+    `SELECT RecipeID, Score FROM Scores ORDER BY score DESC LIMIT 8 OFFSET ${(page - 1) * 8
     }`,
   );
   let count = await db.all(`SELECT COUNT(*) FROM recipes`);
@@ -223,5 +220,15 @@ app.get("/recipes/search", async (req, res) => {
   );
   const count = countQuery[0]["COUNT(*)"];
   res.send({ result, count });
+  await db.close();
+});
+
+app.get("/suggestions", async (req, res) => {
+  let db = await connect();
+  const searchQuery = await db.all(`SELECT * FROM Ingredients WHERE Ingredient LIKE '%${req.query.searchInput}%' LIMIT 10`);
+  let searchResults = searchQuery.map(function (d) {
+    return d["Ingredient"];
+  });
+  res.send({ searchResults });
   await db.close();
 });

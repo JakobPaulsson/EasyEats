@@ -12,6 +12,9 @@ screenshots
 
 # database
 *.db
+
+#cypress
+/cypress/screenshots
 # misc
 .DS_Store
 .env.local

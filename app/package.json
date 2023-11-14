@@ -22,7 +22,7 @@
   },
   "scripts": {
     "start": "concurrently \"npm run server\" \"npm run client\"",
-    "lint": "eslint . ",
+    "lint": "eslint . --fix ",
     "client": "react-scripts start",
     "server": "node ../server/server.js",
     "build": "react-scripts build",

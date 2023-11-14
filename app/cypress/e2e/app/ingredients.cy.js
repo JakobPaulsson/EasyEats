@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
-
 // Tests usage of the ingredients page.
+import cy from "cypress"
 
 describe("Using the ingredients page", () => {
   beforeEach(() => {

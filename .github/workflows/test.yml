@@ -14,8 +14,8 @@ jobs:
         with:
           project: ./site
           browser: chrome
-          build: npm build
-          start: npm start
+          build: npm run build
+          start: npm run start
           working-directory: ./app
           wait-on: "http://localhost:3000"
 

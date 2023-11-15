@@ -10,17 +10,16 @@ module.exports = defineConfig({
 
     env: {
       codeCoverage: {
-        url: 'http://localhost:3003/__coverage__',
-      }
-    }
+        url: "http://localhost:3003/__coverage__",
+      },
+    },
   },
 
   e2e: {
     setupNodeEvents(on, config) {
-    require("@cypress/code-coverage/task")(on, config);    
-    return config;
-
+      require("@cypress/code-coverage/task")(on, config);
+      return config;
     },
-    baseUrl: 'http://localhost:3000',
+    baseUrl: "http://localhost:3000",
   },
 });

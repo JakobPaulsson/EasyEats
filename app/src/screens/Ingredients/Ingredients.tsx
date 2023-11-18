@@ -2,31 +2,35 @@ import Box from "@mui/material/Box";
 import AddIngredient from "../../components/AddIngredient/AddIngredient";
 import InventoryDisplay from "../../components/InventoryDisplay/InventoryDisplay";
 import {
-  getIngredients,
   addIngredient,
+  getIngredients,
   removeIngredient,
 } from "../../services/IngredientService";
 import { updateScores } from "../../services/ScoreService";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import React from "react";
+import { IngredientItem } from "../../types/inventory"; // Adjust the import path
 
 function Ingredients() {
-  const [ingredients, setIngredients] = useState([]);
+  const [ingredients, setIngredients] = useState<IngredientItem[]>([]);
 
   // TODO: Hardcoded for userID 1
   const getAndSetIngredients = () => {
     getIngredients(1).then(function response(data) {
-      let currentIngredients = [];
-      for (var i = 0; i < data.data.ingredients.length; i++) {
-        let name = data.data.ingredients[i];
-        let amount = data.data.ingredientAmounts[i];
-        let unit = data.data.ingredientUnit[i];
-        currentIngredients.push({
-          name: name,
-          amount: amount,
-          unit: unit === "count" ? "" : unit,
-        });
+      let currentIngredients: IngredientItem[] = [];
+      if (data && data.data) {
+        for (var i = 0; i < data.data.ingredients.length; i++) {
+          let name = data.data.ingredients[i];
+          let amount = data.data.ingredientAmounts[i];
+          let unit = data.data.ingredientUnit[i];
+          currentIngredients.push({
+            name: name,
+            amount: amount,
+            unit: unit === "count" ? "" : unit,
+          });
+        }
       }
-      if (currentIngredients[0].name === "") {
+      if (currentIngredients.length === 0) {
         setIngredients([]);
       } else {
         setIngredients(currentIngredients);
@@ -39,16 +43,18 @@ function Ingredients() {
   }, []);
 
   // TODO: Hardcoded for userID 1
-  const handleIngredientAdd = (name, amount, unit) => {
-    addIngredient(1, name, amount, unit).then(function response(data) {
-      getAndSetIngredients();
-      updateScores(1);
-    });
+  const handleIngredientAdd = (ingredient: IngredientItem): void => {
+    addIngredient(1, ingredient.name, +ingredient.amount, ingredient.unit).then(
+      function response() {
+        getAndSetIngredients();
+        updateScores(1);
+      },
+    );
   };
 
   // TODO: Hardcoded for userID 1
-  const handleIngredientRemove = (name) => {
-    removeIngredient(1, name).then(function response(data) {
+  const handleIngredientRemove = (name: string) => {
+    removeIngredient(1, name).then(function response() {
       getAndSetIngredients();
       updateScores(1);
     });

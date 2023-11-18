@@ -1,3 +1,4 @@
+import * as React from 'react'
 import "./Recipe.css";
 import { useLocation } from "react-router-dom";
 import InstructionStepper from "../../components/InstructionStepper/InstructionStepper";
@@ -33,7 +34,7 @@ function Recipe() {
             elevation={8}
           >
             <List sx={{ width: "100%" }}>
-              {ingredients.map((value) => (
+              {ingredients.map((value:string) => (
                 <ListItem key={value} secondaryAction={<Checkbox />}>
                   <ListItemText primary={value} />
                 </ListItem>
@@ -44,7 +45,7 @@ function Recipe() {
         <div className="instructionContainer">
           <h2>Instructions</h2>
           <InstructionStepper
-            instructions={instructions.map((instruction, index) => ({
+            instructions  ={instructions.map((instruction: string, index: number) => ({
               label: `Step ${index + 1}`,
               description: `${instruction}`,
             }))}

@@ -17,6 +17,7 @@ screenshots
 /cypress/screenshots
 videos
 coverage
+.nyc_output
 # misc
 .DS_Store
 .env.local
@@ -30,3 +31,4 @@ yarn-debug.log*
 yarn-error.log*
 
 db/recipes.db
+Session.vim

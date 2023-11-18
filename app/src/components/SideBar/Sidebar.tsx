@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import CssBaseline from "@mui/material/CssBaseline";
 import AppBar from "@mui/material/AppBar";
-import logo from "../../img/logo.png";
 import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
@@ -23,14 +22,14 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
-const sideBarRoutes = {
-  Dashboard: "/dashboard",
+const sideBarRoutes: Record<string, any> = {
+  Dashboard: "/",
   Ingredients: "/ingredients",
   Recipes: "/recipes/page/1",
   Account: "/account",
 };
 
-const sideBarIcons = {
+const sideBarIcons: Record<string, any> = {
   Dashboard: <DashboardIcon />,
   Recipes: <MenuBookIcon />,
   Ingredients: <KitchenIcon />,
@@ -39,9 +38,8 @@ const sideBarIcons = {
 
 export default function Sidebar() {
   const navigate = useNavigate();
-  const handleSideBarClick = (event) => {
-    const path = event.target.innerText;
-    navigate(sideBarRoutes[path]);
+  const handleSideBarClick = (clicked: string) => {
+    navigate(sideBarRoutes[clicked]);
   };
 
   return (
@@ -78,15 +76,16 @@ export default function Sidebar() {
         variant="permanent"
         anchor="left"
       >
-        <img src={logo} alt="logo" />
+        <img src={'/logo.png'} alt="logo" />
         <Divider />
         <List>
           {["Dashboard", "Recipes", "Ingredients", "Account"].map(
-            (text, index) => (
+            (text) => (
               <ListItem data-cy={text} key={text} disablePadding>
                 <ListItemButton
-                  onClick={(event) => {
-                    handleSideBarClick(event);
+                  onClick={(event: React.SyntheticEvent) => {
+                    const clickedElement = event.target as HTMLElement;
+                    handleSideBarClick(clickedElement.innerText);
                   }}
                 >
                   <ListItemIcon>{sideBarIcons[text]}</ListItemIcon>

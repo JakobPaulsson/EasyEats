@@ -1,13 +1,5 @@
 import axios from "axios";
-
-interface RecipeResponse {
-  data: RecipeData;
-}
-
-interface RecipeData {
-  result: [string];
-  count: number;
-}
+import { RecipeResponse } from "../types/responses.interface";
 
 export const fetchSearchResults = async (
   ingredients: string,

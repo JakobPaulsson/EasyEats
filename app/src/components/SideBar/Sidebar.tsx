@@ -22,14 +22,14 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
-const sideBarRoutes: Record<string, any> = {
+const sideBarRoutes: Record<string, string> = {
   Dashboard: "/",
   Ingredients: "/ingredients",
   Recipes: "/recipes/page/1",
   Account: "/account",
 };
 
-const sideBarIcons: Record<string, any> = {
+const sideBarIcons: Record<string, JSX.Element> = {
   Dashboard: <DashboardIcon />,
   Recipes: <MenuBookIcon />,
   Ingredients: <KitchenIcon />,
@@ -76,24 +76,22 @@ export default function Sidebar() {
         variant="permanent"
         anchor="left"
       >
-        <img src={'/logo.png'} alt="logo" />
+        <img src={"/logo.png"} alt="logo" />
         <Divider />
         <List>
-          {["Dashboard", "Recipes", "Ingredients", "Account"].map(
-            (text) => (
-              <ListItem data-cy={text} key={text} disablePadding>
-                <ListItemButton
-                  onClick={(event: React.SyntheticEvent) => {
-                    const clickedElement = event.target as HTMLElement;
-                    handleSideBarClick(clickedElement.innerText);
-                  }}
-                >
-                  <ListItemIcon>{sideBarIcons[text]}</ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItemButton>
-              </ListItem>
-            ),
-          )}
+          {["Dashboard", "Recipes", "Ingredients", "Account"].map((text) => (
+            <ListItem data-cy={text} key={text} disablePadding>
+              <ListItemButton
+                onClick={(event: React.SyntheticEvent) => {
+                  const clickedElement = event.target as HTMLElement;
+                  handleSideBarClick(clickedElement.innerText);
+                }}
+              >
+                <ListItemIcon>{sideBarIcons[text]}</ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItemButton>
+            </ListItem>
+          ))}
         </List>
         <Divider />
         <List>

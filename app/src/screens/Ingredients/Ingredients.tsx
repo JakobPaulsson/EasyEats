@@ -9,7 +9,7 @@ import {
 import { updateScores } from "../../services/ScoreService";
 import { useEffect, useState } from "react";
 import React from "react";
-import { IngredientItem } from "../../types/inventory"; // Adjust the import path
+import { IngredientItem } from "../../types/ingredient.interface"; // Adjust the import path
 
 function Ingredients() {
   const [ingredients, setIngredients] = useState<IngredientItem[]>([]);
@@ -17,12 +17,12 @@ function Ingredients() {
   // TODO: Hardcoded for userID 1
   const getAndSetIngredients = () => {
     getIngredients(1).then(function response(data) {
-      let currentIngredients: IngredientItem[] = [];
+      const currentIngredients: IngredientItem[] = [];
       if (data && data.data) {
-        for (var i = 0; i < data.data.ingredients.length; i++) {
-          let name = data.data.ingredients[i];
-          let amount = data.data.ingredientAmounts[i];
-          let unit = data.data.ingredientUnit[i];
+        for (let i = 0; i < data.data.ingredients.length; i++) {
+          const name = data.data.ingredients[i];
+          const amount = data.data.ingredientAmounts[i];
+          const unit = data.data.ingredientUnit[i];
           currentIngredients.push({
             name: name,
             amount: amount,

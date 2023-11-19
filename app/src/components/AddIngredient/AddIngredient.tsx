@@ -12,7 +12,7 @@ import { Add } from "@mui/icons-material";
 import React, { useState } from "react";
 import { getSearchSuggestions } from "../../services/SearchSuggestionService";
 
-import { IngredientItem } from "../../types/inventory"; // Adjust the import path
+import { IngredientItem } from "../../types/ingredient.interface"; // Adjust the import path
 
 type AddIngredientProps = {
   handleIngredientAdd: (ingredient: IngredientItem) => void;
@@ -25,7 +25,7 @@ const AddIngredient = ({ handleIngredientAdd }: AddIngredientProps) => {
   const [options, setOptions] = useState<[string] | []>([]);
 
   const fetchSuggestions = async (searchTerm: string) => {
-    let data = await getSearchSuggestions(searchTerm);
+    const data = await getSearchSuggestions(searchTerm);
     if (data) setOptions(data.data.searchResults);
   };
 

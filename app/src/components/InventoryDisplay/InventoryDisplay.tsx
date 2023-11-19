@@ -9,7 +9,7 @@ import {
 import { Delete } from "@mui/icons-material";
 import React from "react";
 
-import { IngredientItem } from "../../types/inventory"; // Adjust the import path
+import { IngredientItem } from "../../types/ingredient.interface"; // Adjust the import path
 
 type InventoryDisplayProps = {
   inventory: IngredientItem[];

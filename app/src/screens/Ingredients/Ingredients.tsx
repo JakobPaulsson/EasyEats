@@ -14,7 +14,6 @@ import { IngredientItem } from "../../types/ingredient.interface"; // Adjust the
 function Ingredients() {
   const [ingredients, setIngredients] = useState<IngredientItem[]>([]);
 
-  // TODO: Hardcoded for userID 1
   const getAndSetIngredients = () => {
     getIngredients(1).then(function response(data) {
       const currentIngredients: IngredientItem[] = [];

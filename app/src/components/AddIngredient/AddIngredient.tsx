@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import {
   Container,
@@ -8,11 +9,16 @@ import {
   Tooltip,
   Autocomplete,
 } from "@mui/material";
-import { Add } from "@mui/icons-material";
-import React, { useState } from "react";
 import { getSearchSuggestions } from "../../services/SearchSuggestionService";
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import NumbersIcon from "@mui/icons-material/Numbers";
+import ScaleIcon from "@mui/icons-material/Scale";
+import WaterIcon from "@mui/icons-material/Water";
+import { Add } from "@mui/icons-material";
 
 import { IngredientItem } from "../../types/ingredient.interface"; // Adjust the import path
+import { UnitTypes, UnitCategory } from "../../types/units.interface";
 
 type AddIngredientProps = {
   handleIngredientAdd: (ingredient: IngredientItem) => void;
@@ -21,12 +27,57 @@ type AddIngredientProps = {
 const AddIngredient = ({ handleIngredientAdd }: AddIngredientProps) => {
   const [ingredient, setIngredient] = useState<string>("");
   const [amount, setAmount] = useState("");
-  const [unit, setUnit] = useState("");
+  const [unit, setUnit] = useState<string>("");
   const [options, setOptions] = useState<[string] | []>([]);
+  const [unitType, setUnitType] = React.useState<UnitCategory>("fluid");
 
   const fetchSuggestions = async (searchTerm: string) => {
     const data = await getSearchSuggestions(searchTerm);
     if (data) setOptions(data.data.searchResults);
+  };
+
+  const ToggleIngredientUnit = () => {
+    const handleChange = (
+      _: React.MouseEvent<HTMLElement>,
+      newAlignment: string,
+    ) => {
+      if (newAlignment) {
+        setUnitType(newAlignment as UnitCategory);
+      }
+    };
+
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "center",
+          paddingTop: "10px",
+        }}
+      >
+        <ToggleButtonGroup
+          color="primary"
+          value={unitType}
+          exclusive
+          onChange={handleChange}
+          aria-label="Platform"
+        >
+          <ToggleButton value="fluid">
+            <WaterIcon />
+            Fluid
+          </ToggleButton>
+          <ToggleButton value="count">
+            <NumbersIcon />
+            Number
+          </ToggleButton>
+          <ToggleButton value="weight">
+            <ScaleIcon />
+            Weight
+          </ToggleButton>
+        </ToggleButtonGroup>
+      </Box>
+    );
   };
 
   return (
@@ -44,7 +95,6 @@ const AddIngredient = ({ handleIngredientAdd }: AddIngredientProps) => {
       noValidate
       autoComplete="off"
     >
-      {" "}
       <Paper
         elevation={8}
         square={false}
@@ -57,26 +107,35 @@ const AddIngredient = ({ handleIngredientAdd }: AddIngredientProps) => {
         }}
       >
         <Container>
-          <div className="addIngredientsContainer">
-            <Autocomplete
-              id="grouped-demo"
-              options={options.sort((a, b) => a.length - b.length)}
-              ListboxProps={{ style: { maxHeight: 160, overflow: "auto" } }}
-              onChange={(_, newValue) => {
-                newValue ? setIngredient(newValue) : setIngredient("");
-              }}
-              renderInput={(params) => (
-                <TextField
-                  variant={"standard"}
-                  data-cy={"addIngredient"}
-                  onChange={(e) => {
-                    fetchSuggestions(e.target.value);
-                  }}
-                  {...params}
-                  label="Ingredient"
-                />
-              )}
-            />
+          {ToggleIngredientUnit()}
+          <Autocomplete
+            id="grouped-demo"
+            options={options.sort((a, b) => a.length - b.length)}
+            ListboxProps={{ style: { maxHeight: 160, overflow: "auto" } }}
+            onChange={(_, newValue) => {
+              newValue ? setIngredient(newValue) : setIngredient("");
+            }}
+            renderInput={(params) => (
+              <TextField
+                variant={"standard"}
+                data-cy={"addIngredient"}
+                onChange={(e) => {
+                  fetchSuggestions(e.target.value);
+                }}
+                {...params}
+                label="Ingredient"
+              />
+            )}
+          />
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              height: "100px",
+              marginRight: "10px",
+            }}
+          >
             <TextField
               className="inputBox"
               id="filled-basic"
@@ -90,20 +149,21 @@ const AddIngredient = ({ handleIngredientAdd }: AddIngredientProps) => {
             />
             <TextField
               id="outlined-select-currency"
-              select
               label="Select Unit"
-              helperText="Select the unit of measurement"
+              select
               variant={"standard"}
               className={"inputBox"}
               value={unit}
               onChange={(e) => setUnit(e.target.value)}
               data-cy={"addUnit"}
             >
-              <MenuItem value="ml">ml</MenuItem>
-              <MenuItem value="gram">gram</MenuItem>
-              <MenuItem value="count">count</MenuItem>
+              {Object.values(UnitTypes[unitType]).map((unit) => (
+                <MenuItem key={unit} value={unit}>
+                  {unit}
+                </MenuItem>
+              ))}
             </TextField>
-          </div>
+          </Box>
           <Box
             sx={{
               display: "flex",

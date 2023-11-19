@@ -21,7 +21,7 @@ app.post("/recipes/score", async (req, res) => {
   let db = await connect();
   await db.run(`DELETE FROM Scores WHERE UserID=${req.query.userID}`);
   let userIngredients = await db.get(
-    `SELECT Ingredients FROM Users WHERE UserID=${req.query.userID}`
+    `SELECT Ingredients FROM Users WHERE UserID=${req.query.userID}`,
   );
   userIngredients = userIngredients["Ingredients"].split(",");
 
@@ -32,7 +32,7 @@ app.post("/recipes/score", async (req, res) => {
     return d["RecipeID"];
   });
   let recipesIngredients = await db.all(
-    `SELECT CleanIngredients FROM Recipes WHERE RecipeID IN (${recipeIDs.toString()})`
+    `SELECT CleanIngredients FROM Recipes WHERE RecipeID IN (${recipeIDs.toString()})`,
   );
   recipesIngredients = recipesIngredients.map(function (d) {
     return d["CleanIngredients"].split(",");
@@ -58,7 +58,7 @@ app.post("/recipes/score", async (req, res) => {
 app.get("/recipes/score", async (req, res) => {
   let db = await connect();
   const result = await db.all(
-    `SELECT * FROM Scores WHERE userID=${req.query.userID} ORDER BY Score DESC;`
+    `SELECT * FROM Scores WHERE userID=${req.query.userID} ORDER BY Score DESC;`,
   );
   res.send(result);
   await db.close();
@@ -80,7 +80,7 @@ app.post("/user", async (req, res) => {
 app.delete("/ingredient", async (req, res) => {
   let db = await connect();
   const query = await db.get(
-    `SELECT Ingredients, IngredientAmount, IngredientUnit FROM Users WHERE userID=${req.query.userID};`
+    `SELECT Ingredients, IngredientAmount, IngredientUnit FROM Users WHERE userID=${req.query.userID};`,
   );
   let ingredients = [],
     ingredientAmounts = [],
@@ -99,7 +99,7 @@ app.delete("/ingredient", async (req, res) => {
   ingredientAmounts.splice(removeIndex, 1);
   ingredientUnits.splice(removeIndex, 1);
   const result = await db.run(
-    `UPDATE Users SET Ingredients="${ingredients}", IngredientAmount="${ingredientAmounts}", IngredientUnit="${ingredientUnits}" WHERE userId=${req.query.userID}`
+    `UPDATE Users SET Ingredients="${ingredients}", IngredientAmount="${ingredientAmounts}", IngredientUnit="${ingredientUnits}" WHERE userId=${req.query.userID}`,
   );
   res.send({ result });
   await db.close();
@@ -108,7 +108,7 @@ app.delete("/ingredient", async (req, res) => {
 app.get("/ingredient", async (req, res) => {
   let db = await connect();
   const query = await db.get(
-    `SELECT Ingredients, IngredientAmount, IngredientUnit FROM Users WHERE userID=${req.query.userID};`
+    `SELECT Ingredients, IngredientAmount, IngredientUnit FROM Users WHERE userID=${req.query.userID};`,
   );
   if (query["Ingredients"].includes(",")) {
     const ingredients = query["Ingredients"].split(",");
@@ -127,7 +127,7 @@ app.get("/ingredient", async (req, res) => {
 app.post("/ingredient", async (req, res) => {
   let db = await connect();
   const query = await db.get(
-    `SELECT Ingredients, IngredientAmount, IngredientUnit FROM Users WHERE userID=${req.query.userID};`
+    `SELECT Ingredients, IngredientAmount, IngredientUnit FROM Users WHERE userID=${req.query.userID};`,
   );
   let ingredients = [],
     ingredientAmounts = [],
@@ -138,7 +138,7 @@ app.post("/ingredient", async (req, res) => {
 
   if (query["Ingredients"].length == 0) {
     await db.run(
-      `UPDATE Users SET Ingredients="${ingredient}", IngredientAmount="${amount}", IngredientUnit="${unit}" WHERE userId=${req.query.userID}`
+      `UPDATE Users SET Ingredients="${ingredient}", IngredientAmount="${amount}", IngredientUnit="${unit}" WHERE userId=${req.query.userID}`,
     );
     res.send({});
     return await db.close();
@@ -159,14 +159,14 @@ app.post("/ingredient", async (req, res) => {
     ingredientAmounts.push(amount);
     ingredientUnits.push(unit);
     await db.run(
-      `UPDATE Users SET Ingredients="${ingredients}", IngredientAmount="${ingredientAmounts}", IngredientUnit="${ingredientUnits}" WHERE userId=${req.query.userID}`
+      `UPDATE Users SET Ingredients="${ingredients}", IngredientAmount="${ingredientAmounts}", IngredientUnit="${ingredientUnits}" WHERE userId=${req.query.userID}`,
     );
   } else {
     ingredientAmounts[ingredientIndex] = (
       parseInt(ingredientAmounts[ingredientIndex]) + parseInt(amount)
     ).toString();
     await db.run(
-      `UPDATE Users SET IngredientAmount="${ingredientAmounts}" WHERE userId=${req.query.userID}`
+      `UPDATE Users SET IngredientAmount="${ingredientAmounts}" WHERE userId=${req.query.userID}`,
     );
   }
   res.send({});
@@ -179,7 +179,7 @@ app.get("/recipes", async (req, res) => {
   let scoreQuery = await db.all(
     `SELECT RecipeID, Score FROM Scores ORDER BY score DESC LIMIT 8 OFFSET ${
       (page - 1) * 8
-    }`
+    }`,
   );
   let count = await db.all(`SELECT COUNT(*) FROM recipes`);
   count = count[0]["COUNT(*)"];
@@ -192,7 +192,7 @@ app.get("/recipes", async (req, res) => {
   let result;
   if (recipeIDs.length === 0) {
     result = await db.all(
-      `SELECT * FROM Recipes LIMIT 8 OFFSET ${((page - 1) * 8, page * 8)}`
+      `SELECT * FROM Recipes LIMIT 8 OFFSET ${((page - 1) * 8, page * 8)}`,
     );
   } else {
     let queryString = "(";
@@ -200,7 +200,7 @@ app.get("/recipes", async (req, res) => {
       queryString += `${recipeIDs[i]}, `;
     queryString = queryString.slice(0, -2) + `)`;
     result = await db.all(
-      `SELECT * FROM Recipes WHERE RecipeID IN ${queryString}`
+      `SELECT * FROM Recipes WHERE RecipeID IN ${queryString}`,
     );
     for (var i = 0; i < result.length; i++) result[i]["Score"] = scores[i];
   }
@@ -215,11 +215,11 @@ app.get("/recipes/search", async (req, res) => {
   let limit = parseInt(req.query.limit, 8) || 8; // Default to 10 if no limit provided
   const result = await db.all(
     `SELECT * FROM recipes WHERE Title LIKE ? LIMIT ? OFFSET ? `,
-    ["%" + titleContains + "%", limit, (page - 1) * 8]
+    ["%" + titleContains + "%", limit, (page - 1) * 8],
   );
   const countQuery = await db.all(
     `SELECT COUNT(*) FROM recipes WHERE Title LIKE? LIMIT?`,
-    ["%" + titleContains + "%", limit]
+    ["%" + titleContains + "%", limit],
   );
   const count = countQuery[0]["COUNT(*)"];
   res.send({ result, count });
@@ -229,7 +229,7 @@ app.get("/recipes/search", async (req, res) => {
 app.get("/suggestions", async (req, res) => {
   let db = await connect();
   const searchQuery = await db.all(
-    `SELECT * FROM Ingredients WHERE Ingredient LIKE '%${req.query.searchInput}%' LIMIT 10`
+    `SELECT * FROM Ingredients WHERE Ingredient LIKE '%${req.query.searchInput}%' LIMIT 10`,
   );
   let searchResults = searchQuery.map(function (d) {
     return d["Ingredient"];

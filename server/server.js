@@ -36,21 +36,39 @@ app.post("/recipes/score", async (req, res) => {
     `SELECT CleanIngredients, Rating, CookingTimeMinutes FROM Recipes WHERE RecipeID IN (${recipeIDs.toString()})`,
   );
 
-  let recipesIngredients = ingredientsData.map(d => d["CleanIngredients"].split(","));
-  let recipesScores = ingredientsData.map(d => d["Rating"]);
-  let recipesCookingTimesMinutes = ingredientsData.map(d => d["CookingTimeMinutes"]);
+  let recipesIngredients = ingredientsData.map((d) =>
+    d["CleanIngredients"].split(","),
+  );
+  let recipesScores = ingredientsData.map((d) => d["Rating"]);
+  let recipesCookingTimesMinutes = ingredientsData.map(
+    (d) => d["CookingTimeMinutes"],
+  );
   let scores = Array(recipes.length).fill(0);
-  const COOKING_TIME_MINUTES_CAP = 200, NO_INGREDIENTS_CAP = 10;
+  const COOKING_TIME_MINUTES_CAP = 200,
+    NO_INGREDIENTS_CAP = 10;
   const NO_METRICS = 4;
   for (var i = 0; i < recipes.length; i++) {
     let currentIngredientsScore = 0;
     let ratingScore = recipesScores[i] / 5;
-    let cookingTimeScore = recipesCookingTimesMinutes[i] > COOKING_TIME_MINUTES_CAP ? 0 : 1 - recipesCookingTimesMinutes[i] / COOKING_TIME_MINUTES_CAP
-    let recipeIngredientsScore = recipesIngredients[i].length > NO_INGREDIENTS_CAP ? 0 : 1 - recipesIngredients[i].length / NO_INGREDIENTS_CAP
+    let cookingTimeScore =
+      recipesCookingTimesMinutes[i] > COOKING_TIME_MINUTES_CAP
+        ? 0
+        : 1 - recipesCookingTimesMinutes[i] / COOKING_TIME_MINUTES_CAP;
+    let recipeIngredientsScore =
+      recipesIngredients[i].length > NO_INGREDIENTS_CAP
+        ? 0
+        : 1 - recipesIngredients[i].length / NO_INGREDIENTS_CAP;
     for (var j = 0; j < recipesIngredients[i].length; j++)
       if (userIngredients.includes(recipesIngredients[i][j]))
         currentIngredientsScore += 1 / userIngredients.length;
-    scores[i] = Math.round(100 * (currentIngredientsScore + ratingScore + cookingTimeScore + recipeIngredientsScore) / NO_METRICS);
+    scores[i] = Math.round(
+      (100 *
+        (currentIngredientsScore +
+          ratingScore +
+          cookingTimeScore +
+          recipeIngredientsScore)) /
+        NO_METRICS,
+    );
   }
 
   let queryString = "";
@@ -75,9 +93,11 @@ app.get("/recipes/score", async (req, res) => {
 app.post("/user", async (req, res) => {
   let db = await connect();
   const max = await db.get(`SELECT MAX(UserID) FROM Users;`);
-  let usersQuery = `(${max["MAX(UserID)"] + 1}, ${req.query.ingredients}, ${req.query.ingredientAmount
-    }, ${req.query.IngredientUnit}, ${req.query.previousRecipes}, ${req.query.allergies
-    }, ${req.query.name})`;
+  let usersQuery = `(${max["MAX(UserID)"] + 1}, ${req.query.ingredients}, ${
+    req.query.ingredientAmount
+  }, ${req.query.IngredientUnit}, ${req.query.previousRecipes}, ${
+    req.query.allergies
+  }, ${req.query.name})`;
   const result = await db.all(`INSERT INTO Users VALUES ${usersQuery};`);
   res.send(result);
   await db.close();
@@ -183,7 +203,8 @@ app.get("/recipes", async (req, res) => {
   let db = await connect();
   const page = req.query.page;
   let scoreQuery = await db.all(
-    `SELECT RecipeID, Score FROM Scores ORDER BY score DESC LIMIT 8 OFFSET ${(page - 1) * 8
+    `SELECT RecipeID, Score FROM Scores ORDER BY score DESC LIMIT 8 OFFSET ${
+      (page - 1) * 8
     }`,
   );
   let count = await db.all(`SELECT COUNT(*) FROM recipes`);

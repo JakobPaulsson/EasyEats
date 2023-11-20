@@ -1,4 +1,4 @@
-import styles from "./Recipes.css";
+import "./Recipes.css";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { fetchSearchResults, fetchScored } from "../../services/RecipeService";
@@ -11,26 +11,32 @@ import Typography from "@mui/material/Typography";
 import { CardActionArea, CardHeader } from "@mui/material";
 import { Pagination } from "@mui/material";
 import Search from "../../components/Search/Search";
+import { Recipe } from "../../types/recipe.interface";
+import React from "react";
 
 function Recipes() {
   const { pageNumber } = useParams();
-  const [page, setPage] = useState(pageNumber);
+  const [page, setPage] = useState<string | undefined>(pageNumber);
   const [searchCount, setSearchCount] = useState(0);
   const [searchParams] = useSearchParams();
-  const [recipes, setRecipes] = useState([]);
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [search, setSearch] = useState(searchParams.get("search") || "");
   const navigate = useNavigate();
 
   useEffect(() => {
     if (search) {
       fetchSearchResults(search, page).then(function response(data) {
-        setRecipes(data.data.result);
-        setSearchCount(data.data.count);
+        if (data) {
+          setRecipes(data.data.result);
+          setSearchCount(data.data.count);
+        }
       });
     } else {
       fetchScored(page).then(function response(data) {
-        setRecipes(data.data.result);
-        setSearchCount(data.data.count);
+        if (data) {
+          setRecipes(data.data.result);
+          setSearchCount(data.data.count);
+        }
       });
     }
   }, [search, page]); // Add ingredients to the dependency array
@@ -38,7 +44,7 @@ function Recipes() {
   useEffect(() => {
     setPage(pageNumber);
   }, [pageNumber]);
-  const navigateToRecipe = (recipe) => {
+  const navigateToRecipe = (recipe: Recipe) => {
     navigate(`/recipes/${encodeURIComponent(recipe.Title)}`, {
       state: { recipe },
     });
@@ -70,7 +76,7 @@ function Recipes() {
     </Card>
   ));
 
-  const handlePageChange = (event, page) => {
+  const handlePageChange = (page: number) => {
     if (page > 0) {
       if (!search) {
         navigate(`/recipes/page/${page}`);
@@ -81,20 +87,13 @@ function Recipes() {
     }
   };
 
-  const handleSearch = async (value) => {
-    const searchResults = await fetchSearchResults(value.searchValue, page);
-    setSearchCount(searchResults.data.count);
-    setRecipes(searchResults.data.result);
-    setSearch(value.searchValue);
-    setPage(1);
-    navigate(`/recipes/page/${1}?search=${value.searchValue}`);
+  const handleSearch = (value: string) => {
+    setSearch(value);
+    navigate(`/recipes/page/${1}?search=${value}`);
   };
   return (
     <div className="container">
       <Search
-        className={styles.searchBar}
-        string={search}
-        page={page}
         currentSearch={search}
         handleSearch={handleSearch}
         key={page}
@@ -103,7 +102,7 @@ function Recipes() {
         <Pagination
           count={Math.floor(searchCount / 8)}
           variant="outlined"
-          onChange={handlePageChange}
+          onChange={(_, page: number) => handlePageChange(page)}
         />
       </div>
       <>

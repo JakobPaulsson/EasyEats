@@ -1,6 +1,6 @@
-const { defineConfig } = require("cypress");
+import { defineConfig } from "cypress";
 
-module.exports = defineConfig({
+export default defineConfig({
   video: true,
   component: {
     devServer: {
@@ -17,6 +17,7 @@ module.exports = defineConfig({
 
   e2e: {
     setupNodeEvents(on, config) {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
       require("@cypress/code-coverage/task")(on, config);
       return config;
     },

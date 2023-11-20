@@ -7,6 +7,7 @@ import Sidebar from "./components/SideBar/Sidebar";
 import Header from "./components/Header/Header";
 import Recipe from "./screens/Recipe/Recipe";
 import { Route, Routes } from "react-router-dom";
+import React from "react";
 
 function App() {
   return (

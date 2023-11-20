@@ -1,3 +1,4 @@
+import * as React from "react";
 import "./Recipe.css";
 import { useLocation } from "react-router-dom";
 import InstructionStepper from "../../components/InstructionStepper/InstructionStepper";
@@ -5,10 +6,10 @@ import { List, ListItem, ListItemText, Paper, Checkbox } from "@mui/material";
 
 function Recipe() {
   const recipe = useLocation().state.recipe;
-  let imperialIngredients = recipe["Ingredients"]
+  const imperialIngredients = recipe["Ingredients"]
     .replaceAll("'", "")
     .split("**");
-  let instructions = recipe["Instructions"]
+  const instructions = recipe["Instructions"]
     .replaceAll("'", "")
     .split("**")
     .slice(0, -1);
@@ -33,7 +34,7 @@ function Recipe() {
             elevation={8}
           >
             <List sx={{ width: "100%" }}>
-              {ingredients.map((value) => (
+              {ingredients.map((value: string) => (
                 <ListItem key={value} secondaryAction={<Checkbox />}>
                   <ListItemText primary={value} />
                 </ListItem>
@@ -44,10 +45,12 @@ function Recipe() {
         <div className="instructionContainer">
           <h2>Instructions</h2>
           <InstructionStepper
-            instructions={instructions.map((instruction, index) => ({
-              label: `Step ${index + 1}`,
-              description: `${instruction}`,
-            }))}
+            instructions={instructions.map(
+              (instruction: string, index: number) => ({
+                label: `Step ${index + 1}`,
+                description: `${instruction}`,
+              }),
+            )}
           />
         </div>
       </div>

@@ -1,8 +1,17 @@
 import axios from "axios";
 
-export const getIngredients = async (userID) => {
+interface IngredientResponse {
+  data: IngredientData | undefined;
+}
+
+interface IngredientData {
+  ingredients: string;
+  ingredientAmounts: string;
+  ingredientUnit: string;
+}
+export const getIngredients = async (userID: number) => {
   try {
-    const response = await axios.get(
+    const response: IngredientResponse = await axios.get(
       `http://localhost:8080/ingredient?userID=${userID}`,
     );
     if (response && response.data) {
@@ -14,24 +23,21 @@ export const getIngredients = async (userID) => {
 };
 
 export const addIngredient = async (
-  userID,
-  ingredient,
-  ingredientAmount,
-  ingredientUnit,
+  userID: number,
+  ingredient: string,
+  ingredientAmount: number,
+  ingredientUnit: string,
 ) => {
   try {
-    const response = await axios.post(
+    await axios.post(
       `http://localhost:8080/ingredient?userID=${userID}&ingredient=${ingredient}&ingredientAmount=${ingredientAmount}&ingredientUnit=${ingredientUnit}`,
     );
-    if (response && response.data) {
-      return response;
-    }
   } catch (error) {
     console.error("Failed to fetch search query", error);
   }
 };
 
-export const removeIngredient = async (userID, ingredient) => {
+export const removeIngredient = async (userID: number, ingredient: string) => {
   try {
     const response = await axios.delete(
       `http://localhost:8080/ingredient?userID=${userID}&ingredient=${ingredient}`,

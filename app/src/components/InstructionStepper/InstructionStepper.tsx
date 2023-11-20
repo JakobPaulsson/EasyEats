@@ -8,7 +8,17 @@ import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 
-function InstructionStepper({ instructions, handleComplete }) {
+interface InstructionStepperProps {
+  instructions: Instructions[];
+}
+
+interface Instructions {
+  step: number;
+  label: string;
+  description: string;
+}
+
+function InstructionStepper({ instructions }: InstructionStepperProps) {
   const [activeStep, setActiveStep] = React.useState(0);
 
   const handleNext = () => {
@@ -26,7 +36,7 @@ function InstructionStepper({ instructions, handleComplete }) {
   return (
     <Box sx={{ maxWidth: 400 }}>
       <Stepper activeStep={activeStep} orientation="vertical">
-        {instructions.map((step, index) => (
+        {instructions.map((step: Instructions, index: number) => (
           <Step key={step.label}>
             <StepLabel
               optional={
@@ -64,9 +74,7 @@ function InstructionStepper({ instructions, handleComplete }) {
       {activeStep === instructions.length && (
         <Paper square elevation={0} sx={{ p: 3 }}>
           <Typography>All steps completed - you&apos;re finished</Typography>
-          <Button onClick={handleComplete} sx={{ mt: 1, mr: 1 }}>
-            Complete
-          </Button>
+          <Button sx={{ mt: 1, mr: 1 }}>Complete</Button>
           <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
             Reset
           </Button>

@@ -1,8 +1,15 @@
 import axios from "axios";
 
-export const getSearchSuggestions = async (searchTerm) => {
+interface SearchResponse {
+  data: SearchData;
+}
+
+interface SearchData {
+  searchResults: [string];
+}
+export const getSearchSuggestions = async (searchTerm: string) => {
   try {
-    const response = await axios.get(
+    const response: SearchResponse = await axios.get(
       `http://localhost:8080/suggestions?searchInput=${searchTerm}`,
     );
     if (response && response.data) {

@@ -7,10 +7,21 @@ import {
   Typography,
 } from "@mui/material";
 import { Delete } from "@mui/icons-material";
+import React from "react";
 
-function InventoryDisplay({ inventory, handleIngredientRemove }) {
+import { IngredientItem } from "../../types/ingredient.interface"; // Adjust the import path
+
+type InventoryDisplayProps = {
+  inventory: IngredientItem[];
+  handleIngredientRemove: (s: string) => void;
+};
+
+const InventoryDisplay: React.FC<InventoryDisplayProps> = ({
+  inventory,
+  handleIngredientRemove,
+}) => {
   const inventoryItem = inventory
-    ? inventory.map((item, index) => (
+    ? inventory.map((item) => (
         <>
           <Box
             sx={{
@@ -23,7 +34,7 @@ function InventoryDisplay({ inventory, handleIngredientRemove }) {
               },
             }}
           >
-            <Typography variant="subtitle">
+            <Typography variant="h5">
               {item.name} {item.amount} {item.unit}
             </Typography>
             <IconButton
@@ -73,6 +84,6 @@ function InventoryDisplay({ inventory, handleIngredientRemove }) {
       <Box data-cy={"inventory"}>{inventoryItem ? inventoryItem : null}</Box>
     </Paper>
   );
-}
+};
 
 export default InventoryDisplay;

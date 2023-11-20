@@ -9,18 +9,24 @@ import {
   Autocomplete,
 } from "@mui/material";
 import { Add } from "@mui/icons-material";
-import { useState } from "react";
+import React, { useState } from "react";
 import { getSearchSuggestions } from "../../services/SearchSuggestionService";
 
-function AddIngredient({ handleIngredientAdd }) {
-  const [ingredient, setIngredient] = useState("");
+import { IngredientItem } from "../../types/ingredient.interface"; // Adjust the import path
+
+type AddIngredientProps = {
+  handleIngredientAdd: (ingredient: IngredientItem) => void;
+};
+
+const AddIngredient = ({ handleIngredientAdd }: AddIngredientProps) => {
+  const [ingredient, setIngredient] = useState<string>("");
   const [amount, setAmount] = useState("");
   const [unit, setUnit] = useState("");
-  const [options, setOptions] = useState([]);
+  const [options, setOptions] = useState<[string] | []>([]);
 
-  const fetchSuggestions = async (searchTerm) => {
-    let data = await getSearchSuggestions(searchTerm);
-    setOptions(data.data.searchResults);
+  const fetchSuggestions = async (searchTerm: string) => {
+    const data = await getSearchSuggestions(searchTerm);
+    if (data) setOptions(data.data.searchResults);
   };
 
   return (
@@ -55,10 +61,9 @@ function AddIngredient({ handleIngredientAdd }) {
             <Autocomplete
               id="grouped-demo"
               options={options.sort((a, b) => a.length - b.length)}
-              groupBy={(option) => option.firstLetter}
               ListboxProps={{ style: { maxHeight: 160, overflow: "auto" } }}
-              onChange={(event, newValue) => {
-                setIngredient(newValue);
+              onChange={(_, newValue) => {
+                newValue ? setIngredient(newValue) : setIngredient("");
               }}
               renderInput={(params) => (
                 <TextField
@@ -117,7 +122,11 @@ function AddIngredient({ handleIngredientAdd }) {
                   setIngredient("");
                   setAmount("");
                   setUnit("");
-                  handleIngredientAdd(ingredient, amount, unit);
+                  handleIngredientAdd({
+                    name: ingredient,
+                    amount: amount,
+                    unit: unit,
+                  });
                 }}
               >
                 <Add />
@@ -128,6 +137,6 @@ function AddIngredient({ handleIngredientAdd }) {
       </Paper>
     </Box>
   );
-}
+};
 
 export default AddIngredient;

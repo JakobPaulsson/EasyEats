@@ -6,28 +6,30 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
-export default function FormDialog(open: boolean) {
-  const [isOpen, setOpen] = React.useState(open);
+interface OkDialogProps {
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  title: string;
+  message: string;
+}
 
+const OkDialog = ({ open, setOpen, title, message }: OkDialogProps) => {
   const handleClose = () => {
     setOpen(false);
   };
 
   return (
     <React.Fragment>
-      <Dialog open={isOpen} onClose={handleClose}>
-        <DialogTitle>Subscribe</DialogTitle>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>{title}</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            To subscribe to this website, please enter your email address here.
-            We will send updates occasionally.
-          </DialogContentText>
+          <DialogContentText>{message}</DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Subscribe</Button>
+          <Button onClick={handleClose}>OK</Button>
         </DialogActions>
       </Dialog>
     </React.Fragment>
   );
-}
+};
+export default OkDialog;

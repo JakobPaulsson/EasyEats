@@ -7,6 +7,7 @@ import {
   removeIngredient,
 } from "../../services/IngredientService";
 import { updateScores } from "../../services/ScoreService";
+import { imperialToMetric } from "../../services/ConversionService";
 import { useEffect, useState } from "react";
 import React from "react";
 import { IngredientItem } from "../../types/ingredient.interface"; // Adjust the import path
@@ -14,7 +15,6 @@ import { IngredientItem } from "../../types/ingredient.interface"; // Adjust the
 function Ingredients() {
   const [ingredients, setIngredients] = useState<IngredientItem[]>([]);
 
-  // TODO: Hardcoded for userID 1
   const getAndSetIngredients = () => {
     getIngredients(1).then(function response(data) {
       const currentIngredients: IngredientItem[] = [];
@@ -44,12 +44,15 @@ function Ingredients() {
 
   // TODO: Hardcoded for userID 1
   const handleIngredientAdd = (ingredient: IngredientItem): void => {
-    addIngredient(1, ingredient.name, +ingredient.amount, ingredient.unit).then(
-      function response() {
-        getAndSetIngredients();
-        updateScores(1);
-      },
+    console.log(ingredient);
+    const [amount, unit] = imperialToMetric(
+      +ingredient.amount,
+      ingredient.unit,
     );
+    addIngredient(1, ingredient.name, amount, unit).then(function response() {
+      getAndSetIngredients();
+      updateScores(1);
+    });
   };
 
   // TODO: Hardcoded for userID 1

@@ -24,9 +24,7 @@ describe("Using the ingredients page", () => {
     cy.get("[data-cy=addIngredient]").type("milk{downArrow}{enter}");
     cy.get("[data-cy=addButton]").click();
 
-    cy.get("[data-cy=inventory]")
-      .should("have.length", 0)
-      .and("not.contain", "NaN");
+    cy.get("[data-cy=inventory]").should("not.contain", "milk");
   });
 
   it("Should not be able to add ingredient to inventory with invalid unit", () => {
@@ -41,9 +39,7 @@ describe("Using the ingredients page", () => {
     cy.get("[data-cy=addAmount]").find("input").should("have.value", 123);
     cy.get("[data-cy=addButton]").click();
 
-    cy.get("[data-cy=inventory]")
-      .should("have.length", 0)
-      .and("not.contain", "NaN");
+    cy.get("[data-cy=inventory]").should("not.contain", "milk");
   });
 
   it("Should be able to add ingredient to inventory with valid inputs", () => {
@@ -57,13 +53,13 @@ describe("Using the ingredients page", () => {
     cy.get("[data-cy=addAmount]").find("input").should("have.value", 123);
 
     cy.get("[data-cy=addUnit]").click();
-    cy.get("ul>li").contains("gram").click();
-    cy.get("[data-cy=addUnit]").find("input").should("have.value", "gram");
+    cy.get("ul>li").contains("cup").click();
+    cy.get("[data-cy=addUnit]").find("input").should("have.value", "cup");
     cy.get("[data-cy=addButton]").click();
 
-    cy.get("[data-cy=inventory]")
-      .should("have.length", 1)
-      .and("not.contain", "NaN");
+    cy.get("[data-cy=inventory]").should("contain", "milk");
+    cy.get("[data-cy=inventory]").should("contain", "29520");
+    cy.get("[data-cy=inventory]").should("contain", "ml");
 
     cy.get("[data-cy=addIngredient]").find("input").should("have.value", "");
     cy.get("[data-cy=addAmount]").find("input").should("have.value", "");

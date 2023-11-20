@@ -23,7 +23,8 @@
   "scripts": {
     "start": "concurrently \"npm run server\" \"npm run client\"",
     "lint": "eslint . --fix ",
-    "test": "concurrently \"npm run server\" \"BROWSER=none npm run client \" \"npx cypress run\"",
+    "init_db": "cd ../db && python ./initialize.py",
+    "test": "npm run init_db && concurrently \"npm run server\" \"BROWSER=none npm run client \" \"npx cypress run\"",
     "client": "react-scripts -r @cypress/instrument-cra start",
     "server": "node ../server/server.js",
     "build": "react-scripts build",

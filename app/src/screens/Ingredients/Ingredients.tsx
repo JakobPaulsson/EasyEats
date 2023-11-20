@@ -44,10 +44,15 @@ function Ingredients() {
 
   // TODO: Hardcoded for userID 1
   const handleIngredientAdd = (ingredient: IngredientItem): void => {
-    console.log(ingredient);
+    if (
+      ingredient.name === "" ||
+      ingredient.amount === "" ||
+      ingredient.unit === ""
+    )
+      return;
     const [amount, unit] = imperialToMetric(
       +ingredient.amount,
-      ingredient.unit,
+      ingredient.unit
     );
     addIngredient(1, ingredient.name, amount, unit).then(function response() {
       getAndSetIngredients();

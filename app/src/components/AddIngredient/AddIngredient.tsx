@@ -39,17 +39,14 @@ const AddIngredient = ({ handleIngredientAdd }: AddIngredientProps) => {
   };
 
   const addIngredientClick = () => {
-    if (ingredient === "" || amount === "" || unit === "") {
-      setOpen(true);
-      return;
-    }
+    if (ingredient === "" || amount === "" || unit === "") return;
     handleIngredientAdd({ name: ingredient, amount: amount, unit: unit });
   };
 
   const ToggleIngredientUnit = () => {
     const handleChange = (
       _: React.MouseEvent<HTMLElement>,
-      newAlignment: string
+      newAlignment: string,
     ) => {
       if (newAlignment) {
         setUnitType(newAlignment as UnitCategory);

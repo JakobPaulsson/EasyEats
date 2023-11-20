@@ -115,6 +115,7 @@ const AddIngredient = ({ handleIngredientAdd }: AddIngredientProps) => {
             onChange={(_, newValue) => {
               newValue ? setIngredient(newValue) : setIngredient("");
             }}
+            value={ingredient}
             renderInput={(params) => (
               <TextField
                 variant={"standard"}

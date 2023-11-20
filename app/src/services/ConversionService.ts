@@ -64,11 +64,11 @@ const convertAmount: { [key: string]: number } = {
 
 export const imperialToMetric = (
   amount: number,
-  unit: string,
+  unit: string
 ): [number, string] => {
   return [amount * convertAmount[unit], convertUnit[unit]];
 };
 
-export const metricToImperial = (amount: number, unit: string) => {
+export const metricToImperial = () => {
   throw new Error("Unimplemented");
 };

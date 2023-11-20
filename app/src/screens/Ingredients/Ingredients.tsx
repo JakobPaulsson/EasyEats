@@ -52,7 +52,7 @@ function Ingredients() {
       return;
     const [amount, unit] = imperialToMetric(
       +ingredient.amount,
-      ingredient.unit
+      ingredient.unit,
     );
     addIngredient(1, ingredient.name, amount, unit).then(function response() {
       getAndSetIngredients();

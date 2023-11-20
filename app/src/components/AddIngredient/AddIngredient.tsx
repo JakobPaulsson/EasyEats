@@ -19,6 +19,7 @@ import { Add } from "@mui/icons-material";
 
 import { IngredientItem } from "../../types/ingredient.interface"; // Adjust the import path
 import { UnitTypes, UnitCategory } from "../../types/units.interface";
+import OkDialog from "../../components/OkDialog/OkDialog";
 
 type AddIngredientProps = {
   handleIngredientAdd: (ingredient: IngredientItem) => void;
@@ -30,6 +31,7 @@ const AddIngredient = ({ handleIngredientAdd }: AddIngredientProps) => {
   const [unit, setUnit] = useState<string>("");
   const [options, setOptions] = useState<[string] | []>([]);
   const [unitType, setUnitType] = React.useState<UnitCategory>("fluid");
+  const [open, setOpen] = React.useState(false);
 
   const fetchSuggestions = async (searchTerm: string) => {
     const data = await getSearchSuggestions(searchTerm);
@@ -37,14 +39,17 @@ const AddIngredient = ({ handleIngredientAdd }: AddIngredientProps) => {
   };
 
   const addIngredientClick = () => {
-    if (ingredient === "" || amount === "" || unit === "") return;
+    if (ingredient === "" || amount === "" || unit === "") {
+      setOpen(true);
+      return;
+    }
     handleIngredientAdd({ name: ingredient, amount: amount, unit: unit });
   };
 
   const ToggleIngredientUnit = () => {
     const handleChange = (
       _: React.MouseEvent<HTMLElement>,
-      newAlignment: string
+      newAlignment: string,
     ) => {
       if (newAlignment) {
         setUnitType(newAlignment as UnitCategory);
@@ -194,6 +199,14 @@ const AddIngredient = ({ handleIngredientAdd }: AddIngredientProps) => {
                 <Add />
               </Fab>
             </Tooltip>
+            {open ? (
+              <OkDialog
+                open={open}
+                setOpen={setOpen}
+                title="Missing fields"
+                message="Please fill out all fields."
+              />
+            ) : null}
           </Box>
         </Container>
       </Paper>

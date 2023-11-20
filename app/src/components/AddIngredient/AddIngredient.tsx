@@ -36,10 +36,15 @@ const AddIngredient = ({ handleIngredientAdd }: AddIngredientProps) => {
     if (data) setOptions(data.data.searchResults);
   };
 
+  const addIngredientClick = () => {
+    if (ingredient === "" || amount === "" || unit === "") return;
+    handleIngredientAdd({ name: ingredient, amount: amount, unit: unit });
+  };
+
   const ToggleIngredientUnit = () => {
     const handleChange = (
       _: React.MouseEvent<HTMLElement>,
-      newAlignment: string,
+      newAlignment: string
     ) => {
       if (newAlignment) {
         setUnitType(newAlignment as UnitCategory);
@@ -180,14 +185,10 @@ const AddIngredient = ({ handleIngredientAdd }: AddIngredientProps) => {
                 size={"small"}
                 data-cy={"addButton"}
                 onClick={() => {
+                  addIngredientClick();
                   setIngredient("");
                   setAmount("");
                   setUnit("");
-                  handleIngredientAdd({
-                    name: ingredient,
-                    amount: amount,
-                    unit: unit,
-                  });
                 }}
               >
                 <Add />

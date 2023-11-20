@@ -69,6 +69,6 @@ export const imperialToMetric = (
   return [amount * convertAmount[unit], convertUnit[unit]];
 };
 
-export const metricToImperial = (amount: number, unit: string) => {
+export const metricToImperial = () => {
   throw new Error("Unimplemented");
 };

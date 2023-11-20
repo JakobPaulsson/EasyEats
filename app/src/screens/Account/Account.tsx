@@ -1,8 +1,9 @@
 import React from "react";
 import "./Account.css";
+import PresetIcon from "../../components/PresetIcon/PresetIcon";
 
 function Account() {
-  return <div>TODO Account</div>;
+  return <PresetIcon />;
 }
 
 export default Account;

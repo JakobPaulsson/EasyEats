@@ -37,7 +37,7 @@ const AddIngredient = ({ handleIngredientAdd }: AddIngredientProps) => {
   };
 
   const addIngredientClick = () => {
-    if (ingredient === "" || ingredient === "" || ingredient === "") return;
+    if (ingredient === "" || amount === "" || unit === "") return;
     handleIngredientAdd({ name: ingredient, amount: amount, unit: unit });
   };
 

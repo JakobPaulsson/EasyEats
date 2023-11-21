@@ -1,9 +1,9 @@
 import React from "react";
 import "./Account.css";
-import PresetIcon from "../../components/PresetIcon/PresetIcon";
+import CustomPreset from "../../components/CustomPreset/CustomPreset";
 
 function Account() {
-  return <PresetIcon />;
+  return <CustomPreset />;
 }
 
 export default Account;

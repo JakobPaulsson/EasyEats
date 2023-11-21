@@ -3,6 +3,9 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { fetchSearchResults, fetchScored } from "../../services/RecipeService";
 import Card from "@mui/material/Card";
+import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
@@ -52,9 +55,6 @@ function Recipes() {
 
   const recipeElements = recipes.map((recipe) => (
     <Card variant="outlined" sx={{ maxWidth: 245 }}>
-      {recipe["Score"] ? (
-        <CardHeader title={`Score ${recipe["Score"]}`} />
-      ) : null}
       <CardActionArea onClick={() => navigateToRecipe(recipe)}>
         <CardMedia
           sx={{ height: 140 }}
@@ -62,14 +62,28 @@ function Recipes() {
           title={recipe["Title"]}
         />
         <CardContent>
-          <Typography gutterBottom variant="h6" component="div">
+          <Typography gutterBottom variant="h5" component="div">
+            Score:{recipe["Score"]}
+          </Typography>
+          <Typography
+            gutterBottom
+            variant="subtitle1"
+            component="div"
+            noWrap={true}
+          >
             {recipe["Title"]}
           </Typography>
           <Typography variant="body2" color="text.secondary" noWrap={true}>
             {recipe["Instructions"]}
           </Typography>
         </CardContent>
-        <CardActions>
+        <CardActions
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "flex-end",
+          }}
+        >
           <Button size="small">Learn More</Button>
         </CardActions>
       </CardActionArea>
@@ -98,23 +112,41 @@ function Recipes() {
         handleSearch={handleSearch}
         key={page}
       ></Search>
-      <div className="buttonNavigationContainer">
-        <Pagination
-          count={Math.floor(searchCount / 8)}
-          variant="outlined"
-          onChange={(_, page: number) => handlePageChange(page)}
-        />
-      </div>
-      <>
-        <div className="cardsContainer">
-          {recipeElements.length > 0 ? (
-            recipeElements
-          ) : (
-            <p>No recipes found.</p>
-          )}
-        </div>
-      </>
-      )
+      <Paper
+        elevation={12}
+        sx={{
+          width: "80%",
+          height: "80%",
+          borderRadius: "10px",
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            mt: "20px",
+            mb: "20px",
+          }}
+        >
+          <Pagination
+            count={Math.floor(searchCount / 8)}
+            variant="outlined"
+            onChange={(_, page: number) => handlePageChange(page)}
+          />
+        </Box>
+        <>
+          <Container>
+            <div className="cardsContainer">
+              {recipeElements.length > 0 ? (
+                recipeElements
+              ) : (
+                <p>No recipes found.</p>
+              )}
+            </div>
+          </Container>
+        </>
+      </Paper>
     </div>
   );
 }

@@ -34,7 +34,12 @@ const InventoryDisplay: React.FC<InventoryDisplayProps> = ({
               },
             }}
           >
-            <Typography variant="h5">
+            <Typography
+              variant="subtitle1"
+              sx={{
+                textTransform: "capitalize",
+              }}
+            >
               {item.name} {item.amount} {item.unit}
             </Typography>
             <IconButton
@@ -64,22 +69,24 @@ const InventoryDisplay: React.FC<InventoryDisplayProps> = ({
     >
       <Box
         sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
           textAlign: "center",
-          backgroundColor: "grey",
+          backgroundColor: "#ededed",
           borderTopLeftRadius: "20px",
           borderTopRightRadius: "20px",
+          height: "45px",
         }}
       >
-        <Container>
-          <Typography
-            variant="h6"
-            gutterBottom
-            component="h5"
-            marginBottom={"unset"}
-          >
-            Inventory
-          </Typography>
-        </Container>
+        <Typography
+          variant="h6"
+          gutterBottom
+          component="h5"
+          marginBottom={"unset"}
+        >
+          Inventory
+        </Typography>
       </Box>
       <Box data-cy={"inventory"}>{inventoryItem ? inventoryItem : null}</Box>
     </Paper>

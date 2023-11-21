@@ -15,25 +15,27 @@ function SliderComponent(props: any) {
 
 function CustomPreset() {
   return (
-    <div className="customPresetContainer">
-      <PresetIcon />
-      <TextField
-        sx={{ width: "80%", borderRadius: "50px" }}
-        id="outlined-basic"
-        label="Preset Name..."
-        variant="filled"
-      />
-      <div className="sliderGridContainer">
-        <SliderComponent label={"Previously Used Ingredients"} />
-        <SliderComponent label={"Something New"} />
-        <SliderComponent label={"Short Cook Time"} />
-        <SliderComponent label={"Rating"} />
-        <SliderComponent label={"Few Ingredients"} />
-        <SliderComponent label={"Ingredients in Inventory"} />
-      </div>
-      <div className="buttonContainer">
-        <button className="button">Add Preset</button>
-        <button className="button">Cancel</button>
+    <div className="outerContainer">
+      <div className="customPresetContainer">
+        <PresetIcon />
+        <TextField
+          sx={{ width: "80%", borderRadius: "50px" }}
+          id="outlined-basic"
+          label="Preset Name..."
+          variant="filled"
+        />
+        <div className="sliderGridContainer">
+          <SliderComponent label={"Previously Used Ingredients"} />
+          <SliderComponent label={"Something New"} />
+          <SliderComponent label={"Short Cook Time"} />
+          <SliderComponent label={"Rating"} />
+          <SliderComponent label={"Few Ingredients"} />
+          <SliderComponent label={"Ingredients in Inventory"} />
+        </div>
+        <div className="buttonContainer">
+          <button className="button">Add Preset</button>
+          <button className="button">Cancel</button>
+        </div>
       </div>
     </div>
   );

@@ -105,16 +105,9 @@ function Recipes() {
           onChange={(_, page: number) => handlePageChange(page)}
         />
       </div>
-      <>
-        <div className="cardsContainer">
-          {recipeElements.length > 0 ? (
-            recipeElements
-          ) : (
-            <p>No recipes found.</p>
-          )}
-        </div>
-      </>
-      )
+      <div className="cardsContainer">
+        {recipeElements.length > 0 ? recipeElements : <p>No recipes found.</p>}
+      </div>
     </div>
   );
 }

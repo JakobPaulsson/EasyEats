@@ -5,9 +5,9 @@ interface IngredientResponse {
 }
 
 interface IngredientData {
-  ingredients: string;
-  ingredientAmounts: string;
-  ingredientUnit: string;
+  ingredientAmounts: Array<string>;
+  ingredientUnit: Array<string>;
+  ingredients: Array<string>;
 }
 export const getIngredients = async (userID: number) => {
   try {

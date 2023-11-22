@@ -16,6 +16,7 @@ import { Pagination } from "@mui/material";
 import Search from "../../components/Search/Search";
 import { Recipe } from "../../types/recipe.interface";
 import React from "react";
+import PaperHeader from "../../components/PaperHeader/PaperHeader";
 
 function Recipes() {
   const { pageNumber } = useParams();
@@ -107,11 +108,6 @@ function Recipes() {
   };
   return (
     <div className="container">
-      <Search
-        currentSearch={search}
-        handleSearch={handleSearch}
-        key={page}
-      ></Search>
       <Paper
         elevation={12}
         sx={{
@@ -123,9 +119,22 @@ function Recipes() {
         <Box
           sx={{
             display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
+          <PaperHeader title="Recipes" />
+          <Search
+            currentSearch={search}
+            handleSearch={handleSearch}
+            key={page}
+          ></Search>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            mt: "20px",
             mb: "20px",
           }}
         >

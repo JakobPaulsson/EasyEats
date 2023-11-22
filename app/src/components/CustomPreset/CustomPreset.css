@@ -9,10 +9,8 @@
   flex-direction: column;
   align-items: center;
   row-gap: 40px;
-  margin-top: 60px;
   margin-bottom: 60px;
   width: 650px;
-  background-color: #bfbfbf;
   border-radius: 20px;
 }
 

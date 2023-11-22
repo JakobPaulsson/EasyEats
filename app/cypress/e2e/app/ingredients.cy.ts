@@ -1,7 +1,7 @@
+/* eslint-disable cypress/no-unnecessary-waiting */
 /// <reference types="cypress" />
 // Tests usage of the ingredients page.
 describe("Using the ingredients page", () => {
-  before(() => {});
   beforeEach(() => {
     cy.viewport(1500, 800);
     cy.visit("localhost:3000/ingredients");

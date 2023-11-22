@@ -3,8 +3,22 @@ import "./Recipe.css";
 import { useLocation } from "react-router-dom";
 import InstructionStepper from "../../components/InstructionStepper/InstructionStepper";
 import { List, ListItem, ListItemText, Paper, Checkbox } from "@mui/material";
+import {
+  getIngredients,
+  addIngredient,
+  removeIngredient,
+} from "../../services/IngredientService";
+import { updateScores } from "../../services/ScoreService";
+import Slider from "@mui/material/Slider";
 
 function Recipe() {
+  const [completed, setCompleted] = React.useState<boolean>(false);
+  const [userIngredients, setUserIngredients] = React.useState<
+    Array<Array<any>>
+  >([]);
+  const [userIngredientElements, setUserIngredientElements] =
+    React.useState<any>();
+
   const recipe = useLocation().state.recipe;
   const imperialIngredients = recipe["Ingredients"]
     .replaceAll("'", "")
@@ -13,11 +27,127 @@ function Recipe() {
     .replaceAll("'", "")
     .split("**")
     .slice(0, -1);
+  const cleanIngredients = recipe["CleanIngredients"].split(",");
+  const ingredientAmounts = recipe["IngredientAmount"].split(",");
   const ingredients = imperialIngredients;
+
+  const handleSliderChange = (i: number, sliderValue: number) => {
+    const tmpUserIngredients = [...userIngredients];
+    tmpUserIngredients[i][3] = sliderValue;
+    setUserIngredients(tmpUserIngredients);
+  };
+
+  const zip = (...arr: Array<any>) =>
+    Array.from({ length: Math.max(...arr.map((a) => a.length)) }, (_, i) =>
+      arr.map((a) => a[i]),
+    );
+
+  const getUserIngredients = () => {
+    setCompleted(true);
+    const ingredientElements = userIngredients.map((elements, index) => {
+      const name = elements[0];
+      const amount = parseInt(elements[1]);
+      const unit = elements[2];
+      return (
+        <div className="sliderContainer">
+          <p>{`${name} (${unit})`}</p>
+          <Slider
+            min={0}
+            max={+amount}
+            aria-label="Custom marks"
+            valueLabelDisplay="auto"
+            defaultValue={parseInt(
+              ingredientAmounts[cleanIngredients.indexOf(name)],
+            )}
+            marks={[
+              { value: 0, label: "0" },
+              { value: +amount, label: `${+amount}` },
+            ]}
+            onChange={(_, value) => handleSliderChange(index, value as number)}
+          />
+        </div>
+      );
+    });
+    setUserIngredientElements(ingredientElements);
+  };
+
+  const handleRemoveIngredients = async () => {
+    setCompleted(false);
+
+    for (let i = 0; i < userIngredients.length; i++) {
+      const name = userIngredients[i][0];
+      const currentAmount = parseFloat(userIngredients[i][1]);
+      const unit = userIngredients[i][2];
+      const usedAmount = parseFloat(userIngredients[i][3]);
+      setTimeout;
+      if (currentAmount - usedAmount <= 0) {
+        await removeIngredient(1, name);
+      } else {
+        await addIngredient(1, name, -usedAmount, unit);
+      }
+    }
+    updateScores(1);
+  };
+
+  React.useEffect(() => {
+    const newUserIngredients: Array<Array<any>> = [];
+    getIngredients(1).then(function response(data) {
+      if (data && data.data) {
+        let zippedData = zip(
+          data!.data!.ingredients,
+          data!.data!.ingredientAmounts,
+          data!.data!.ingredientUnit,
+        );
+
+        // Filter these out so later, the index from the mapping function
+        // can be used in the handleSliderChange function
+        zippedData = zippedData.filter((data) =>
+          cleanIngredients.includes(data[0]),
+        );
+
+        zippedData.map((data) => {
+          const name = data[0];
+          const amount = data[1];
+          const unit = data[2];
+          const defaultValue: number = parseInt(
+            ingredientAmounts[cleanIngredients.indexOf(name)],
+          );
+          newUserIngredients.push([name, amount, unit, defaultValue]);
+        });
+
+        setUserIngredients(newUserIngredients);
+      }
+    });
+  }, []);
 
   return (
     <div className="recipe">
-      <div className="titleImageContainer">
+      {completed ? (
+        <div className="popup">
+          <div>
+            Done!
+            <br />
+            <br />
+            Choose amounts used.
+          </div>
+          {userIngredientElements}
+          <div className="completeRecipeContainer">
+            <button
+              className="confirmCancelButton"
+              onClick={handleRemoveIngredients}
+            >
+              Confirm
+            </button>
+            <button
+              className="confirmCancelButton"
+              onClick={() => setCompleted(false)}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      ) : null}
+      <div className={`titleImageContainer ${completed ? "blurred" : ""}`}>
         <img className="recipeImage" src={recipe["ImageSrc"]} alt=""></img>
         <div className="titleContainer">
           <h1>{recipe["Title"]}</h1>
@@ -26,7 +156,7 @@ function Recipe() {
           <p>{`Cooking Time: ${recipe["CookingTimeMinutes"]} minutes`}</p>
         </div>
       </div>
-      <div className="descriptionContainer">
+      <div className={`descriptionContainer ${completed ? "blurred" : ""}`}>
         <div className="ingredientContainer">
           <h2>Ingredients</h2>
           <Paper
@@ -45,6 +175,7 @@ function Recipe() {
         <div className="instructionContainer">
           <h2>Instructions</h2>
           <InstructionStepper
+            handleComplete={getUserIngredients}
             instructions={instructions.map(
               (instruction: string, index: number) => ({
                 label: `Step ${index + 1}`,

@@ -115,7 +115,6 @@ function Recipes() {
       <Paper
         elevation={12}
         sx={{
-          width: "80%",
           height: "80%",
           borderRadius: "10px",
         }}

@@ -1,9 +1,17 @@
-const connect = require("./connect");
+const utility = require("./utility");
 
 module.exports = {
   initializeIngredientRoute: function (app) {
     app.get("/ingredient", async (req, res) => {
-      let db = await connect.connect();
+      let expectedValues = ["userID"];
+      let missingParameters = utility.missingParameters(
+        expectedValues,
+        req.query,
+      );
+      if (!missingParameters.length == 0)
+        res.send({ "Missing Parameters": missingParameters });
+
+      let db = await utility.connect();
       const query = await db.get(
         `SELECT Ingredients, IngredientAmount, IngredientUnit FROM Users WHERE userID=${req.query.userID};`,
       );
@@ -22,7 +30,15 @@ module.exports = {
     });
 
     app.delete("/ingredient", async (req, res) => {
-      let db = await connect.connect();
+      let expectedValues = ["userID", "ingredient"];
+      let missingParameters = utility.missingParameters(
+        expectedValues,
+        req.query,
+      );
+      if (!missingParameters.length == 0)
+        res.send({ "Missing Parameters": missingParameters });
+
+      let db = await utility.connect();
       const query = await db.get(
         `SELECT Ingredients, IngredientAmount, IngredientUnit FROM Users WHERE userID=${req.query.userID};`,
       );
@@ -50,7 +66,20 @@ module.exports = {
     });
 
     app.post("/ingredient", async (req, res) => {
-      let db = await connect.connect();
+      let expectedValues = [
+        "userID",
+        "ingredient",
+        "ingredientAmount",
+        "ingredientUnit",
+      ];
+      let missingParameters = utility.missingParameters(
+        expectedValues,
+        req.query,
+      );
+      if (!missingParameters.length == 0)
+        res.send({ "Missing Parameters": missingParameters });
+
+      let db = await utility.connect();
       const query = await db.get(
         `SELECT Ingredients, IngredientAmount, IngredientUnit FROM Users WHERE userID=${req.query.userID};`,
       );

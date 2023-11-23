@@ -1,9 +1,17 @@
-const connect = require("./connect");
+const utility = require("./utility");
 
 module.exports = {
   initializeScoreRoute: function (app) {
     app.get("/score", async (req, res) => {
-      let db = await connect.connect();
+      let expectedValues = ["userID"];
+      let missingParameters = utility.missingParameters(
+        expectedValues,
+        req.query,
+      );
+      if (!missingParameters.length == 0)
+        res.send({ "Missing Parameters": missingParameters });
+
+      let db = await utility.connect();
       const result = await db.all(
         `SELECT * FROM Scores WHERE userID=${req.query.userID} ORDER BY Score DESC;`,
       );
@@ -12,7 +20,15 @@ module.exports = {
     });
 
     app.post("/score", async (req, res) => {
-      let db = await connect.connect();
+      let expectedValues = ["userID"];
+      let missingParameters = utility.missingParameters(
+        expectedValues,
+        req.query,
+      );
+      if (!missingParameters.length == 0)
+        res.send({ "Missing Parameters": missingParameters });
+
+      let db = await utility.connect();
       await db.run(`DELETE FROM Scores WHERE UserID=${req.query.userID}`);
       let userIngredients = await db.get(
         `SELECT Ingredients FROM Users WHERE UserID=${req.query.userID}`,

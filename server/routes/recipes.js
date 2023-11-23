@@ -1,9 +1,17 @@
-const connect = require("./connect");
+const utility = require("./utility");
 
 module.exports = {
   initializeRecipesRoute: function (app) {
     app.get("/recipes", async (req, res) => {
-      let db = await connect.connect();
+      let expectedValues = ["page"];
+      let missingParameters = utility.missingParameters(
+        expectedValues,
+        req.query,
+      );
+      if (!missingParameters.length == 0)
+        res.send({ "Missing Parameters": missingParameters });
+
+      let db = await utility.connect();
       const page = req.query.page;
       let scoreQuery = await db.all(
         `SELECT RecipeID, Score FROM Scores ORDER BY score DESC LIMIT 8 OFFSET ${
@@ -38,7 +46,15 @@ module.exports = {
     });
 
     app.get("/recipes/search", async (req, res) => {
-      let db = await connect.connect();
+      let expectedValues = ["page"];
+      let missingParameters = utility.missingParameters(
+        expectedValues,
+        req.query,
+      );
+      if (!missingParameters.length == 0)
+        res.send({ "Missing Parameters": missingParameters });
+
+      let db = await utility.connect();
       const page = req.query.page;
       let titleContains = req.query.title || ""; // Default to an empty string if no name provided
       let limit = parseInt(req.query.limit, 8) || 8; // Default to 8 if no limit provided

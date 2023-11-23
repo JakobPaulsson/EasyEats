@@ -5,6 +5,7 @@ import PresetIcon from "../../components/PresetIcon/PresetIcon";
 import { Container, TextField, Slider, Typography, Paper } from "@mui/material";
 import PaperHeader from "../../components/PaperHeader/PaperHeader";
 
+
 interface SliderComponentProps {
   label: string;
 }
@@ -58,3 +59,4 @@ function CustomPreset() {
 }
 
 export default CustomPreset;
+

@@ -10,6 +10,7 @@ import Typography from "@mui/material/Typography";
 
 interface InstructionStepperProps {
   instructions: Instructions[];
+  handleComplete(): any;
 }
 
 interface Instructions {
@@ -18,7 +19,10 @@ interface Instructions {
   description: string;
 }
 
-function InstructionStepper({ instructions }: InstructionStepperProps) {
+function InstructionStepper({
+  instructions,
+  handleComplete,
+}: InstructionStepperProps) {
   const [activeStep, setActiveStep] = React.useState(0);
 
   const handleNext = () => {
@@ -74,7 +78,9 @@ function InstructionStepper({ instructions }: InstructionStepperProps) {
       {activeStep === instructions.length && (
         <Paper square elevation={0} sx={{ p: 3 }}>
           <Typography>All steps completed - you&apos;re finished</Typography>
-          <Button sx={{ mt: 1, mr: 1 }}>Complete</Button>
+          <Button onClick={handleComplete} sx={{ mt: 1, mr: 1 }}>
+            Complete
+          </Button>
           <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
             Reset
           </Button>

@@ -26,7 +26,9 @@ const OkDialog = ({ open, setOpen, title, message }: OkDialogProps) => {
           <DialogContentText>{message}</DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>OK</Button>
+          <Button data-cy="OkButton" onClick={handleClose}>
+            OK
+          </Button>
         </DialogActions>
       </Dialog>
     </React.Fragment>

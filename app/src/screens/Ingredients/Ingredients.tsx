@@ -30,7 +30,10 @@ function Ingredients() {
           });
         }
       }
-      if (currentIngredients.length === 0) {
+      if (
+        currentIngredients.length === 0 ||
+        currentIngredients[0].name === ""
+      ) {
         setIngredients([]);
       } else {
         setIngredients(currentIngredients);

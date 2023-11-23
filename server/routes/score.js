@@ -3,8 +3,11 @@ const utility = require("./utility");
 module.exports = {
   initializeScoreRoute: function (app) {
     app.get("/score", async (req, res) => {
-      let expectedValues = ["userID"]
-      let missingParameters = utility.missingParameters(expectedValues, req.query);
+      let expectedValues = ["userID"];
+      let missingParameters = utility.missingParameters(
+        expectedValues,
+        req.query,
+      );
       if (!missingParameters.length == 0)
         res.send({ "Missing Parameters": missingParameters });
 
@@ -17,8 +20,11 @@ module.exports = {
     });
 
     app.post("/score", async (req, res) => {
-      let expectedValues = ["userID"]
-      let missingParameters = utility.missingParameters(expectedValues, req.query);
+      let expectedValues = ["userID"];
+      let missingParameters = utility.missingParameters(
+        expectedValues,
+        req.query,
+      );
       if (!missingParameters.length == 0)
         res.send({ "Missing Parameters": missingParameters });
 
@@ -71,7 +77,7 @@ module.exports = {
               ratingScore +
               cookingTimeScore +
               recipeIngredientsScore)) /
-          NO_METRICS,
+            NO_METRICS,
         );
       }
 

@@ -3,8 +3,11 @@ const utility = require("./utility");
 module.exports = {
   initializeSuggestionsRoute: function (app) {
     app.get("/suggestions", async (req, res) => {
-      let expectedValues = ["searchInput"]
-      let missingParameters = utility.missingParameters(expectedValues, req.query);
+      let expectedValues = ["searchInput"];
+      let missingParameters = utility.missingParameters(
+        expectedValues,
+        req.query,
+      );
       if (!missingParameters.length == 0)
         res.send({ "Missing Parameters": missingParameters });
 

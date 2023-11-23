@@ -3,8 +3,11 @@ const utility = require("./utility");
 module.exports = {
   initializeScoreRoute: function (app) {
     app.get("/score", async (req, res) => {
-      let expectedValues = ["userID"]
-      let missingParameters = utility.missingParameters(expectedValues, req.query);
+      let expectedValues = ["userID"];
+      let missingParameters = utility.missingParameters(
+        expectedValues,
+        req.query,
+      );
       if (!missingParameters.length == 0)
         res.send({ "Missing Parameters": missingParameters });
 
@@ -17,8 +20,11 @@ module.exports = {
     });
 
     app.post("/score", async (req, res) => {
-      let expectedValues = ["userID"]
-      let missingParameters = utility.missingParameters(expectedValues, req.query);
+      let expectedValues = ["userID"];
+      let missingParameters = utility.missingParameters(
+        expectedValues,
+        req.query,
+      );
       if (!missingParameters.length == 0)
         res.send({ "Missing Parameters": missingParameters });
 
@@ -52,7 +58,7 @@ module.exports = {
         NO_INGREDIENTS_CAP = 10;
       const NO_METRICS = 4;
       for (var i = 0; i < recipes.length; i++) {
-        let foundIngredients = []
+        let foundIngredients = [];
         let currentIngredientsScore = 0;
         let ratingScore = recipesScores[i] / 5;
         let cookingTimeScore =
@@ -64,10 +70,13 @@ module.exports = {
             ? 0
             : 1 - recipesIngredients[i].length / NO_INGREDIENTS_CAP;
         for (var j = 0; j < recipesIngredients[i].length; j++) {
-          const currentIngredient = recipesIngredients[i][j]
-          if (userIngredients.includes(currentIngredient) && !foundIngredients.includes(currentIngredient)) {
+          const currentIngredient = recipesIngredients[i][j];
+          if (
+            userIngredients.includes(currentIngredient) &&
+            !foundIngredients.includes(currentIngredient)
+          ) {
             currentIngredientsScore += 1 / userIngredients.length;
-            foundIngredients.push(currentIngredient)
+            foundIngredients.push(currentIngredient);
           }
         }
 
@@ -77,7 +86,7 @@ module.exports = {
               ratingScore +
               cookingTimeScore +
               recipeIngredientsScore)) /
-          NO_METRICS,
+            NO_METRICS,
         );
       }
 

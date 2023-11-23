@@ -33,7 +33,14 @@ function Search({ currentSearch, handleSearch }: SearchProps) {
   return (
     <Paper
       component="form"
-      sx={{ p: "2px 4px", display: "flex", alignItems: "center", width: 400 }}
+      sx={{
+        p: "2px 4px",
+        display: "flex",
+        alignItems: "center",
+        width: 300,
+        height: 40,
+        m: 2,
+      }}
       onSubmit={(event) => handleSubmit(event)}
     >
       <InputBase

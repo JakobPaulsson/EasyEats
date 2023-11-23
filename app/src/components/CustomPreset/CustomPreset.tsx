@@ -3,11 +3,17 @@ import "./CustomPreset.css";
 import PresetIcon from "../../components/PresetIcon/PresetIcon";
 
 import { Container, TextField, Slider, Typography, Paper } from "@mui/material";
+import PaperHeader from "../../components/PaperHeader/PaperHeader";
 
-function SliderComponent(props: any) {
+
+interface SliderComponentProps {
+  label: string;
+}
+
+function SliderComponent({ label }: SliderComponentProps) {
   return (
     <Container>
-      <Typography>{props.label}</Typography>
+      <Typography>{label}</Typography>
       <Slider step={0.1} min={0} max={1} marks valueLabelDisplay="auto" />
     </Container>
   );
@@ -25,6 +31,7 @@ function CustomPreset() {
           borderRadius: "10px",
         }}
       >
+        <PaperHeader title="Create Custom Preset" />
         <div className="customPresetContainer">
           <PresetIcon />
           <TextField

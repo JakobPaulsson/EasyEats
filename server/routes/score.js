@@ -52,6 +52,7 @@ module.exports = {
         NO_INGREDIENTS_CAP = 10;
       const NO_METRICS = 4;
       for (var i = 0; i < recipes.length; i++) {
+        let foundIngredients = []
         let currentIngredientsScore = 0;
         let ratingScore = recipesScores[i] / 5;
         let cookingTimeScore =
@@ -62,9 +63,14 @@ module.exports = {
           recipesIngredients[i].length > NO_INGREDIENTS_CAP
             ? 0
             : 1 - recipesIngredients[i].length / NO_INGREDIENTS_CAP;
-        for (var j = 0; j < recipesIngredients[i].length; j++)
-          if (userIngredients.includes(recipesIngredients[i][j]))
+        for (var j = 0; j < recipesIngredients[i].length; j++) {
+          const currentIngredient = recipesIngredients[i][j]
+          if (userIngredients.includes(currentIngredient) && !foundIngredients.includes(currentIngredient)) {
             currentIngredientsScore += 1 / userIngredients.length;
+            foundIngredients.push(currentIngredient)
+          }
+        }
+
         scores[i] = Math.round(
           (100 *
             (currentIngredientsScore +

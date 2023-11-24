@@ -3,24 +3,19 @@ const utility = require("./utility");
 module.exports = {
   initializePresetRoute: function (app) {
     app.get("/preset", async (req, res) => {
-      console.log("arse")
-      let expectedValues = ["userID", "name"]
+      let expectedValues = ["userID"]
       let missingParameters = utility.missingParameters(expectedValues, req.query);
-      if (!missingParameters.length == 0)
-        res.send({ "Missing Parameters": missingParameters });
+      if (!missingParameters.length == 0) {
+        return res.send({ "Missing Parameters": missingParameters });
+      }
 
       let db = await utility.connect();
 
-      const query = await db.get(`SELECT RatingMetric, CookingTimeMetric, CommonIngredientsMetric, NumberOfIngredientsMetric FROM Presets WHERE UserID=${req.query.userID} AND Name='${req.query.name}';`);
+      const query = await db.all(`SELECT Name, Icon, Color FROM Presets WHERE UserID=${req.query.userID};`);
       if (query === undefined) {
         res.send({ "error": "Invalid userID or presetID" });
       } else {
-        res.send({
-          "ratingMetric": query["RatingMetric"],
-          "CookingTimeMetric": query["CookingTimeMetric"],
-          "CommonIngredientsMetric": query["CommonIngredientsMetric"],
-          "NumberOfIngredientsMetric": query["NumberOfIngredientsMetric"]
-        })
+        res.send({ query })
       }
       await db.close();
     });
@@ -29,7 +24,7 @@ module.exports = {
       let expectedValues = ["userID", "name", "icon", "color", "ratingMetric", "cookingTimeMetric", "commonIngredientsMetric", "numberOfIngredientsMetric"]
       let missingParameters = utility.missingParameters(expectedValues, req.query);
       if (!missingParameters.length == 0)
-        res.send({ "Missing Parameters": missingParameters });
+        return res.send({ "Missing Parameters": missingParameters });
 
       let db = await utility.connect();
       try {
@@ -46,7 +41,7 @@ module.exports = {
       let expectedValues = ["userID", "name"]
       let missingParameters = utility.missingParameters(expectedValues, req.query);
       if (!missingParameters.length == 0)
-        res.send({ "Missing Parameters": missingParameters });
+        return res.send({ "Missing Parameters": missingParameters });
 
       let db = await utility.connect();
       const result = await db.run(`DELETE FROM Presets WHERE UserID=${req.query.userID} AND Name='${req.query.name}'`);
@@ -58,11 +53,12 @@ module.exports = {
       let expectedValues = ["userID", "name", "newName"]
       let missingParameters = utility.missingParameters(expectedValues, req.query);
       if (!missingParameters.length == 0)
-        res.send({ "Missing Parameters": missingParameters });
+        return res.send({ "Missing Parameters": missingParameters });
 
       let db = await utility.connect();
       const result = await db.run(
-        `UPDATE Presets SET Name="${req.query.newName}" WHERE userId=${req.query.userID} AND Name='${req.query.name}'`,
+        `UPDATE Presets SET Name="${req.query.newName}"
+         WHERE userId=${req.query.userID} AND Name='${req.query.name}'`,
       );
 
       res.send(result)

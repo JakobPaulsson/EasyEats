@@ -6,7 +6,7 @@ import { getPresets } from "../../services/PresetService";
 import { setSelectedPreset } from "../../services/UserService";
 import { updateScores } from "../../services/ScoreService";
 
-import { Paper, Box, Container, Typography, Pagination } from "@mui/material";
+import { Paper, Box, Container, Pagination, Tooltip } from "@mui/material";
 import Search from "../../components/Search/Search";
 import { Recipe } from "../../types/recipe.interface";
 import React from "react";
@@ -134,7 +134,7 @@ function Recipes() {
             default:
               return null;
           }
-        }),
+        })
       );
     });
   };
@@ -185,6 +185,28 @@ function Recipes() {
           }}
         >
           <PaperHeader title="Recipes" />
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <Tooltip title="Select preset">
+              <Paper
+                elevation={1}
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  gap: 2,
+                  padding: "5px",
+                  ml: "200px",
+                  mt: "10px",
+                }}
+              >
+                {presetIcons}
+              </Paper>
+            </Tooltip>
+          </Box>
           <Search
             currentSearch={search}
             handleSearch={handleSearch}
@@ -209,37 +231,22 @@ function Recipes() {
               mt: 1,
               gap: 1,
             }}
-          >
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              <Typography gutterBottom variant="h5" component="div">
-                Presets
-              </Typography>
-              <Paper
-                elevation={6}
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  gap: 2,
-                  padding: "5px",
-                }}
-              >
-                {presetIcons}
-              </Paper>
-            </Box>
-          </Box>
-          <Pagination
-            count={Math.floor(searchCount / 8)}
-            variant="outlined"
-            onChange={(_, page: number) => handlePageChange(page)}
-          />
+          ></Box>
         </Box>
         <>
           <Container>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <Pagination
+                count={Math.floor(searchCount / 8)}
+                variant="outlined"
+                onChange={(_, page: number) => handlePageChange(page)}
+              />
+            </Box>
             <RecipeCard recipes={recipes} navigateToRecipe={navigateToRecipe} />
           </Container>
         </>

@@ -134,7 +134,7 @@ function Recipes() {
             default:
               return null;
           }
-        })
+        }),
       );
     });
   };

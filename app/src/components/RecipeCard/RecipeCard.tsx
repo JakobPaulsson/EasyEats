@@ -52,7 +52,7 @@ const cardIcon = (recipe: Recipe) => {
   const missingIngredients = checkIfIngriedientsMatch(recipe);
 
   const style = {
-    color: "orange",
+    color: "gray",
     fontSize: "1.5rem",
   } as React.CSSProperties;
 
@@ -88,7 +88,7 @@ const cardIcon = (recipe: Recipe) => {
       return (
         <FaSadCry
           style={{
-            color: "red",
+            color: "gray",
             fontSize: "1.5rem",
           }}
         />

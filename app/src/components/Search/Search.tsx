@@ -33,16 +33,18 @@ function Search({ currentSearch, handleSearch }: SearchProps) {
   return (
     <Paper
       component="form"
+      elevation={0}
       sx={{
         p: "2px 4px",
         display: "flex",
         alignItems: "center",
         width: 300,
         height: 40,
-        m: 2,
+        mt: "8px",
       }}
       onSubmit={(event) => handleSubmit(event)}
     >
+      <Divider orientation="vertical"></Divider>
       <InputBase
         sx={{ ml: 1, flex: 1 }}
         placeholder="Search Recipes"

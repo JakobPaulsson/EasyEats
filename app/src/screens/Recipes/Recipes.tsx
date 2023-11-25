@@ -17,6 +17,11 @@ import DownhillSkiingIcon from "@mui/icons-material/DownhillSkiing";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
 import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
 import RecipeCard from "../../components/RecipeCard/RecipeCard";
+import Tab from "@mui/material/Tab";
+import { Divider } from "@mui/material";
+import { TabContext, TabList, TabPanel } from "@mui/lab";
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
 function Recipes() {
   const { pageNumber } = useParams();
@@ -25,8 +30,13 @@ function Recipes() {
   const [searchParams] = useSearchParams();
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [search, setSearch] = useState(searchParams.get("search") || "");
-  const [presetIcons, setPresetIcons] = useState();
+  const [presetIcons, setPresetIcons] = useState<any>();
   const navigate = useNavigate();
+  const [selected, setSelected] = React.useState("Skiing");
+
+  useEffect(() => {
+    console.log(selected);
+  }, [selected]);
 
   useEffect(() => {
     if (search) {
@@ -46,6 +56,11 @@ function Recipes() {
     }
   }, [search, page]); // Add ingredients to the dependency array
 
+  const [tabValue, setTabValue] = React.useState("1");
+  const handleTabSwitch = (event: React.SyntheticEvent, newValue: string) => {
+    setTabValue(newValue);
+  };
+
   const handlePresetClick = (item: any) => {
     setSelectedPreset(1, item.Name).then(() => {
       console.log(page);
@@ -62,79 +77,85 @@ function Recipes() {
 
   const getAndSetPresetIcons = () => {
     getPresets(1).then(function response(data) {
+      console.log(selected);
       const query = data?.data?.query;
       setPresetIcons(
         query.map((item: any) => {
           switch (item.Icon) {
             case "PedalBikeIcon":
               return (
-                <PedalBikeIcon
-                  onClick={() => {
-                    handlePresetClick(item);
-                  }}
-                  sx={{
-                    cursor: "pointer",
-                    fontSize: 40,
-                    color: `#${item.Color}`,
-                  }}
-                />
+                <ToggleButton value="Pedal" aria-label="yeah">
+                  <PedalBikeIcon
+                    sx={{
+                      cursor: "pointer",
+                      fontSize: 40,
+                      color: `#${item.Color}`,
+                    }}
+                    onClick={() => handlePresetClick(item)}
+                  />
+                </ToggleButton>
               );
             case "BeachAccessIcon":
               return (
-                <BeachAccessIcon
-                  onClick={() => {
-                    handlePresetClick(item);
-                  }}
+                <ToggleButton
+                  value="Beach"
                   sx={{
-                    cursor: "pointer",
-                    fontSize: 40,
-                    color: `#${item.Color}`,
+                    width: "10px",
                   }}
-                />
+                >
+                  <BeachAccessIcon
+                    sx={{
+                      cursor: "pointer",
+                      fontSize: 40,
+                      color: `#${item.Color}`,
+                    }}
+                    onClick={() => handlePresetClick(item)}
+                  />
+                </ToggleButton>
               );
             case "DownhillSkiingIcon":
               return (
-                <DownhillSkiingIcon
-                  onClick={() => {
-                    handlePresetClick(item);
-                  }}
-                  sx={{
-                    cursor: "pointer",
-                    fontSize: 40,
-                    color: `#${item.Color}`,
-                  }}
-                />
+                <ToggleButton value="Skiing" aria-label="">
+                  <DownhillSkiingIcon
+                    sx={{
+                      cursor: "pointer",
+                      fontSize: 40,
+                      color: `#${item.Color}`,
+                    }}
+                    onClick={() => handlePresetClick(item)}
+                  />
+                </ToggleButton>
               );
             case "RestaurantIcon":
               return (
-                <RestaurantIcon
-                  onClick={() => {
-                    handlePresetClick(item);
-                  }}
-                  sx={{
-                    cursor: "pointer",
-                    fontSize: 40,
-                    color: `#${item.Color}`,
-                  }}
-                />
+                <ToggleButton value="Restaurant">
+                  <RestaurantIcon
+                    sx={{
+                      cursor: "pointer",
+                      fontSize: 40,
+                      color: `#${item.Color}`,
+                    }}
+                    onClick={() => handlePresetClick(item)}
+                  />
+                </ToggleButton>
               );
             case "RestaurantMenuIcon":
               return (
-                <RestaurantMenuIcon
-                  onClick={() => {
-                    handlePresetClick(item);
-                  }}
-                  sx={{
-                    cursor: "pointer",
-                    fontSize: 40,
-                    color: `#${item.Color}`,
-                  }}
-                />
+                <ToggleButton value="RestaurantMenu">
+                  <RestaurantMenuIcon
+                    sx={{
+                      cursor: "pointer",
+                      fontSize: 40,
+                      color: `#${item.Color}`,
+                    }}
+                    onClick={() => handlePresetClick(item)}
+                  />
+                </ToggleButton>
               );
             default:
               return null;
           }
-        }),
+        })
       );
     });
   };
@@ -168,6 +189,14 @@ function Recipes() {
     setSearch(value);
     navigate(`/recipes/page/${1}?search=${value}`);
   };
+
+  const handleSelected = (
+    event: React.MouseEvent<HTMLElement>,
+    newAlignment: string | null
+  ) => {
+    console.log(newAlignment);
+    setSelected(newAlignment || "0");
+  };
   return (
     <div className="container">
       <Paper
@@ -184,7 +213,14 @@ function Recipes() {
             justifyContent: "space-between",
           }}
         >
-          <PaperHeader title="Recipes" />
+          <TabContext value={tabValue}>
+            <Box>
+              <TabList onChange={handleTabSwitch}>
+                <Tab label="All Recipes" value="1" />
+                <Tab label="Matches" value="2" />
+              </TabList>
+            </Box>
+          </TabContext>
           <Box
             sx={{
               display: "flex",
@@ -192,19 +228,16 @@ function Recipes() {
             }}
           >
             <Tooltip title="Select preset">
-              <Paper
-                elevation={1}
+              <ToggleButtonGroup
+                value={selected}
+                onChange={handleSelected}
+                exclusive
                 sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  gap: 2,
-                  padding: "5px",
-                  ml: "200px",
-                  mt: "10px",
+                  height: "48px",
                 }}
               >
                 {presetIcons}
-              </Paper>
+              </ToggleButtonGroup>
             </Tooltip>
           </Box>
           <Search
@@ -213,6 +246,7 @@ function Recipes() {
             key={page}
           ></Search>
         </Box>
+        <Divider />
         <Box
           sx={{
             display: "flex",
@@ -228,8 +262,6 @@ function Recipes() {
               display: "flex",
               flexDirection: "row",
               alignItems: "flex-start",
-              mt: 1,
-              gap: 1,
             }}
           ></Box>
         </Box>

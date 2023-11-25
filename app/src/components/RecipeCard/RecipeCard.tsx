@@ -38,7 +38,6 @@ const checkIfIngriedientsMatch = (recipe: Recipe) => {
   if (!storagIngredients || storagIngredients.length === 0) {
     return [];
   }
-  console.log(storagIngredients);
   const storageIngredients: Array<string> =
     JSON.parse(storagIngredients).data.ingredients;
   const recipeIngredients: Array<string> =

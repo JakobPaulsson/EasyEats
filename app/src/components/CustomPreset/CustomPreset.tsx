@@ -5,6 +5,8 @@ import { addPreset } from "../../services/PresetService";
 import { Container, TextField, Slider, Typography, Paper } from "@mui/material";
 import PaperHeader from "../../components/PaperHeader/PaperHeader";
 import OkDialog from "../../components/OkDialog/OkDialog";
+import Box from "@mui/material/Box";
+import { PresetSelector } from "../../components/PresetSelector/PresetSelector";
 
 function CustomPreset() {
   const [icon, setIcon] = React.useState("PedalBikeIcon");
@@ -48,98 +50,103 @@ function CustomPreset() {
   };
 
   return (
-    <div className="outerContainer">
-      <Paper
-        elevation={6}
-        sx={{
-          width: 650,
-          height: 800,
-          mt: "60px",
-          borderRadius: "10px",
-        }}
-      >
-        <PaperHeader title="Create Custom Preset" />
-        <div className="customPresetContainer">
+    <Paper
+      elevation={6}
+      sx={{
+        width: 650,
+        height: 800,
+        borderRadius: "10px",
+        mt: 3,
+      }}
+    >
+      <PaperHeader title="Create Preset" />
+      <div className="customPresetContainer">
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            gap: 5.5,
+          }}
+        >
           <PresetIcon setIconParent={setIcon} setColorParent={setColor} />
-          <TextField
-            sx={{ width: "80%", borderRadius: "50px" }}
-            id="outlined-basic"
-            label="Preset Name..."
-            value={presetName}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setPresetName(event.target.value);
-            }}
-            variant="filled"
-          />
-          <div className="sliderGridContainer">
-            <Container>
-              <Typography>{"Short Cook Time"}</Typography>
-              <Slider
-                step={0.1}
-                min={0}
-                max={1}
-                marks
-                value={cookTimeSlider}
-                onChange={(e) => setCookTimeSlider((e.target as any).value)}
-                valueLabelDisplay="auto"
-              />
-            </Container>
-            <Container>
-              <Typography>{"High Rating"}</Typography>
-              <Slider
-                step={0.1}
-                min={0}
-                max={1}
-                marks
-                value={ratingSlider}
-                onChange={(e) => setRatingSlider((e.target as any).value)}
-                valueLabelDisplay="auto"
-              />
-            </Container>
-            <Container>
-              <Typography>{"Few Ingredients"}</Typography>
-              <Slider
-                step={0.1}
-                min={0}
-                max={1}
-                marks
-                value={fewIngredientsSlider}
-                onChange={(e) =>
-                  setFewIngredientsSlider((e.target as any).value)
-                }
-                valueLabelDisplay="auto"
-              />
-            </Container>
-            <Container>
-              <Typography>{"Ingredients in Inventory"}</Typography>
-              <Slider
-                step={0.1}
-                min={0}
-                max={1}
-                marks
-                value={ingredientsInInventorySlider}
-                onChange={(e) =>
-                  setIngredientsInInventorySlider((e.target as any).value)
-                }
-                valueLabelDisplay="auto"
-              />
-            </Container>
-          </div>
-          <OkDialog
-            open={open}
-            setOpen={setOpen}
-            title={popupTitle}
-            message={popupText}
-          />
-          <div className="buttonContainer">
-            <button onClick={addNewPreset} className="button">
-              Add Preset
-            </button>
-            <button className="button">Cancel</button>
-          </div>
+        </Box>
+        <TextField
+          sx={{ width: "80%", borderRadius: "50px" }}
+          id="outlined-basic"
+          label="Preset Name..."
+          value={presetName}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            setPresetName(event.target.value);
+          }}
+          variant="filled"
+        />
+        <div className="sliderGridContainer">
+          <Container>
+            <Typography>{"Short Cook Time"}</Typography>
+            <Slider
+              step={0.1}
+              min={0}
+              max={1}
+              marks
+              value={cookTimeSlider}
+              onChange={(e) => setCookTimeSlider((e.target as any).value)}
+              valueLabelDisplay="auto"
+            />
+          </Container>
+          <Container>
+            <Typography>{"High Rating"}</Typography>
+            <Slider
+              step={0.1}
+              min={0}
+              max={1}
+              marks
+              value={ratingSlider}
+              onChange={(e) => setRatingSlider((e.target as any).value)}
+              valueLabelDisplay="auto"
+            />
+          </Container>
+          <Container>
+            <Typography>{"Few Ingredients"}</Typography>
+            <Slider
+              step={0.1}
+              min={0}
+              max={1}
+              marks
+              value={fewIngredientsSlider}
+              onChange={(e) => setFewIngredientsSlider((e.target as any).value)}
+              valueLabelDisplay="auto"
+            />
+          </Container>
+          <Container>
+            <Typography>{"Ingredients in Inventory"}</Typography>
+            <Slider
+              step={0.1}
+              min={0}
+              max={1}
+              marks
+              value={ingredientsInInventorySlider}
+              onChange={(e) =>
+                setIngredientsInInventorySlider((e.target as any).value)
+              }
+              valueLabelDisplay="auto"
+            />
+          </Container>
         </div>
-      </Paper>
-    </div>
+        <OkDialog
+          open={open}
+          setOpen={setOpen}
+          title={popupTitle}
+          message={popupText}
+        />
+        <div className="buttonContainer">
+          <button onClick={addNewPreset} className="button">
+            Add Preset
+          </button>
+          <button className="button">Cancel</button>
+        </div>
+      </div>
+    </Paper>
   );
 }
 

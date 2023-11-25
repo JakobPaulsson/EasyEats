@@ -4,6 +4,7 @@ import BeachAccessIcon from "@mui/icons-material/BeachAccess";
 import DownhillSkiingIcon from "@mui/icons-material/DownhillSkiing";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
 import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
+import PaperHeader from "../../components/PaperHeader/PaperHeader";
 
 import { Paper, Box, Container } from "@mui/material";
 
@@ -62,95 +63,89 @@ const PresetIcon = ({ setIconParent, setColorParent }: PresetIconProps) => {
   };
 
   return (
-    <Container>
+    <Paper
+      elevation={3}
+      square={false}
+      sx={{
+        width: 200,
+        height: 250,
+        borderRadius: 4,
+      }}
+    >
+      <PaperHeader title="Select Icon" />
       <Box
-        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+          mt: 1,
+          gap: 1.5,
+        }}
       >
-        <Paper
-          elevation={3}
-          square={false}
-          sx={{
-            width: 200,
-            height: 200,
-            mt: 5,
-            borderRadius: 4,
+        <PedalBikeIcon
+          sx={{ fontSize: 20, cursor: "pointer" }}
+          onClick={() => {
+            setIcon("PedalBikeIcon");
+            setIconParent("PedalBikeIcon");
           }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-              mt: 1,
-              gap: 1.5,
-            }}
-          >
-            <PedalBikeIcon
-              sx={{ fontSize: 20, cursor: "pointer" }}
-              onClick={() => {
-                setIcon("PedalBikeIcon");
-                setIconParent("PedalBikeIcon");
-              }}
-            />
-            <BeachAccessIcon
-              sx={{ fontSize: 20, cursor: "pointer" }}
-              onClick={() => {
-                setIcon("BeachAccessIcon");
-                setIconParent("BeachAccessIcon");
-              }}
-            />
-            <DownhillSkiingIcon
-              sx={{ fontSize: 20, cursor: "pointer" }}
-              onClick={() => {
-                setIcon("DownhillSkiingIcon");
-                setIconParent("DownhillSkiingIcon");
-              }}
-            />
-            <RestaurantIcon
-              sx={{ fontSize: 20, cursor: "pointer" }}
-              onClick={() => {
-                setIcon("RestaurantIcon");
-                setIconParent("RestaurantIcon");
-              }}
-            />
-            <RestaurantMenuIcon
-              sx={{ fontSize: 20, cursor: "pointer" }}
-              onClick={() => {
-                setIcon("RestaurantMenuIcon");
-                setIconParent("RestaurantMenuIcon");
-              }}
-            />
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              mt: 3,
-            }}
-          >
-            {renderSelectedIcon()}
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              marginTop: 3.5,
-              marginLeft: 1,
-              marginRight: 1,
-            }}
-          >
-            {renderColorSelector("#65D663")}
-            {renderColorSelector("#639ED6")}
-            {renderColorSelector("#D69363")}
-            {renderColorSelector("#BD3838")}
-            {renderColorSelector("#DAF148")}
-          </Box>
-        </Paper>
+        />
+        <BeachAccessIcon
+          sx={{ fontSize: 20, cursor: "pointer" }}
+          onClick={() => {
+            setIcon("BeachAccessIcon");
+            setIconParent("BeachAccessIcon");
+          }}
+        />
+        <DownhillSkiingIcon
+          sx={{ fontSize: 20, cursor: "pointer" }}
+          onClick={() => {
+            setIcon("DownhillSkiingIcon");
+            setIconParent("DownhillSkiingIcon");
+          }}
+        />
+        <RestaurantIcon
+          sx={{ fontSize: 20, cursor: "pointer" }}
+          onClick={() => {
+            setIcon("RestaurantIcon");
+            setIconParent("RestaurantIcon");
+          }}
+        />
+        <RestaurantMenuIcon
+          sx={{ fontSize: 20, cursor: "pointer" }}
+          onClick={() => {
+            setIcon("RestaurantMenuIcon");
+            setIconParent("RestaurantMenuIcon");
+          }}
+        />
       </Box>
-    </Container>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          mt: 3,
+        }}
+      >
+        {renderSelectedIcon()}
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          marginTop: 3.5,
+          marginLeft: 1,
+          marginRight: 1,
+        }}
+      >
+        {renderColorSelector("#65D663")}
+        {renderColorSelector("#639ED6")}
+        {renderColorSelector("#D69363")}
+        {renderColorSelector("#BD3838")}
+        {renderColorSelector("#DAF148")}
+      </Box>
+    </Paper>
   );
 };
 

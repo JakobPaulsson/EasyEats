@@ -1,10 +1,10 @@
 import axios from "axios";
 
-interface IngredientResponse {
+export interface IngredientResponse {
   data: IngredientData | undefined;
 }
 
-interface IngredientData {
+export interface IngredientData {
   ingredientAmounts: Array<string>;
   ingredientUnit: Array<string>;
   ingredients: Array<string>;
@@ -32,6 +32,8 @@ export const addIngredient = async (
     await axios.post(
       `http://localhost:8080/ingredient?userID=${userID}&ingredient=${ingredient}&ingredientAmount=${ingredientAmount}&ingredientUnit=${ingredientUnit}`,
     );
+
+    localStorage.setItem("ingredients", JSON.stringify(getIngredients(userID)));
   } catch (error) {
     console.error("Failed to fetch search query", error);
   }
@@ -45,6 +47,8 @@ export const removeIngredient = async (userID: number, ingredient: string) => {
     if (response && response.data) {
       return response;
     }
+
+    localStorage.setItem("ingredients", JSON.stringify(getIngredients(userID)));
   } catch (error) {
     console.error("Failed to fetch search query", error);
   }

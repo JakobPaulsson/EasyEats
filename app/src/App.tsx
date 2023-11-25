@@ -6,10 +6,17 @@ import Account from "./screens/Account/Account";
 import Sidebar from "./components/SideBar/Sidebar";
 import Header from "./components/Header/Header";
 import Recipe from "./screens/Recipe/Recipe";
+import { getIngredients } from "./services/IngredientService";
 import { Route, Routes } from "react-router-dom";
-import React from "react";
+import React, { useEffect } from "react";
 
 function App() {
+  useEffect(() => {
+    getIngredients(1).then(function response(data) {
+      localStorage.setItem("ingredients", JSON.stringify(data));
+    });
+  });
+
   return (
     <div className="outerContainer">
       <Sidebar />

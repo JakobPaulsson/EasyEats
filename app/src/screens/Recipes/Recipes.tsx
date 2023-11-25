@@ -6,19 +6,7 @@ import { getPresets } from "../../services/PresetService";
 import { setSelectedPreset } from "../../services/UserService";
 import { updateScores } from "../../services/ScoreService";
 
-import {
-  Card,
-  Paper,
-  Box,
-  Container,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Button,
-  Typography,
-  CardActionArea,
-  Pagination,
-} from "@mui/material";
+import { Paper, Box, Container, Typography, Pagination } from "@mui/material";
 import Search from "../../components/Search/Search";
 import { Recipe } from "../../types/recipe.interface";
 import React from "react";
@@ -28,6 +16,7 @@ import BeachAccessIcon from "@mui/icons-material/BeachAccess";
 import DownhillSkiingIcon from "@mui/icons-material/DownhillSkiing";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
 import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
+import RecipeCard from "../../components/RecipeCard/RecipeCard";
 
 function Recipes() {
   const { pageNumber } = useParams();
@@ -164,43 +153,6 @@ function Recipes() {
     });
   };
 
-  const recipeElements = recipes.map((recipe) => (
-    <Card variant="outlined" sx={{ maxWidth: 245 }}>
-      <CardActionArea onClick={() => navigateToRecipe(recipe)}>
-        <CardMedia
-          sx={{ height: 140 }}
-          image={recipe["ImageSrc"]}
-          title={recipe["Title"]}
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            Match: {recipe["Score"]}%
-          </Typography>
-          <Typography
-            gutterBottom
-            variant="subtitle1"
-            component="div"
-            noWrap={true}
-          >
-            {recipe["Title"]}
-          </Typography>
-          <Typography variant="body2" color="text.secondary" noWrap={true}>
-            {recipe["Instructions"]}
-          </Typography>
-        </CardContent>
-        <CardActions
-          sx={{
-            display: "flex",
-            justifyContent: "flex-end",
-            alignItems: "flex-end",
-          }}
-        >
-          <Button size="small">Learn More</Button>
-        </CardActions>
-      </CardActionArea>
-    </Card>
-  ));
-
   const handlePageChange = (page: number) => {
     if (page > 0) {
       if (!search) {
@@ -288,13 +240,7 @@ function Recipes() {
         </Box>
         <>
           <Container>
-            <div className="cardsContainer">
-              {recipeElements.length > 0 ? (
-                recipeElements
-              ) : (
-                <p>No recipes found.</p>
-              )}
-            </div>
+            <RecipeCard recipes={recipes} navigateToRecipe={navigateToRecipe} />
           </Container>
         </>
       </Paper>

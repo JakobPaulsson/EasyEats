@@ -35,7 +35,7 @@ interface RecipeCardProps {
 
 const checkIfIngriedientsMatch = (recipe: Recipe) => {
   const storageIngredients: Array<string> = JSON.parse(
-    localStorage.getItem("ingredients") || "[]"
+    localStorage.getItem("ingredients") || "[]",
   ).data.ingredients;
   const recipeIngredients: Array<string> =
     recipe["CleanIngredients"].split(",");

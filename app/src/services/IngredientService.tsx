@@ -32,6 +32,8 @@ export const addIngredient = async (
     await axios.post(
       `http://localhost:8080/ingredient?userID=${userID}&ingredient=${ingredient}&ingredientAmount=${ingredientAmount}&ingredientUnit=${ingredientUnit}`
     );
+
+    localStorage.setItem("ingredients", JSON.stringify(getIngredients(userID)));
   } catch (error) {
     console.error("Failed to fetch search query", error);
   }

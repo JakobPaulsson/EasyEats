@@ -29,7 +29,7 @@ function CustomPreset() {
       ratingSlider,
       cookTimeSlider,
       ingredientsInInventorySlider,
-      fewIngredientsSlider,
+      fewIngredientsSlider
     ).then((data) => {
       if (data?.data?.error?.code == "SQLITE_CONSTRAINT") {
         setOpen(true);

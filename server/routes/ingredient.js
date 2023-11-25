@@ -3,8 +3,11 @@ const utility = require("./utility");
 module.exports = {
   initializeIngredientRoute: function (app) {
     app.get("/ingredient", async (req, res) => {
-      let expectedValues = ["userID"]
-      let missingParameters = utility.missingParameters(expectedValues, req.query);
+      let expectedValues = ["userID"];
+      let missingParameters = utility.missingParameters(
+        expectedValues,
+        req.query,
+      );
       if (!missingParameters.length == 0)
         return res.send({ "Missing Parameters": missingParameters });
 
@@ -27,8 +30,11 @@ module.exports = {
     });
 
     app.delete("/ingredient", async (req, res) => {
-      let expectedValues = ["userID", "ingredient"]
-      let missingParameters = utility.missingParameters(expectedValues, req.query);
+      let expectedValues = ["userID", "ingredient"];
+      let missingParameters = utility.missingParameters(
+        expectedValues,
+        req.query,
+      );
       if (!missingParameters.length == 0)
         return res.send({ "Missing Parameters": missingParameters });
 
@@ -60,8 +66,16 @@ module.exports = {
     });
 
     app.post("/ingredient", async (req, res) => {
-      let expectedValues = ["userID", "ingredient", "ingredientAmount", "ingredientUnit"]
-      let missingParameters = utility.missingParameters(expectedValues, req.query);
+      let expectedValues = [
+        "userID",
+        "ingredient",
+        "ingredientAmount",
+        "ingredientUnit",
+      ];
+      let missingParameters = utility.missingParameters(
+        expectedValues,
+        req.query,
+      );
       if (!missingParameters.length == 0)
         return res.send({ "Missing Parameters": missingParameters });
 

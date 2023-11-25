@@ -31,7 +31,7 @@ function CustomPreset() {
       ratingSlider,
       cookTimeSlider,
       ingredientsInInventorySlider,
-      fewIngredientsSlider,
+      fewIngredientsSlider
     ).then((data) => {
       if (data?.data?.error?.code == "SQLITE_CONSTRAINT") {
         setOpen(true);
@@ -51,7 +51,7 @@ function CustomPreset() {
 
   return (
     <Paper
-      elevation={6}
+      elevation={5}
       sx={{
         width: 650,
         height: 800,

@@ -58,7 +58,7 @@ function Account() {
     <Paper
       elevation={6}
       sx={{
-        width: "90%",
+        width: "70%",
         borderRadius: "10px",
         mt: 5,
         mb: 5,

@@ -64,7 +64,7 @@ const PresetIcon = ({ setIconParent, setColorParent }: PresetIconProps) => {
 
   return (
     <Paper
-      elevation={3}
+      elevation={0}
       square={false}
       sx={{
         width: 200,

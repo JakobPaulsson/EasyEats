@@ -34,9 +34,13 @@ interface RecipeCardProps {
 }
 
 const checkIfIngriedientsMatch = (recipe: Recipe) => {
-  const storageIngredients: Array<string> = JSON.parse(
-    localStorage.getItem("ingredients") || "[]"
-  ).data.ingredients;
+  const storagIngredients = localStorage.getItem("ingredients");
+  if (!storagIngredients || storagIngredients.length === 0) {
+    return [];
+  }
+  console.log(storagIngredients);
+  const storageIngredients: Array<string> =
+    JSON.parse(storagIngredients).data.ingredients;
   const recipeIngredients: Array<string> =
     recipe["CleanIngredients"].split(",");
   const missingIngredients: Array<string> = [];

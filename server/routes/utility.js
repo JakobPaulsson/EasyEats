@@ -11,13 +11,13 @@ module.exports = {
   },
 
   missingParameters: function (expectedValues, query) {
-    let missingParameters = []
-    let keys = Object.keys(query)
+    let missingParameters = [];
+    let keys = Object.keys(query);
     for (let i = 0; i < expectedValues.length; i++) {
       if (!keys.includes(expectedValues[i])) {
-        missingParameters.push(expectedValues[i])
+        missingParameters.push(expectedValues[i]);
       }
     }
     return missingParameters;
-  }
+  },
 };

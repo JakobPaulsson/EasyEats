@@ -34,9 +34,12 @@ interface RecipeCardProps {
 }
 
 const checkIfIngriedientsMatch = (recipe: Recipe) => {
-  const storageIngredients: Array<string> = JSON.parse(
-    localStorage.getItem("ingredients") || "[]",
-  ).data.ingredients;
+  const storagIngredients = localStorage.getItem("ingredients");
+  if (!storagIngredients || storagIngredients.length === 0) {
+    return [];
+  }
+  const storageIngredients: Array<string> =
+    JSON.parse(storagIngredients).data.ingredients;
   const recipeIngredients: Array<string> =
     recipe["CleanIngredients"].split(",");
   const missingIngredients: Array<string> = [];
@@ -52,17 +55,20 @@ const cardIcon = (recipe: Recipe) => {
   const missingIngredients = checkIfIngriedientsMatch(recipe);
 
   const style = {
-    position: "absolute",
-    top: 0,
-    right: 0,
-    color: "yellow",
+    color: "gray",
     fontSize: "1.5rem",
-    margin: "0.5rem",
   } as React.CSSProperties;
 
   switch (missingIngredients.length) {
     case 0:
-      return <FaGrinStars style={style} />;
+      return (
+        <FaGrinStars
+          style={{
+            color: "yellow",
+            fontSize: "1.5rem",
+          }}
+        />
+      );
     case 1:
       return <PiNumberCircleOne style={style} />;
     case 2:
@@ -82,7 +88,14 @@ const cardIcon = (recipe: Recipe) => {
     case 9:
       return <PiNumberCircleNine style={style} />;
     default:
-      return <FaSadCry style={style} />;
+      return (
+        <FaSadCry
+          style={{
+            color: "gray",
+            fontSize: "1.5rem",
+          }}
+        />
+      );
   }
 };
 
@@ -90,26 +103,34 @@ const RecipeCard = ({ recipes, navigateToRecipe }: RecipeCardProps) => {
   const recipeElements = recipes.map((recipe) => (
     <Card variant="outlined" sx={{ maxWidth: 245 }}>
       <CardActionArea onClick={() => navigateToRecipe(recipe)}>
-        <CardMedia sx={{ height: 140 }} image={recipe["ImageSrc"]}>
-          <Tooltip
-            title={
-              <span style={{ whiteSpace: "pre-line" }}>
-                {checkIfIngriedientsMatch(recipe).length > 0
-                  ? "Some ingredients are missing: \n" +
-                    checkIfIngriedientsMatch(recipe).join("\n")
-                  : "You have all the ingredients!"}
-              </span>
-            }
-            followCursor
-            onMouseOver={() => console.log("cock")}
-          >
-            <Box>{cardIcon(recipe)}</Box>
-          </Tooltip>
-        </CardMedia>
+        <CardMedia sx={{ height: 140 }} image={recipe["ImageSrc"]}></CardMedia>
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            Match:{recipe["Score"]}%
-          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+          >
+            <Typography gutterBottom variant="h5" component="div">
+              Match: {recipe["Score"]}%
+            </Typography>
+            <Tooltip
+              title={
+                <span style={{ whiteSpace: "pre-line" }}>
+                  {checkIfIngriedientsMatch(recipe).length > 0
+                    ? "Some ingredients are missing: \n" +
+                      "• " +
+                      checkIfIngriedientsMatch(recipe).join("\n • ")
+                    : "You have all the ingredients!"}
+                </span>
+              }
+              followCursor
+              onMouseOver={() => console.log("cock")}
+            >
+              <Box>{cardIcon(recipe)}</Box>
+            </Tooltip>
+          </Box>
           <Typography
             gutterBottom
             variant="subtitle1"
@@ -128,9 +149,7 @@ const RecipeCard = ({ recipes, navigateToRecipe }: RecipeCardProps) => {
             justifyContent: "flex-end",
             alignItems: "flex-end",
           }}
-        >
-          <Button size="small">Learn More</Button>
-        </CardActions>
+        ></CardActions>
       </CardActionArea>
     </Card>
   ));
@@ -140,7 +159,7 @@ const RecipeCard = ({ recipes, navigateToRecipe }: RecipeCardProps) => {
       <Paper
         elevation={12}
         sx={{
-          height: "80%",
+          height: "100%",
           borderRadius: "10px",
         }}
       >

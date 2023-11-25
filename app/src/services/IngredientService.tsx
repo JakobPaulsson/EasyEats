@@ -15,6 +15,7 @@ export const getIngredients = async (userID: number) => {
       `http://localhost:8080/ingredient?userID=${userID}`,
     );
     if (response && response.data) {
+      localStorage.setItem("ingredients", JSON.stringify(response));
       return response;
     }
   } catch (error) {
@@ -32,10 +33,10 @@ export const addIngredient = async (
     await axios.post(
       `http://localhost:8080/ingredient?userID=${userID}&ingredient=${ingredient}&ingredientAmount=${ingredientAmount}&ingredientUnit=${ingredientUnit}`,
     );
-
-    localStorage.setItem("ingredients", JSON.stringify(getIngredients(userID)));
   } catch (error) {
     console.error("Failed to fetch search query", error);
+  } finally {
+    getIngredients(userID);
   }
 };
 
@@ -47,9 +48,9 @@ export const removeIngredient = async (userID: number, ingredient: string) => {
     if (response && response.data) {
       return response;
     }
-
-    localStorage.setItem("ingredients", JSON.stringify(getIngredients(userID)));
   } catch (error) {
     console.error("Failed to fetch search query", error);
+  } finally {
+    getIngredients(userID);
   }
 };

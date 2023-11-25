@@ -19,7 +19,7 @@ import MenuBookIcon from "@mui/icons-material/MenuBook";
 import KitchenIcon from "@mui/icons-material/Kitchen";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 
 const drawerWidth = 240;
 const sideBarRoutes: Record<string, string> = {
@@ -38,6 +38,7 @@ const sideBarIcons: Record<string, JSX.Element> = {
 
 export default function Sidebar() {
   const navigate = useNavigate();
+  const location = useLocation();
   const handleSideBarClick = (clicked: string) => {
     navigate(sideBarRoutes[clicked]);
   };
@@ -60,7 +61,8 @@ export default function Sidebar() {
             noWrap
             component="div"
           >
-            Easy Eats
+            {location.pathname.split("/")[1].charAt(0).toUpperCase() +
+              location.pathname.split("/")[1].slice(1)}
           </Typography>
         </Toolbar>
       </AppBar>

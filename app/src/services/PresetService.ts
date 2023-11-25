@@ -24,3 +24,16 @@ export const addPreset = async (
     console.error("Failed to fetch add preset", error);
   }
 };
+
+export const getPresets = async (userID: number) => {
+  try {
+    const response = await axios.get(
+      `http://localhost:8080/preset?userID=${userID}`,
+    );
+    if (response && response.data) {
+      return response;
+    }
+  } catch (error) {
+    console.error("Failed to fetch add preset", error);
+  }
+};

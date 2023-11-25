@@ -85,7 +85,7 @@ function CustomPreset() {
               />
             </Container>
             <Container>
-              <Typography>{"Short Cook Time"}</Typography>
+              <Typography>{"High Rating"}</Typography>
               <Slider
                 step={0.1}
                 min={0}
@@ -97,7 +97,7 @@ function CustomPreset() {
               />
             </Container>
             <Container>
-              <Typography>{"Short Cook Time"}</Typography>
+              <Typography>{"Few Ingredients"}</Typography>
               <Slider
                 step={0.1}
                 min={0}
@@ -111,7 +111,7 @@ function CustomPreset() {
               />
             </Container>
             <Container>
-              <Typography>{"Short Cook Time"}</Typography>
+              <Typography>{"Ingredients in Inventory"}</Typography>
               <Slider
                 step={0.1}
                 min={0}

@@ -2,21 +2,32 @@ import "./Recipes.css";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { fetchSearchResults, fetchScored } from "../../services/RecipeService";
-import Card from "@mui/material/Card";
-import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import { CardActionArea } from "@mui/material";
-import { Pagination } from "@mui/material";
+import { getPresets } from "../../services/PresetService";
+import { setSelectedPreset } from "../../services/UserService";
+import { updateScores } from "../../services/ScoreService";
+
+import {
+  Card,
+  Paper,
+  Box,
+  Container,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Button,
+  Typography,
+  CardActionArea,
+  Pagination,
+} from "@mui/material";
 import Search from "../../components/Search/Search";
 import { Recipe } from "../../types/recipe.interface";
 import React from "react";
 import PaperHeader from "../../components/PaperHeader/PaperHeader";
+import PedalBikeIcon from "@mui/icons-material/PedalBike";
+import BeachAccessIcon from "@mui/icons-material/BeachAccess";
+import DownhillSkiingIcon from "@mui/icons-material/DownhillSkiing";
+import RestaurantIcon from "@mui/icons-material/Restaurant";
+import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
 
 function Recipes() {
   const { pageNumber } = useParams();
@@ -25,6 +36,7 @@ function Recipes() {
   const [searchParams] = useSearchParams();
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [search, setSearch] = useState(searchParams.get("search") || "");
+  const [presetIcons, setPresetIcons] = useState();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -45,9 +57,107 @@ function Recipes() {
     }
   }, [search, page]); // Add ingredients to the dependency array
 
+  const handlePresetClick = (item: any) => {
+    setSelectedPreset(1, item.Name).then(() => {
+      console.log(page);
+      updateScores(1).then(() => {
+        fetchScored(page).then(function response(data) {
+          if (data) {
+            setRecipes(data.data.result);
+            setSearchCount(data.data.count);
+          }
+        });
+      });
+    });
+  };
+
+  const getAndSetPresetIcons = () => {
+    getPresets(1).then(function response(data) {
+      const query = data?.data?.query;
+      setPresetIcons(
+        query.map((item: any) => {
+          switch (item.Icon) {
+            case "PedalBikeIcon":
+              return (
+                <PedalBikeIcon
+                  onClick={() => {
+                    handlePresetClick(item);
+                  }}
+                  sx={{
+                    cursor: "pointer",
+                    fontSize: 40,
+                    color: `#${item.Color}`,
+                  }}
+                />
+              );
+            case "BeachAccessIcon":
+              return (
+                <BeachAccessIcon
+                  onClick={() => {
+                    handlePresetClick(item);
+                  }}
+                  sx={{
+                    cursor: "pointer",
+                    fontSize: 40,
+                    color: `#${item.Color}`,
+                  }}
+                />
+              );
+            case "DownhillSkiingIcon":
+              return (
+                <DownhillSkiingIcon
+                  onClick={() => {
+                    handlePresetClick(item);
+                  }}
+                  sx={{
+                    cursor: "pointer",
+                    fontSize: 40,
+                    color: `#${item.Color}`,
+                  }}
+                />
+              );
+            case "RestaurantIcon":
+              return (
+                <RestaurantIcon
+                  onClick={() => {
+                    handlePresetClick(item);
+                  }}
+                  sx={{
+                    cursor: "pointer",
+                    fontSize: 40,
+                    color: `#${item.Color}`,
+                  }}
+                />
+              );
+            case "RestaurantMenuIcon":
+              return (
+                <RestaurantMenuIcon
+                  onClick={() => {
+                    handlePresetClick(item);
+                  }}
+                  sx={{
+                    cursor: "pointer",
+                    fontSize: 40,
+                    color: `#${item.Color}`,
+                  }}
+                />
+              );
+            default:
+              return null;
+          }
+        }),
+      );
+    });
+  };
+
   useEffect(() => {
     setPage(pageNumber);
   }, [pageNumber]);
+
+  useEffect(() => {
+    getAndSetPresetIcons();
+  }, []);
+
   const navigateToRecipe = (recipe: Recipe) => {
     navigate(`/recipes/${encodeURIComponent(recipe.Title)}`, {
       state: { recipe },
@@ -64,7 +174,7 @@ function Recipes() {
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            Score:{recipe["Score"]}
+            Match: {recipe["Score"]}%
           </Typography>
           <Typography
             gutterBottom
@@ -132,11 +242,44 @@ function Recipes() {
         <Box
           sx={{
             display: "flex",
-            justifyContent: "center",
+            justifyContent: "space-between",
             alignItems: "center",
             mb: "20px",
+            marginLeft: "65px",
+            marginRight: "65px",
           }}
         >
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "flex-start",
+              mt: 1,
+              gap: 1,
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <Typography gutterBottom variant="h5" component="div">
+                Presets
+              </Typography>
+              <Paper
+                elevation={6}
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  gap: 2,
+                  padding: "5px",
+                }}
+              >
+                {presetIcons}
+              </Paper>
+            </Box>
+          </Box>
           <Pagination
             count={Math.floor(searchCount / 8)}
             variant="outlined"

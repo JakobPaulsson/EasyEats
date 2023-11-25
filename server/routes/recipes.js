@@ -9,7 +9,7 @@ module.exports = {
         req.query,
       );
       if (!missingParameters.length == 0)
-        res.send({ "Missing Parameters": missingParameters });
+        return res.send({ "Missing Parameters": missingParameters });
 
       let db = await utility.connect();
       const page = req.query.page;
@@ -52,7 +52,7 @@ module.exports = {
         req.query,
       );
       if (!missingParameters.length == 0)
-        res.send({ "Missing Parameters": missingParameters });
+        return res.send({ "Missing Parameters": missingParameters });
 
       let db = await utility.connect();
       const page = req.query.page;

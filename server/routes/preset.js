@@ -3,19 +3,24 @@ const utility = require("./utility");
 module.exports = {
   initializePresetRoute: function (app) {
     app.get("/preset", async (req, res) => {
-      let expectedValues = ["userID"]
-      let missingParameters = utility.missingParameters(expectedValues, req.query);
+      let expectedValues = ["userID"];
+      let missingParameters = utility.missingParameters(
+        expectedValues,
+        req.query,
+      );
       if (!missingParameters.length == 0) {
         return res.send({ "Missing Parameters": missingParameters });
       }
 
       let db = await utility.connect();
 
-      const query = await db.all(`SELECT Name, Icon, Color FROM Presets WHERE UserID=${req.query.userID};`);
+      const query = await db.all(
+        `SELECT Name, Icon, Color FROM Presets WHERE UserID=${req.query.userID};`,
+      );
       if (query === undefined) {
         res.send({ error: "Invalid userID or presetID" });
       } else {
-        res.send({ query })
+        res.send({ query });
       }
       await db.close();
     });

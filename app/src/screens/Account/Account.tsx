@@ -76,6 +76,7 @@ function Account() {
         <Tab label="Create Preset" {...a11yProps(0)} />
         <Tab label="Show Presets" {...a11yProps(1)} />
       </Tabs>
+      <Divider />
       <Box>
         <TabPanel value={value} index={0} dir={theme.direction}>
           <Box

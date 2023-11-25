@@ -2,37 +2,21 @@ import "./Recipes.css";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { fetchSearchResults, fetchScored } from "../../services/RecipeService";
-import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
-import { Pagination } from "@mui/material";
 import { getPresets } from "../../services/PresetService";
 import { setSelectedPreset } from "../../services/UserService";
 import { updateScores } from "../../services/ScoreService";
 
-import {
-  Card,
-  Paper,
-  Box,
-  Container,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Button,
-  Typography,
-  CardActionArea,
-  Pagination,
-} from "@mui/material";
+import { Paper, Box, Container, Typography, Pagination } from "@mui/material";
 import Search from "../../components/Search/Search";
 import { Recipe } from "../../types/recipe.interface";
 import React from "react";
 import PaperHeader from "../../components/PaperHeader/PaperHeader";
-import RecipeCard from "../../components/RecipeCard/RecipeCard";
 import PedalBikeIcon from "@mui/icons-material/PedalBike";
 import BeachAccessIcon from "@mui/icons-material/BeachAccess";
 import DownhillSkiingIcon from "@mui/icons-material/DownhillSkiing";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
 import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
+import RecipeCard from "../../components/RecipeCard/RecipeCard";
 
 function Recipes() {
   const { pageNumber } = useParams();
@@ -150,7 +134,7 @@ function Recipes() {
             default:
               return null;
           }
-        }),
+        })
       );
     });
   };
@@ -168,43 +152,6 @@ function Recipes() {
       state: { recipe },
     });
   };
-
-  const recipeElements = recipes.map((recipe) => (
-    <Card variant="outlined" sx={{ maxWidth: 245 }}>
-      <CardActionArea onClick={() => navigateToRecipe(recipe)}>
-        <CardMedia
-          sx={{ height: 140 }}
-          image={recipe["ImageSrc"]}
-          title={recipe["Title"]}
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            Match: {recipe["Score"]}%
-          </Typography>
-          <Typography
-            gutterBottom
-            variant="subtitle1"
-            component="div"
-            noWrap={true}
-          >
-            {recipe["Title"]}
-          </Typography>
-          <Typography variant="body2" color="text.secondary" noWrap={true}>
-            {recipe["Instructions"]}
-          </Typography>
-        </CardContent>
-        <CardActions
-          sx={{
-            display: "flex",
-            justifyContent: "flex-end",
-            alignItems: "flex-end",
-          }}
-        >
-          <Button size="small">Learn More</Button>
-        </CardActions>
-      </CardActionArea>
-    </Card>
-  ));
 
   const handlePageChange = (page: number) => {
     if (page > 0) {

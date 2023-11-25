@@ -2,21 +2,15 @@ import "./Recipes.css";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { fetchSearchResults, fetchScored } from "../../services/RecipeService";
-import Card from "@mui/material/Card";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import { CardActionArea } from "@mui/material";
 import { Pagination } from "@mui/material";
 import Search from "../../components/Search/Search";
 import { Recipe } from "../../types/recipe.interface";
 import React from "react";
 import PaperHeader from "../../components/PaperHeader/PaperHeader";
+import RecipeCard from "../../components/RecipeCard/RecipeCard";
 
 function Recipes() {
   const { pageNumber } = useParams();
@@ -48,48 +42,12 @@ function Recipes() {
   useEffect(() => {
     setPage(pageNumber);
   }, [pageNumber]);
+
   const navigateToRecipe = (recipe: Recipe) => {
     navigate(`/recipes/${encodeURIComponent(recipe.Title)}`, {
       state: { recipe },
     });
   };
-
-  const recipeElements = recipes.map((recipe) => (
-    <Card variant="outlined" sx={{ maxWidth: 245 }}>
-      <CardActionArea onClick={() => navigateToRecipe(recipe)}>
-        <CardMedia
-          sx={{ height: 140 }}
-          image={recipe["ImageSrc"]}
-          title={recipe["Title"]}
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            Score:{recipe["Score"]}
-          </Typography>
-          <Typography
-            gutterBottom
-            variant="subtitle1"
-            component="div"
-            noWrap={true}
-          >
-            {recipe["Title"]}
-          </Typography>
-          <Typography variant="body2" color="text.secondary" noWrap={true}>
-            {recipe["Instructions"]}
-          </Typography>
-        </CardContent>
-        <CardActions
-          sx={{
-            display: "flex",
-            justifyContent: "flex-end",
-            alignItems: "flex-end",
-          }}
-        >
-          <Button size="small">Learn More</Button>
-        </CardActions>
-      </CardActionArea>
-    </Card>
-  ));
 
   const handlePageChange = (page: number) => {
     if (page > 0) {
@@ -145,13 +103,7 @@ function Recipes() {
         </Box>
         <>
           <Container>
-            <div className="cardsContainer">
-              {recipeElements.length > 0 ? (
-                recipeElements
-              ) : (
-                <p>No recipes found.</p>
-              )}
-            </div>
+            <RecipeCard recipes={recipes} navigateToRecipe={navigateToRecipe} />
           </Container>
         </>
       </Paper>

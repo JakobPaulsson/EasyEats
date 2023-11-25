@@ -2,6 +2,40 @@ const utility = require("./utility");
 
 module.exports = {
   initializeUserRoute: function (app) {
+    app.get("/user/preset", async (req, res) => {
+      let expectedValues = ["userID"];
+      let missingParameters = utility.missingParameters(
+        expectedValues,
+        req.query,
+      );
+      if (!missingParameters.length == 0)
+        return res.send({ "Missing Parameters": missingParameters });
+
+      let db = await utility.connect();
+      const selectedPreset = await db.get(
+        `SELECT SelectedPreset FROM Users WHERE UserID=${req.query.userID};`,
+      );
+      res.send(selectedPreset);
+      await db.close();
+    });
+
+    app.post("/user/preset", async (req, res) => {
+      let expectedValues = ["userID", "name"];
+      let missingParameters = utility.missingParameters(
+        expectedValues,
+        req.query,
+      );
+      if (!missingParameters.length == 0)
+        return res.send({ "Missing Parameters": missingParameters });
+
+      let db = await utility.connect();
+      const selectedPreset = await db.get(
+        `UPDATE Users SET SelectedPreset='${req.query.name}' WHERE UserID=${req.query.userID};`,
+      );
+      res.send(selectedPreset);
+      await db.close();
+    });
+
     app.post("/user", async (req, res) => {
       let expectedValues = [
         "ingredients",
@@ -16,7 +50,7 @@ module.exports = {
         req.query,
       );
       if (!missingParameters.length == 0)
-        res.send({ "Missing Parameters": missingParameters });
+        return res.send({ "Missing Parameters": missingParameters });
 
       let db = await utility.connect();
       const max = await db.get(`SELECT MAX(UserID) FROM Users;`);

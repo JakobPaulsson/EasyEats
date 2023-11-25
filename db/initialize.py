@@ -23,6 +23,7 @@ cursor.execute("""
         RatingCount INTEGER
     );
     """)
+
 cursor.execute("""
     CREATE TABLE IF NOT EXISTS Users (
         UserID INTEGER PRIMARY KEY,
@@ -31,7 +32,22 @@ cursor.execute("""
         IngredientUnit TEXT,
         PreviousRecipes TEXT,
         Allergies TEXT,
-        Name TEXT
+        Name TEXT,
+        SelectedPreset TEXT
+    );
+    """)
+
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS Presets (
+        UserID INTEGER,
+        Name TEXT,
+        Icon TEXT,
+        Color TEXT,
+        RatingMetric FLOAT,
+        CookingTimeMetric FLOAT,
+        CommonIngredientsMetric FLOAT,
+        NumberOfIngredientsMetric FLOAT,
+        primary key (UserID, Name)
     );
     """)
 
@@ -43,8 +59,9 @@ cursor.execute("""
                         IngredientUnit,
                         PreviousRecipes,
                         Allergies,
-                        Name)
-    VALUES (1, '', '', '','', '', '');
+                        Name,
+                        SelectedPreset)
+    VALUES (1, '', '', '','', '', '', '');
         """)
 cursor.execute("""
     CREATE TABLE IF NOT EXISTS Scores (

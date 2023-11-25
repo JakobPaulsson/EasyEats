@@ -7,7 +7,12 @@ import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
 
 import { Paper, Box, Container } from "@mui/material";
 
-const PresetIcon = () => {
+interface PresetIconProps {
+  setIconParent: (icon: string) => void;
+  setColorParent: (color: string) => void;
+}
+
+const PresetIcon = ({ setIconParent, setColorParent }: PresetIconProps) => {
   const [icon, setIcon] = useState("PedalBikeIcon");
   const [color, setColor] = useState("#65D663");
 
@@ -32,7 +37,10 @@ const PresetIcon = () => {
     return (
       <Paper
         elevation={6}
-        onClick={() => setColor(color)}
+        onClick={() => {
+          setColor(color);
+          setColorParent(color);
+        }}
         sx={{
           width: 30,
           height: 30,
@@ -80,23 +88,38 @@ const PresetIcon = () => {
           >
             <PedalBikeIcon
               sx={{ fontSize: 20, cursor: "pointer" }}
-              onClick={() => setIcon("PedalBikeIcon")}
+              onClick={() => {
+                setIcon("PedalBikeIcon");
+                setIconParent("PedalBikeIcon");
+              }}
             />
             <BeachAccessIcon
               sx={{ fontSize: 20, cursor: "pointer" }}
-              onClick={() => setIcon("BeachAccessIcon")}
+              onClick={() => {
+                setIcon("BeachAccessIcon");
+                setIconParent("BeachAccessIcon");
+              }}
             />
             <DownhillSkiingIcon
               sx={{ fontSize: 20, cursor: "pointer" }}
-              onClick={() => setIcon("DownhillSkiingIcon")}
+              onClick={() => {
+                setIcon("DownhillSkiingIcon");
+                setIconParent("DownhillSkiingIcon");
+              }}
             />
             <RestaurantIcon
               sx={{ fontSize: 20, cursor: "pointer" }}
-              onClick={() => setIcon("RestaurantIcon")}
+              onClick={() => {
+                setIcon("RestaurantIcon");
+                setIconParent("RestaurantIcon");
+              }}
             />
             <RestaurantMenuIcon
               sx={{ fontSize: 20, cursor: "pointer" }}
-              onClick={() => setIcon("RestaurantMenuIcon")}
+              onClick={() => {
+                setIcon("RestaurantMenuIcon");
+                setIconParent("RestaurantMenuIcon");
+              }}
             />
           </Box>
           <Box

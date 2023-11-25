@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography, Box } from "@mui/material";
+import { Typography, Box, Divider } from "@mui/material";
 
 interface PaperHeaderProps {
   title: string;
@@ -7,16 +7,22 @@ interface PaperHeaderProps {
 
 function PaperHeader({ title }: PaperHeaderProps) {
   return (
-    <Box
-      sx={{
-        display: "inline-flex",
-        m: 2,
-      }}
-    >
-      <Typography variant="h6" sx={{ fontWeight: 300 }}>
-        {title}
-      </Typography>
-    </Box>
+    <>
+      <Box
+        sx={{
+          display: "inline-flex",
+          m: 1.5,
+        }}
+      >
+        <Typography
+          variant="h6"
+          sx={{ fontWeight: 500, color: "rgba(0, 0, 0, 0.54)" }}
+        >
+          {title}
+        </Typography>
+      </Box>
+      <Divider />
+    </>
   );
 }
 

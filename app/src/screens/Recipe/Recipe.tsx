@@ -2,6 +2,7 @@ import * as React from "react";
 import "./Recipe.css";
 import { useLocation } from "react-router-dom";
 import InstructionStepper from "../../components/InstructionStepper/InstructionStepper";
+import RecipeError from "../../components/RecipeError/RecipeError";
 import { List, ListItem, ListItemText, Paper, Checkbox } from "@mui/material";
 import {
   getIngredients,
@@ -18,6 +19,8 @@ function Recipe() {
   >([]);
   const [userIngredientElements, setUserIngredientElements] =
     React.useState<any>();
+
+  if (!useLocation().state) return <RecipeError />;
 
   const recipe = useLocation().state.recipe;
   const imperialIngredients = recipe["Ingredients"]

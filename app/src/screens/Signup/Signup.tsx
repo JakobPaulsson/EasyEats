@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import React from "react";
 import { Button, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { sha256, sha224 } from 'js-sha256';
+import { sha256, sha224 } from "js-sha256";
 
 function Signup() {
   const navigate = useNavigate();
@@ -26,54 +26,48 @@ function Signup() {
 
   const handleSignupButton = () => {
     const encryptedPassword = sha256(password);
-    console.log(encryptedPassword)
+    console.log(encryptedPassword);
     const successfulSignup = false;
-    if(successfulSignup) {
+    if (successfulSignup) {
       navigate("/");
     }
-  }
+  };
 
   const handleLoginButton = () => {
     navigate("/");
-  }
+  };
 
   return (
     <div className="container">
-    <img src={"/logo.png"} alt="logo" style={{width: "400px"}} />
-    <TextField
-      className="inputBox"
-      id="filled-basic"
-      label="Your Username"
-      variant={"standard"}
-      placeholder={"Enter Your Username..."}
-      type={"text"}
-      value={username}
-      onChange={(e) => setUsername(e.target.value)}
-      data-cy={"username-field"}
-    ></TextField>
+      <img src={"/logo.png"} alt="logo" style={{ width: "400px" }} />
+      <TextField
+        className="inputBox"
+        id="filled-basic"
+        label="Your Username"
+        variant={"standard"}
+        placeholder={"Enter Your Username..."}
+        type={"text"}
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        data-cy={"username-field"}
+      ></TextField>
 
-    <TextField
-      className="inputBox"
-      id="filled-basic"
-      label="Password"
-      variant={"standard"}
-      placeholder={"Enter Your Password..."}
-      type={"password"}
-      value={password}
-      onChange={(e) => setPassword(e.target.value)}
-      data-cy={"password-field"}
-    ></TextField>
+      <TextField
+        className="inputBox"
+        id="filled-basic"
+        label="Password"
+        variant={"standard"}
+        placeholder={"Enter Your Password..."}
+        type={"password"}
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        data-cy={"password-field"}
+      ></TextField>
 
-      <Button
-        onClick={handleSignupButton}
-        variant="contained"
-      >
+      <Button onClick={handleSignupButton} variant="contained">
         SIGNUP
       </Button>
-      <Button
-        onClick={handleLoginButton}
-        variant="outlined"
-      >
+      <Button onClick={handleLoginButton} variant="outlined">
         LOGIN
       </Button>
     </div>

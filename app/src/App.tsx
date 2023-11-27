@@ -18,7 +18,8 @@ function App() {
       localStorage.setItem("ingredients", JSON.stringify(data));
     });
   });
-  const isLogin = useLocation().pathname == "/" || useLocation().pathname == "/signup";
+  const isLogin =
+    useLocation().pathname == "/" || useLocation().pathname == "/signup";
 
   return (
     <div className="outerContainer">

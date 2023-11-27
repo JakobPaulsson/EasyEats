@@ -154,7 +154,7 @@ function Recipes() {
             default:
               return null;
           }
-        })
+        }),
       );
     });
   };
@@ -191,7 +191,7 @@ function Recipes() {
 
   const handleSelected = (
     _: React.MouseEvent<HTMLElement>,
-    newAlignment: string | null
+    newAlignment: string | null,
   ) => {
     console.log(newAlignment);
     setSelected(newAlignment || "0");

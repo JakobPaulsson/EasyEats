@@ -19,17 +19,15 @@ export const PresetSelector = () => {
 
   return (
     <Paper
-      elevation={6}
+      elevation={5}
       sx={{
         width: 250,
-        height: "min-content",
-        mt: "60px",
+        height: "800px",
         borderRadius: "10px",
-        p: "10px",
+        mt: 3,
       }}
     >
-      <PaperHeader title="Presets" />
-      <Divider />
+      <PaperHeader title="Created Presets" />
       <Box
         sx={{
           display: "flex",

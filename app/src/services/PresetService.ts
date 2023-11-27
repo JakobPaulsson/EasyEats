@@ -8,14 +8,14 @@ export const addPreset = async (
   ratingMetric: number,
   cookingTimeMetric: number,
   commonIngredientsMetric: number,
-  numberOfIngredientsMetric: number
+  numberOfIngredientsMetric: number,
 ) => {
   try {
     const response = await axios.post(
       `http://localhost:8080/preset?userID=${userID}&name=${name}&icon=${icon}&color=${color.replace(
         "#",
-        ""
-      )}&ratingMetric=${ratingMetric}&cookingTimeMetric=${cookingTimeMetric}&commonIngredientsMetric=${commonIngredientsMetric}&numberOfIngredientsMetric=${numberOfIngredientsMetric}`
+        "",
+      )}&ratingMetric=${ratingMetric}&cookingTimeMetric=${cookingTimeMetric}&commonIngredientsMetric=${commonIngredientsMetric}&numberOfIngredientsMetric=${numberOfIngredientsMetric}`,
     );
     if (response && response.data) {
       getPresets(userID);
@@ -29,7 +29,7 @@ export const addPreset = async (
 export const getPresets = async (userID: number) => {
   try {
     const response = await axios.get(
-      `http://localhost:8080/preset?userID=${userID}`
+      `http://localhost:8080/preset?userID=${userID}`,
     );
     if (response && response.data) {
       console.log("response", response);

@@ -1,6 +1,7 @@
 import { Box, Divider, IconButton, Paper, Typography } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import React from "react";
+import PaperHeader from "../PaperHeader/PaperHeader";
 
 import { IngredientItem } from "../../types/ingredient.interface"; // Adjust the import path
 
@@ -60,27 +61,7 @@ const InventoryDisplay: React.FC<InventoryDisplayProps> = ({
         borderRadius: "20px",
       }}
     >
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          textAlign: "center",
-          backgroundColor: "#ededed",
-          borderTopLeftRadius: "20px",
-          borderTopRightRadius: "20px",
-          height: "45px",
-        }}
-      >
-        <Typography
-          variant="h6"
-          gutterBottom
-          component="h5"
-          marginBottom={"unset"}
-        >
-          Inventory
-        </Typography>
-      </Box>
+      <PaperHeader title="Inventory"></PaperHeader>
       <Box data-cy={"inventory"}>{inventoryItem ? inventoryItem : null}</Box>
     </Paper>
   );

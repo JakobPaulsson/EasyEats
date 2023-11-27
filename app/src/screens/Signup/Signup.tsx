@@ -1,36 +1,37 @@
 import "./Signup.css";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import React from "react";
 import { Button, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { sha256, sha224 } from "js-sha256";
+import { sha256 } from "js-sha256";
+import { registerUser } from "../../services/UserService";
+import SignupError from "../../components/SignupError/SignupError";
 
 function Signup() {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [errorText, setErrorText] = useState("");
 
-  const handlePageChange = (page: number) => {
-    if (page > 0) {
-      setUsername(username);
-    }
-  };
-
-  const handleUsername = (value: string) => {
-    setUsername(username);
-  };
-
-  const handlePassword = (value: string) => {
-    setPassword(password);
+  const setErrorTextAndReset = (text: string) => {
+    setErrorText(text);
+    setTimeout(() => {
+      setErrorText("");
+    }, 3000);
   };
 
   const handleSignupButton = () => {
     const encryptedPassword = sha256(password);
-    console.log(encryptedPassword);
-    const successfulSignup = false;
-    if (successfulSignup) {
+
+    if (username == "") return setErrorTextAndReset("Empty username!");
+    if (password == "") return setErrorTextAndReset("Empty password!");
+
+    registerUser(username, encryptedPassword).then((data) => {
+      if (data?.data?.error?.code == "SQLITE_CONSTRAINT")
+        return setErrorTextAndReset("Username taken!");
+
       navigate("/");
-    }
+    });
   };
 
   const handleLoginButton = () => {
@@ -70,6 +71,7 @@ function Signup() {
       <Button onClick={handleLoginButton} variant="outlined">
         LOGIN
       </Button>
+      {errorText === "" ? null : <SignupError errorText={errorText} />}
     </div>
   );
 }

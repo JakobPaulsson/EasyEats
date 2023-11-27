@@ -38,12 +38,8 @@ module.exports = {
 
     app.post("/user", async (req, res) => {
       let expectedValues = [
-        "ingredients",
-        "ingredientAmount",
-        "IngredientUnit",
-        "previousRecipes",
-        "allergies",
-        "name",
+        "username",
+        "password",
       ];
       let missingParameters = utility.missingParameters(
         expectedValues,
@@ -53,15 +49,17 @@ module.exports = {
         return res.send({ "Missing Parameters": missingParameters });
 
       let db = await utility.connect();
-      const max = await db.get(`SELECT MAX(UserID) FROM Users;`);
-      let usersQuery = `(${max["MAX(UserID)"] + 1}, ${req.query.ingredients}, ${
-        req.query.ingredientAmount
-      }, ${req.query.IngredientUnit}, ${req.query.previousRecipes}, ${
-        req.query.allergies
-      }, ${req.query.name})`;
-      const result = await db.all(`INSERT INTO Users VALUES ${usersQuery};`);
-      res.send(result);
-      await db.close();
+      let max = await db.get(`SELECT MAX(UserID) FROM Users;`);
+      max = max["MAX(UserID)"] + 1;
+      try {
+        await db.all(`INSERT INTO Users VALUES (${max}, '${req.query.username}', '${req.query.password}', '', '', '', '', '', '');`);
+        res.send({ userID: max });
+      }
+      catch (error) {
+        res.send({ error: error });
+      } finally {
+        await db.close();
+      }
     });
   },
 };

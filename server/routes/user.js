@@ -37,10 +37,7 @@ module.exports = {
     });
 
     app.post("/user", async (req, res) => {
-      let expectedValues = [
-        "username",
-        "password",
-      ];
+      let expectedValues = ["username", "password"];
       let missingParameters = utility.missingParameters(
         expectedValues,
         req.query,
@@ -52,10 +49,11 @@ module.exports = {
       let max = await db.get(`SELECT MAX(UserID) FROM Users;`);
       max = max["MAX(UserID)"] + 1;
       try {
-        await db.all(`INSERT INTO Users VALUES (${max}, '${req.query.username}', '${req.query.password}', '', '', '', '', '', '');`);
+        await db.all(
+          `INSERT INTO Users VALUES (${max}, '${req.query.username}', '${req.query.password}', '', '', '', '', '', '');`,
+        );
         res.send({ userID: max });
-      }
-      catch (error) {
+      } catch (error) {
         res.send({ error: error });
       } finally {
         await db.close();

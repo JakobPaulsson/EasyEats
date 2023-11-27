@@ -4,12 +4,8 @@ import CustomPreset from "../../components/CustomPreset/CustomPreset";
 import { PresetSelector } from "../../components/PresetSelector/PresetSelector";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
-import PaperHeader from "../../components/PaperHeader/PaperHeader";
 import Divider from "@mui/material/Divider";
 import Tab from "@mui/material/Tab";
-import { useTheme } from "@mui/material/styles";
-import { TabContext, TabList } from "@mui/lab";
-import Typography from "@mui/material/Typography";
 import Tabs from "@mui/material/Tabs";
 
 interface TabPanelProps {
@@ -44,14 +40,9 @@ function a11yProps(index: number) {
 
 function Account() {
   const [value, setValue] = React.useState(0);
-  const theme = useTheme();
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleChange = (_: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
-  };
-
-  const handleChangeIndex = (index: number) => {
-    setValue(index);
   };
 
   return (
@@ -60,25 +51,21 @@ function Account() {
       sx={{
         width: "70%",
         borderRadius: "10px",
-        mt: 5,
-        mb: 5,
+        m: 5,
         height: "900px",
       }}
     >
       <Tabs
         value={value}
         onChange={handleChange}
-        indicatorColor="secondary"
-        textColor="inherit"
-        variant="fullWidth"
+        indicatorColor="primary"
         aria-label="full width tabs example"
       >
-        <Tab label="Create Preset" {...a11yProps(0)} />
-        <Tab label="Show Presets" {...a11yProps(1)} />
+        <Tab label="Presets" {...a11yProps(0)} />
       </Tabs>
       <Divider />
       <Box>
-        <TabPanel value={value} index={0} dir={theme.direction}>
+        <TabPanel value={value} index={0}>
           <Box
             sx={{
               display: "flex",
@@ -92,7 +79,7 @@ function Account() {
             <PresetSelector />
           </Box>
         </TabPanel>
-        <TabPanel value={value} index={1} dir={theme.direction}>
+        <TabPanel value={value} index={1}>
           <Box
             sx={{
               display: "flex",

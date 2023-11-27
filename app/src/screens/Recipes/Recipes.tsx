@@ -10,16 +10,15 @@ import { Paper, Box, Container, Pagination, Tooltip } from "@mui/material";
 import Search from "../../components/Search/Search";
 import { Recipe } from "../../types/recipe.interface";
 import React from "react";
-import PaperHeader from "../../components/PaperHeader/PaperHeader";
 import PedalBikeIcon from "@mui/icons-material/PedalBike";
 import BeachAccessIcon from "@mui/icons-material/BeachAccess";
 import DownhillSkiingIcon from "@mui/icons-material/DownhillSkiing";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
 import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
 import RecipeCard from "../../components/RecipeCard/RecipeCard";
-import Tab from "@mui/material/Tab";
 import { Divider } from "@mui/material";
-import { TabContext, TabList, TabPanel } from "@mui/lab";
+import Tab from "@mui/material/Tab";
+import { TabContext, TabList } from "@mui/lab";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
@@ -57,7 +56,7 @@ function Recipes() {
   }, [search, page]); // Add ingredients to the dependency array
 
   const [tabValue, setTabValue] = React.useState("1");
-  const handleTabSwitch = (event: React.SyntheticEvent, newValue: string) => {
+  const handleTabSwitch = (_: React.SyntheticEvent, newValue: string) => {
     setTabValue(newValue);
   };
 
@@ -155,7 +154,7 @@ function Recipes() {
             default:
               return null;
           }
-        }),
+        })
       );
     });
   };
@@ -191,8 +190,8 @@ function Recipes() {
   };
 
   const handleSelected = (
-    event: React.MouseEvent<HTMLElement>,
-    newAlignment: string | null,
+    _: React.MouseEvent<HTMLElement>,
+    newAlignment: string | null
   ) => {
     console.log(newAlignment);
     setSelected(newAlignment || "0");

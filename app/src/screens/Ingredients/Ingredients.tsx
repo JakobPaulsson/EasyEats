@@ -1,6 +1,8 @@
 import Box from "@mui/material/Box";
 import AddIngredient from "../../components/AddIngredient/AddIngredient";
 import InventoryDisplay from "../../components/InventoryDisplay/InventoryDisplay";
+import Paper from "@mui/material/Paper";
+import Divider from "@mui/material/Divider";
 import {
   addIngredient,
   getIngredients,
@@ -11,6 +13,8 @@ import { imperialToMetric } from "../../services/ConversionService";
 import { useEffect, useState } from "react";
 import React from "react";
 import { IngredientItem } from "../../types/ingredient.interface"; // Adjust the import path
+import Tab from "@mui/material/Tab";
+import { TabContext, TabList, TabPanel } from "@mui/lab";
 
 function Ingredients() {
   const [ingredients, setIngredients] = useState<IngredientItem[]>([]);
@@ -45,6 +49,11 @@ function Ingredients() {
     getAndSetIngredients();
   }, []);
 
+  const [tabValue, setTabValue] = React.useState("1");
+  const handleTabSwitch = (event: React.SyntheticEvent, newValue: string) => {
+    setTabValue(newValue);
+  };
+
   // TODO: Hardcoded for userID 1
   const handleIngredientAdd = (ingredient: IngredientItem): void => {
     if (
@@ -72,20 +81,43 @@ function Ingredients() {
   };
 
   return (
-    <Box
+    <Paper
+      elevation={6}
       sx={{
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",
+        m: 5,
+        width: "70%",
+        height: "800px",
+        borderRadius: "10px",
       }}
     >
-      <AddIngredient handleIngredientAdd={handleIngredientAdd}></AddIngredient>
-      <InventoryDisplay
-        inventory={ingredients}
-        handleIngredientRemove={handleIngredientRemove}
-      ></InventoryDisplay>
-    </Box>
+      <TabContext value={tabValue}>
+        <Divider />
+        <Box>
+          <TabList onChange={handleTabSwitch}>
+            <Tab label="Inventory" value="1" />
+          </TabList>
+          <Divider />
+        </Box>
+        <TabPanel value="1">
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <AddIngredient
+              handleIngredientAdd={handleIngredientAdd}
+            ></AddIngredient>
+            <InventoryDisplay
+              inventory={ingredients}
+              handleIngredientRemove={handleIngredientRemove}
+            ></InventoryDisplay>
+          </Box>
+        </TabPanel>
+      </TabContext>
+    </Paper>
   );
 }
 

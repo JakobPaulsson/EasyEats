@@ -20,6 +20,7 @@ import { Add } from "@mui/icons-material";
 import { IngredientItem } from "../../types/ingredient.interface"; // Adjust the import path
 import { UnitTypes, UnitCategory } from "../../types/units.interface";
 import OkDialog from "../../components/OkDialog/OkDialog";
+import PaperHeader from "../../components/PaperHeader/PaperHeader";
 
 type AddIngredientProps = {
   handleIngredientAdd: (ingredient: IngredientItem) => void;
@@ -112,10 +113,11 @@ const AddIngredient = ({ handleIngredientAdd }: AddIngredientProps) => {
           ml: 0,
           mt: 3,
           width: "400px",
-          height: "300px",
+          height: "350px",
           borderRadius: "20px",
         }}
       >
+        <PaperHeader title="Add Ingredient" />
         <Container>
           {ToggleIngredientUnit()}
           <Autocomplete

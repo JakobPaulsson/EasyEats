@@ -37,7 +37,7 @@ const PresetIcon = ({ setIconParent, setColorParent }: PresetIconProps) => {
   const renderColorSelector = (color: string) => {
     return (
       <Paper
-        elevation={6}
+        elevation={3}
         onClick={() => {
           setColor(color);
           setColorParent(color);
@@ -64,7 +64,7 @@ const PresetIcon = ({ setIconParent, setColorParent }: PresetIconProps) => {
 
   return (
     <Paper
-      elevation={0}
+      elevation={3}
       square={false}
       sx={{
         width: 200,

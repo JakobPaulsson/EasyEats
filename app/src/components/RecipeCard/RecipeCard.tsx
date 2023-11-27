@@ -10,7 +10,6 @@ import {
   Typography,
   Tooltip,
   Paper,
-  Button,
 } from "@mui/material";
 import { Recipe } from "../../types/recipe.interface";
 import { FaGrinStars } from "react-icons/fa";

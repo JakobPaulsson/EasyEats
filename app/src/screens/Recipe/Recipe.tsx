@@ -31,7 +31,7 @@ function Recipe() {
     .split("**")
     .slice(0, -1);
   const cleanIngredients = recipe["CleanIngredients"].split(",");
-  const ingredientAmounts = recipe["IngredientAmount"].split(",");
+  const ingredientAmounts = recipe["IngredientAmount"].toString().split(",");
   const ingredients = imperialIngredients;
 
   const handleSliderChange = (i: number, sliderValue: number) => {

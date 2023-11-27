@@ -23,10 +23,12 @@ import { useNavigate, useLocation, useParams } from "react-router-dom";
 
 const drawerWidth = 240;
 const sideBarRoutes: Record<string, string> = {
-  Dashboard: "/",
+  Dashboard: "/dasboard",
   Ingredients: "/ingredients",
   Recipes: "/recipes/page/1",
   Account: "/account",
+  Settings: "/",
+  Logout: "/",
 };
 
 const sideBarIcons: Record<string, JSX.Element> = {
@@ -99,7 +101,12 @@ export default function Sidebar() {
         <List>
           {["Settings", "Logout"].map((text, index) => (
             <ListItem key={text} disablePadding>
-              <ListItemButton>
+              <ListItemButton
+                onClick={(event: React.SyntheticEvent) => {
+                  const clickedElement = event.target as HTMLElement;
+                  handleSideBarClick(clickedElement.innerText);
+                }}
+              >
                 <ListItemIcon>
                   {index % 2 === 0 ? <SettingsIcon /> : <LogoutIcon />}
                 </ListItemIcon>

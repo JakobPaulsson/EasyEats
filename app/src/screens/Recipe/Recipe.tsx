@@ -1,6 +1,6 @@
 import * as React from "react";
 import "./Recipe.css";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import InstructionStepper from "../../components/InstructionStepper/InstructionStepper";
 import RecipeError from "../../components/RecipeError/RecipeError";
 import { List, ListItem, ListItemText, Paper, Checkbox } from "@mui/material";
@@ -19,6 +19,7 @@ function Recipe() {
   >([]);
   const [userIngredientElements, setUserIngredientElements] =
     React.useState<any>();
+  const navigate = useNavigate();
 
   if (!useLocation().state) return <RecipeError />;
 
@@ -49,7 +50,7 @@ function Recipe() {
     setCompleted(true);
     const ingredientElements = userIngredients.map((elements, index) => {
       const name = elements[0];
-      const amount = parseInt(elements[1]);
+      const amount = elements[1];
       const unit = elements[2];
       return (
         <div className="sliderContainer">
@@ -64,7 +65,7 @@ function Recipe() {
             )}
             marks={[
               { value: 0, label: "0" },
-              { value: +amount, label: `${+amount}` },
+              { value: amount, label: `${parseInt(amount)}` },
             ]}
             onChange={(_, value) => handleSliderChange(index, value as number)}
           />
@@ -90,6 +91,7 @@ function Recipe() {
       }
     }
     updateScores(1);
+    navigate("/recipes/page/1");
   };
 
   React.useEffect(() => {

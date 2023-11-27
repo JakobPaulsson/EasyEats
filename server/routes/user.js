@@ -61,10 +61,7 @@ module.exports = {
     });
 
     app.get("/user/login", async (req, res) => {
-      let expectedValues = [
-        "username",
-        "password",
-      ];
+      let expectedValues = ["username", "password"];
       let missingParameters = utility.missingParameters(
         expectedValues,
         req.query,
@@ -73,15 +70,16 @@ module.exports = {
         return res.send({ "Missing Parameters": missingParameters });
 
       let db = await utility.connect();
-      let userID = await db.get(`SELECT userID FROM Users WHERE username='${req.query.username}' AND password='${req.query.password}';`);
+      let userID = await db.get(
+        `SELECT userID FROM Users WHERE username='${req.query.username}' AND password='${req.query.password}';`,
+      );
       if (userID === undefined) {
-        res.send({ error: "Invalid username or password!" })
+        res.send({ error: "Invalid username or password!" });
       } else {
-        res.send({ userID: userID })
+        res.send({ userID: userID });
       }
 
       await db.close();
     });
-
   },
 };

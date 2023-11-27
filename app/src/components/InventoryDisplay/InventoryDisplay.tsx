@@ -34,7 +34,7 @@ const InventoryDisplay: React.FC<InventoryDisplayProps> = ({
                 textTransform: "capitalize",
               }}
             >
-              {item.name} {item.amount} {item.unit}
+              {item.name} {parseFloat(item.amount).toFixed(2)} {item.unit}
             </Typography>
             <IconButton
               aria-label="delete"

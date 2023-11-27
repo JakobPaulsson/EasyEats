@@ -117,7 +117,7 @@ module.exports = {
         );
       } else {
         ingredientAmounts[ingredientIndex] = (
-          parseInt(ingredientAmounts[ingredientIndex]) + parseInt(amount)
+          parseFloat(ingredientAmounts[ingredientIndex]) + parseFloat(amount)
         ).toString();
         await db.run(
           `UPDATE Users SET IngredientAmount="${ingredientAmounts}" WHERE userId=${req.query.userID}`,

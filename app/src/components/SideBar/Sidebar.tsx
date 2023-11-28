@@ -27,7 +27,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 
 const drawerWidth = 240;
 const sideBarRoutes: Record<string, string> = {
-  Dashboard: "/dasboard",
+  Dashboard: "/dashboard",
   Ingredients: "/ingredients",
   Recipes: "/recipes/page/1",
   Account: "/account",

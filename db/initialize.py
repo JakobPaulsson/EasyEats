@@ -1,7 +1,8 @@
 import csv
 import sqlite3
 import re
-import os 
+import os
+import hashlib
 
 if os.path.exists("recipes.db"):
     os.remove("recipes.db")
@@ -17,7 +18,7 @@ cursor.execute("""
         IngredientAmount REAL,
         IngredientUnit TEXT,
         Instructions TEXT,
-        ImageSrc TEXT, 
+        ImageSrc TEXT,
         CookingTimeMinutes INTEGER,
         Rating REAL,
         RatingCount INTEGER
@@ -27,6 +28,8 @@ cursor.execute("""
 cursor.execute("""
     CREATE TABLE IF NOT EXISTS Users (
         UserID INTEGER PRIMARY KEY,
+        Username TEXT,
+        Password TEXT,
         Ingredients TEXT,
         IngredientAmount REAL,
         IngredientUnit TEXT,
@@ -52,8 +55,10 @@ cursor.execute("""
     """)
 
 # TODO: This should not be created, just an example user
-cursor.execute("""
+cursor.execute(f"""
     INSERT INTO Users (UserID,
+                        Username,
+                        Password,
                         Ingredients,
                         IngredientAmount,
                         IngredientUnit,
@@ -61,7 +66,7 @@ cursor.execute("""
                         Allergies,
                         Name,
                         SelectedPreset)
-    VALUES (1, '', '', '','', '', '', '');
+    VALUES ('1','Jarmo','{hashlib.sha256(b"Rantakokko").hexdigest}','', '', '','', '', '', '');
         """)
 cursor.execute("""
     CREATE TABLE IF NOT EXISTS Scores (
@@ -89,7 +94,7 @@ convert_unit = {
     'dashes': 'ml',
     'drop': 'ml',
     'drops': 'ml',
-    
+
     'pinch': 'gram',
     'pinches': 'gram',
     'ounce': 'gram',
@@ -121,7 +126,7 @@ convert_amount = {
     'dashes': 2,
     'drop': 2,
     'drops': 2,
-    
+
     'pinch': 0,
     'pinches': 0,
     'ounce': 28.3495,
@@ -167,7 +172,7 @@ def parse_ingredients(ingredients):
                     if word in allowed_units:
                         unit = word
                         break
-            
+
                 for word in ingredient.split(" "):
                     if any(c.isdigit() for c in word):
                         amount += convert_amount[unit] * eval(word)
@@ -206,7 +211,7 @@ with open('data/clean_reviews.csv', 'r', encoding='unicode_escape') as file:
         ratings[row['RecipeID']].append(float(row['Rate']))
 for k, v in ratings.items():
     rating_counts[k] = len(v)
-    ratings[k] = round(sum(v)/len(v), 1)        
+    ratings[k] = round(sum(v)/len(v), 1)
 
 with open('data/recipes.csv', 'r', encoding='unicode_escape') as file:
     csv_reader = csv.DictReader(file, delimiter=';')
@@ -222,7 +227,7 @@ with open('data/recipes.csv', 'r', encoding='unicode_escape') as file:
         units, amounts = parse_ingredients(ingredients)
         if not units:
             continue
-        
+
         clean_ingredients = eval('[\'' + clean_ingredients_recipes[ID].replace('\'','').replace(',','\',\'') + '\']')
 
         if 'olive oil' in row['Ingredients']:
@@ -242,7 +247,7 @@ with open('data/recipes.csv', 'r', encoding='unicode_escape') as file:
                                         IngredientAmount,
                                         IngredientUnit,
                                         Instructions,
-                                        ImageSrc, 
+                                        ImageSrc,
                                         CookingTimeMinutes,
                                         Rating,
                                         RatingCount)

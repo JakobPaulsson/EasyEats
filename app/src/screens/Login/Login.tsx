@@ -8,11 +8,15 @@ import {
   Paper,
   Backdrop,
   CircularProgress,
+  Typography,
+  Link,
 } from "@mui/material";
 import PositionedSnackbar from "../../components/PositionedSnackbar/PositionedSnackbar";
 import { useNavigate, useLocation } from "react-router-dom";
 import { sha256 } from "js-sha256";
 import { AuthContext } from "../../contexts/AuthContext";
+import { loginUser } from "../../services/UserService";
+import { MdLockOutline } from "react-icons/md";
 
 function Login() {
   const navigate = useNavigate();
@@ -24,9 +28,11 @@ function Login() {
     throw new Error("AuthContext must be used within an AuthProvider");
   }
 
-  const { login, isLoggedIn, setUserID } = authContext;
+  const { isLoggedIn, setUserID } = authContext;
   const [successfulLogin, setSuccessfulLogin] = useState(false);
   const [unAuthorizedRoute, setUnauthorizedRoute] = useState(false);
+  const [failedLogin, setFailedLogin] = useState(false);
+  const [successfulSignup, setSuccessfulSignup] = useState(false);
   const { state } = useLocation();
   useEffect(() => {
     if (isLoggedIn) {
@@ -47,20 +53,32 @@ function Login() {
         setUnauthorizedRoute(false);
       }, 2000);
     }
+
+    if (state?.signup) {
+      setSuccessfulSignup(true);
+      setTimeout(() => {
+        setSuccessfulSignup(false);
+      }, 2000);
+    }
   }, [isLoggedIn, navigate]);
 
-  const handleLoginButton = () => {
+  const handleLoginButton = async () => {
     setOpen(true);
     const encryptedPassword = sha256(password);
-    const successfulLogin = true;
-    setTimeout(() => {
-      //  login();
-      setUserID(1);
+    try {
+      setOpen(true);
+      const response = await loginUser(username, encryptedPassword);
+      if (response && response.data && !response.data.error) {
+        setUserID(response.data.userID);
+        setOpen(false);
+        navigate("/Loading");
+      } else {
+        setFailedLogin(true);
+        setOpen(false);
+      }
+    } catch (error) {
       setOpen(false);
-      // TODO set user state instead userLoggedIn
-      //localStorage.setItem("userLoggedIn", JSON.stringify(true));
-      if (successfulLogin) navigate("/Loading");
-    }, 2000);
+    }
   };
 
   const handleSignupButton = () => {
@@ -72,9 +90,9 @@ function Login() {
       <Paper
         elevation={3}
         sx={{
-          width: "20%",
+          width: "25%",
           borderRadius: "20px",
-          marginTop: "10%",
+          marginTop: "8%",
         }}
       >
         <Box
@@ -83,10 +101,25 @@ function Login() {
             flexDirection: "column",
             alignItems: "center",
             padding: "20px",
-            rowGap: "40px",
+            mb: 2,
+            rowGap: "20px",
           }}
         >
           <img src={"/logo.png"} alt="logo" style={{ width: "300px" }} />
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "#f50057",
+              borderRadius: "50%",
+              height: "45px",
+              width: "45px",
+            }}
+          >
+            <MdLockOutline style={{ fontSize: 30, color: "white" }} />
+          </Box>
+          <Typography variant="h5">Login</Typography>
           <TextField
             className="inputBox"
             id="filled-basic"
@@ -118,21 +151,42 @@ function Login() {
               mb: 2,
             }}
           >
-            <Button onClick={handleLoginButton} variant="contained">
-              LOGIN
-              <Backdrop
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <Button
+                onClick={handleLoginButton}
+                variant="contained"
                 sx={{
-                  color: "#fff",
-                  zIndex: (theme) => theme.zIndex.drawer + 1,
+                  backgroundColor: "#3aa5a6",
                 }}
-                open={open}
               >
-                <CircularProgress color="inherit" />
-              </Backdrop>
-            </Button>
-            <Button onClick={handleSignupButton} variant="outlined">
-              SIGNUP
-            </Button>
+                LOGIN
+                <Backdrop
+                  sx={{
+                    color: "#fff",
+                    zIndex: (theme) => theme.zIndex.drawer + 1,
+                  }}
+                  open={open}
+                >
+                  <CircularProgress color="inherit" />
+                </Backdrop>
+              </Button>
+              <Typography
+                variant="body1"
+                sx={{
+                  mt: 2,
+                }}
+              >
+                Don't have an account? &nbsp;
+                <Link variant="body1" href="/signup">
+                  Sign up
+                </Link>
+              </Typography>
+            </Box>
           </Box>
         </Box>
       </Paper>
@@ -142,6 +196,20 @@ function Login() {
         horizontal={"center"}
         severity="error"
         message="You must login to access this page "
+      />
+      <PositionedSnackbar
+        open={failedLogin}
+        vertical={"top"}
+        horizontal={"center"}
+        severity="error"
+        message="Invalid username or password"
+      />
+      <PositionedSnackbar
+        open={successfulSignup}
+        vertical={"top"}
+        horizontal={"center"}
+        severity="success"
+        message="Signup successful"
       />
       ;
     </>

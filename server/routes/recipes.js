@@ -14,8 +14,7 @@ module.exports = {
       let db = await utility.connect();
       const page = req.query.page;
       let scoreQuery = await db.all(
-        `SELECT RecipeID, Score FROM Scores ORDER BY score DESC LIMIT 8 OFFSET ${
-          (page - 1) * 8
+        `SELECT RecipeID, Score FROM Scores ORDER BY score DESC LIMIT 8 OFFSET ${(page - 1) * 8
         }`,
       );
       let count = await db.all(`SELECT COUNT(*) FROM recipes`);
@@ -39,7 +38,11 @@ module.exports = {
         result = await db.all(
           `SELECT * FROM Recipes WHERE RecipeID IN ${queryString}`,
         );
-        for (var i = 0; i < result.length; i++) result[i]["Score"] = scores[i];
+
+        for (var i = 0; i < recipeIDs.length; i++) {
+          result[i]["Score"] = scores[recipeIDs.indexOf(result[i].RecipeID)];
+        }
+        result.sort((a, b) => b.Score - a.Score);
       }
       res.send({ result, count });
       await db.close();

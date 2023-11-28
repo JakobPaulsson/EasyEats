@@ -1,5 +1,5 @@
 import "./Login.css";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import React from "react";
 import {
   Button,
@@ -11,19 +11,30 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { sha256 } from "js-sha256";
+import { AuthContext } from "../../contexts/AuthContext";
 
 function Login() {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [open, setOpen] = React.useState(false);
+  const authContext = useContext(AuthContext);
+  if (!authContext) {
+    throw new Error("AuthContext must be used within an AuthProvider");
+  }
+
+  const { login, setUserID } = authContext;
 
   const handleLoginButton = () => {
     setOpen(true);
     const encryptedPassword = sha256(password);
     const successfulLogin = true;
     setTimeout(() => {
+      login();
+      setUserID(1);
       setOpen(false);
+      // TODO set user state instead userLoggedIn
+      localStorage.setItem("userLoggedIn", JSON.stringify(true));
       if (successfulLogin) navigate("/dashboard");
     }, 2000);
   };

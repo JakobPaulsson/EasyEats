@@ -5,11 +5,14 @@ import Signup from "./screens/Signup/Signup";
 import Dashboard from "./screens/Dashboard/Dashboard";
 import Ingredients from "./screens/Ingredients/Ingredients";
 import Account from "./screens/Account/Account";
+import Recipe from "./screens/Recipe/Recipe";
 import Sidebar from "./components/SideBar/Sidebar";
 import Header from "./components/Header/Header";
-import Recipe from "./screens/Recipe/Recipe";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
+import { AuthContext } from "./contexts/AuthContext";
 import { getIngredients } from "./services/IngredientService";
-import { Route, Routes, useLocation } from "react-router-dom";
+
+import { Route, Routes } from "react-router-dom";
 import React, { useEffect } from "react";
 
 function App() {
@@ -18,22 +21,44 @@ function App() {
       localStorage.setItem("ingredients", JSON.stringify(data));
     });
   });
-  const isLogin =
-    useLocation().pathname == "/" || useLocation().pathname == "/signup";
+
+  const authContext = React.useContext(AuthContext);
+  if (!authContext) {
+    throw new Error("AuthContext must be used within App");
+  }
+
+  const { isLoggedIn } = authContext;
+  console.log(isLoggedIn);
 
   return (
     <div className="outerContainer">
-      {isLogin ? null : <Sidebar />}
+      {isLoggedIn && <Sidebar />}
       <div className="innerContainer">
-        {isLogin ? null : <Header />}
+        {isLoggedIn && <Header />}
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/ingredients" element={<Ingredients />} />
-          <Route path="/recipes/:recipeid" element={<Recipe />} />
-          <Route path="/recipes/page/:pageNumber" element={<Recipes />} />
-          <Route path="/account" element={<Account />} />
+          <Route
+            path="/dashboard"
+            element={<ProtectedRoute element={<Dashboard />} />}
+          />
+          <Route
+            path="/ingredients"
+            element={<ProtectedRoute element={<Ingredients />} />}
+          />
+          <Route
+            path="/recipes/:recipeid"
+            element={<ProtectedRoute element={<Recipe />} />}
+          />
+          <Route
+            path="/recipes/page/:pageNumber"
+            element={<ProtectedRoute element={<Recipes />} />}
+          />
+          <Route
+            path="/account"
+            element={<ProtectedRoute element={<Account />} />}
+          />
+          {/* More protected routes */}
         </Routes>
       </div>
     </div>

@@ -11,6 +11,8 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -18,8 +20,10 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import KitchenIcon from "@mui/icons-material/Kitchen";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import Skeleton from "@mui/material/Skeleton";
 
-import { useNavigate, useLocation, useParams } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { AuthContext } from "../../contexts/AuthContext";
 
 const drawerWidth = 240;
 const sideBarRoutes: Record<string, string> = {
@@ -42,8 +46,33 @@ export default function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
   const handleSideBarClick = (clicked: string) => {
-    navigate(sideBarRoutes[clicked]);
+    switch (clicked) {
+      case "Logout":
+        handleLogout();
+        break;
+      default:
+        navigate(sideBarRoutes[clicked]);
+        break;
+    }
   };
+  const authContext = React.useContext(AuthContext);
+  if (!authContext) {
+    throw new Error("AuthContext broken in Sidebar.tsx");
+  }
+
+  const { logout } = authContext;
+
+  const handleLogout = () => {
+    setLoading(true);
+    setTimeout(() => {
+      logout();
+      localStorage.setItem("userLoggedIn", JSON.stringify(false));
+      navigate("/");
+      setLoading(false);
+    }, Math.random() * 2000);
+  };
+
+  const [loading, setLoading] = React.useState(false);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -107,6 +136,15 @@ export default function Sidebar() {
                   handleSideBarClick(clickedElement.innerText);
                 }}
               >
+                <Backdrop
+                  sx={{
+                    color: "#fff",
+                    zIndex: (theme) => theme.zIndex.drawer + 1,
+                  }}
+                  open={loading}
+                >
+                  <CircularProgress color="inherit" />
+                </Backdrop>
                 <ListItemIcon>
                   {index % 2 === 0 ? <SettingsIcon /> : <LogoutIcon />}
                 </ListItemIcon>

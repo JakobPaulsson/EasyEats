@@ -10,6 +10,7 @@ import Sidebar from "./components/SideBar/Sidebar";
 import Header from "./components/Header/Header";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import { AuthContext } from "./contexts/AuthContext";
+import Loading from "./screens/Loading/Loading";
 import { getIngredients } from "./services/IngredientService";
 
 import { Route, Routes } from "react-router-dom";
@@ -28,7 +29,6 @@ function App() {
   }
 
   const { isLoggedIn } = authContext;
-  console.log(isLoggedIn);
 
   return (
     <div className="outerContainer">
@@ -38,6 +38,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/loading" element={<Loading />} />
           <Route
             path="/dashboard"
             element={<ProtectedRoute element={<Dashboard />} />}

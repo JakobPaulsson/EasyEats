@@ -20,7 +20,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import KitchenIcon from "@mui/icons-material/Kitchen";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import Skeleton from "@mui/material/Skeleton";
+import PositionedSnackbar from "../../components/PositionedSnackbar/PositionedSnackbar";
 
 import { useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
@@ -69,7 +69,7 @@ export default function Sidebar() {
       localStorage.setItem("userLoggedIn", JSON.stringify(false));
       navigate("/");
       setLoading(false);
-    }, Math.random() * 2000);
+    }, 1500);
   };
 
   const [loading, setLoading] = React.useState(false);
@@ -127,6 +127,13 @@ export default function Sidebar() {
           ))}
         </List>
         <Divider />
+        <PositionedSnackbar
+          open={loading}
+          vertical={"top"}
+          horizontal={"center"}
+          severity="info"
+          message="Logging out..."
+        />
         <List>
           {["Settings", "Logout"].map((text, index) => (
             <ListItem key={text} disablePadding>

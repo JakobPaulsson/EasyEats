@@ -16,7 +16,7 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(
-    localStorage.getItem("userLoggedIn") === "true"
+    localStorage.getItem("userLoggedIn") === "true",
   );
   console.log(localStorage.getItem("userLoggedIn"));
   const [currentUserID, setCurrentUserID] = useState<number>(1);

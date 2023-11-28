@@ -161,7 +161,7 @@ export default function Loading() {
             variant="rectangular"
             animation="wave"
             width={1800}
-            height={700}
+            height={900}
           />
         </Box>
       </Box>

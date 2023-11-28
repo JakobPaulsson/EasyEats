@@ -11,23 +11,20 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-
-import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import KitchenIcon from "@mui/icons-material/Kitchen";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import TuneIcon from "@mui/icons-material/Tune";
 
-import { useNavigate, useLocation, useParams } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const drawerWidth = 240;
 const sideBarRoutes: Record<string, string> = {
   Dashboard: "/dasboard",
   Ingredients: "/ingredients",
   Recipes: "/recipes/page/1",
-  Account: "/account",
-  Settings: "/",
+  Presets: "/presets",
   Logout: "/",
 };
 
@@ -35,7 +32,7 @@ const sideBarIcons: Record<string, JSX.Element> = {
   Dashboard: <DashboardIcon />,
   Recipes: <MenuBookIcon />,
   Ingredients: <KitchenIcon />,
-  Account: <AccountCircleIcon />,
+  Presets: <TuneIcon />,
 };
 
 export default function Sidebar() {
@@ -83,7 +80,7 @@ export default function Sidebar() {
         <img src={"/logo.png"} alt="logo" />
         <Divider />
         <List>
-          {["Dashboard", "Recipes", "Ingredients", "Account"].map((text) => (
+          {["Dashboard", "Recipes", "Ingredients", "Presets"].map((text) => (
             <ListItem data-cy={text} key={text} disablePadding>
               <ListItemButton
                 onClick={(event: React.SyntheticEvent) => {
@@ -99,21 +96,19 @@ export default function Sidebar() {
         </List>
         <Divider />
         <List>
-          {["Settings", "Logout"].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton
-                onClick={(event: React.SyntheticEvent) => {
-                  const clickedElement = event.target as HTMLElement;
-                  handleSideBarClick(clickedElement.innerText);
-                }}
-              >
-                <ListItemIcon>
-                  {index % 2 === 0 ? <SettingsIcon /> : <LogoutIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
+          <ListItem key={"Logout"} disablePadding>
+            <ListItemButton
+              onClick={(event: React.SyntheticEvent) => {
+                const clickedElement = event.target as HTMLElement;
+                handleSideBarClick(clickedElement.innerText);
+              }}
+            >
+              <ListItemIcon>
+                <LogoutIcon />
+              </ListItemIcon>
+              <ListItemText primary={"Logout"} />
+            </ListItemButton>
+          </ListItem>
         </List>
       </Drawer>
     </Box>

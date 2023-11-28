@@ -4,7 +4,7 @@ import Login from "./screens/Login/Login";
 import Signup from "./screens/Signup/Signup";
 import Dashboard from "./screens/Dashboard/Dashboard";
 import Ingredients from "./screens/Ingredients/Ingredients";
-import Account from "./screens/Account/Account";
+import Presets from "./screens/Presets/Presets";
 import Sidebar from "./components/SideBar/Sidebar";
 import Header from "./components/Header/Header";
 import Recipe from "./screens/Recipe/Recipe";
@@ -33,7 +33,7 @@ function App() {
           <Route path="/ingredients" element={<Ingredients />} />
           <Route path="/recipes/:recipeid" element={<Recipe />} />
           <Route path="/recipes/page/:pageNumber" element={<Recipes />} />
-          <Route path="/account" element={<Account />} />
+          <Route path="/presets" element={<Presets />} />
         </Routes>
       </div>
     </div>

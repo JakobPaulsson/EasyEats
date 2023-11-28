@@ -6,9 +6,19 @@ import { Container, TextField, Slider, Typography, Paper } from "@mui/material";
 import PaperHeader from "../../components/PaperHeader/PaperHeader";
 import OkDialog from "../../components/OkDialog/OkDialog";
 import Box from "@mui/material/Box";
-import { PresetSelector } from "../../components/PresetSelector/PresetSelector";
+import { getPresets } from "../../services/PresetService";
 
-function CustomPreset() {
+interface PresetResponse {
+  Name: string;
+  Icon: string;
+  Color: string;
+}
+
+interface CustomPresetProps {
+  setPresets(array: Array<PresetResponse>): void;
+}
+
+function CustomPreset({ setPresets }: CustomPresetProps) {
   const [icon, setIcon] = React.useState("PedalBikeIcon");
   const [color, setColor] = React.useState("#65D663");
   const [open, setOpen] = React.useState<boolean>(false);
@@ -45,6 +55,11 @@ function CustomPreset() {
         setOpen(true);
         setPopupTitle("Success");
         setPopupText("Preset added.");
+        getPresets(1).then((data) => {
+          if (data) {
+            setPresets(data!.data!.query);
+          }
+        });
       }
     });
   };

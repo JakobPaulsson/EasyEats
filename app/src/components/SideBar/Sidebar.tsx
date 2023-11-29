@@ -14,24 +14,23 @@ import ListItemText from "@mui/material/ListItemText";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 
-import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import KitchenIcon from "@mui/icons-material/Kitchen";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import PositionedSnackbar from "../../components/PositionedSnackbar/PositionedSnackbar";
 
-import { useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
+import TuneIcon from "@mui/icons-material/Tune";
+
+import { useNavigate, useLocation } from "react-router-dom";
 
 const drawerWidth = 240;
 const sideBarRoutes: Record<string, string> = {
   Dashboard: "/dashboard",
   Ingredients: "/ingredients",
   Recipes: "/recipes/page/1",
-  Account: "/account",
-  Settings: "/",
+  Presets: "/presets",
   Logout: "/",
 };
 
@@ -39,7 +38,7 @@ const sideBarIcons: Record<string, JSX.Element> = {
   Dashboard: <DashboardIcon />,
   Recipes: <MenuBookIcon />,
   Ingredients: <KitchenIcon />,
-  Account: <AccountCircleIcon />,
+  Presets: <TuneIcon />,
 };
 
 export default function Sidebar() {
@@ -112,7 +111,7 @@ export default function Sidebar() {
         <img src={"/logo.png"} alt="logo" />
         <Divider />
         <List>
-          {["Dashboard", "Recipes", "Ingredients", "Account"].map((text) => (
+          {["Dashboard", "Recipes", "Ingredients", "Presets"].map((text) => (
             <ListItem data-cy={text} key={text} disablePadding>
               <ListItemButton
                 onClick={(event: React.SyntheticEvent) => {
@@ -135,30 +134,28 @@ export default function Sidebar() {
           message="Logging out..."
         />
         <List>
-          {["Settings", "Logout"].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton
-                onClick={(event: React.SyntheticEvent) => {
-                  const clickedElement = event.target as HTMLElement;
-                  handleSideBarClick(clickedElement.innerText);
+          <ListItem key={"Logout"} disablePadding>
+            <ListItemButton
+              onClick={(event: React.SyntheticEvent) => {
+                const clickedElement = event.target as HTMLElement;
+                handleSideBarClick(clickedElement.innerText);
+              }}
+            >
+              <Backdrop
+                sx={{
+                  color: "#fff",
+                  zIndex: (theme) => theme.zIndex.drawer + 1,
                 }}
+                open={loading}
               >
-                <Backdrop
-                  sx={{
-                    color: "#fff",
-                    zIndex: (theme) => theme.zIndex.drawer + 1,
-                  }}
-                  open={loading}
-                >
-                  <CircularProgress color="inherit" />
-                </Backdrop>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <SettingsIcon /> : <LogoutIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
+                <CircularProgress color="inherit" />
+              </Backdrop>
+              <ListItemIcon>
+                <LogoutIcon />
+              </ListItemIcon>
+              <ListItemText primary={"Logout"} />
+            </ListItemButton>
+          </ListItem>
         </List>
       </Drawer>
     </Box>

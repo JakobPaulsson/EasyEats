@@ -68,14 +68,16 @@ function Login() {
     try {
       setOpen(true);
       const response = await loginUser(username, encryptedPassword);
-      if (response && response.data && !response.data.error) {
-        setUserID(response.data.userID);
-        setOpen(false);
-        navigate("/Loading");
-      } else {
-        setFailedLogin(true);
-        setOpen(false);
-      }
+      setTimeout(() => {
+        if (response && response.data && !response.data.error) {
+          setUserID(response.data.userID);
+          setOpen(false);
+          navigate("/Loading");
+        } else {
+          setFailedLogin(true);
+          setOpen(false);
+        }
+      }, 1500);
     } catch (error) {
       setOpen(false);
     }

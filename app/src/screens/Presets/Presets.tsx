@@ -1,5 +1,5 @@
 import React from "react";
-import "./Account.css";
+import "./Presets.css";
 import CustomPreset from "../../components/CustomPreset/CustomPreset";
 import { PresetSelector } from "../../components/PresetSelector/PresetSelector";
 import Box from "@mui/material/Box";
@@ -38,7 +38,7 @@ function a11yProps(index: number) {
   };
 }
 
-function Account() {
+function Presets() {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (_: React.SyntheticEvent, newValue: number) => {
@@ -97,4 +97,4 @@ function Account() {
   );
 }
 
-export default Account;
+export default Presets;

@@ -4,8 +4,8 @@ import Login from "./screens/Login/Login";
 import Signup from "./screens/Signup/Signup";
 import Dashboard from "./screens/Dashboard/Dashboard";
 import Ingredients from "./screens/Ingredients/Ingredients";
-import Account from "./screens/Account/Account";
 import Recipe from "./screens/Recipe/Recipe";
+import Presets from "./screens/Presets/Presets";
 import Sidebar from "./components/SideBar/Sidebar";
 import Header from "./components/Header/Header";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
@@ -56,10 +56,9 @@ function App() {
             element={<ProtectedRoute element={<Recipes />} />}
           />
           <Route
-            path="/account"
-            element={<ProtectedRoute element={<Account />} />}
+            path="/presets"
+            element={<ProtectedRoute element={<Presets />} />}
           />
-          {/* More protected routes */}
         </Routes>
       </div>
     </div>

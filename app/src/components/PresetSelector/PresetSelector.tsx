@@ -1,28 +1,14 @@
 import * as React from "react";
-
 import { Box, Paper, Button, Typography, Divider } from "@mui/material";
-
-import { getPresets } from "../../services/PresetService";
 import { PresetIcons } from "../../types/icons.interface";
 import PaperHeader from "../../components/PaperHeader/PaperHeader";
 
-export const PresetSelector = () => {
-  const [presets, setPresets] = React.useState<any>();
-
-  React.useEffect(() => {
-    getPresets(1).then((data) => {
-      if (data) {
-        setPresets(data.data.query);
-      }
-    });
-  }, []);
-
+export const PresetSelector = ({ presets }: any) => {
   return (
     <Paper
       elevation={5}
       sx={{
         width: 250,
-        height: "800px",
         borderRadius: "10px",
         mt: 3,
       }}
@@ -33,6 +19,7 @@ export const PresetSelector = () => {
           display: "flex",
           flexDirection: "column",
           gap: "10px",
+          marginBottom: "50px",
         }}
       >
         {presets?.map((preset: any) => {

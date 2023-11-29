@@ -22,7 +22,7 @@ const OkDialog = ({ open, setOpen, title, message }: OkDialogProps) => {
     <React.Fragment>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>{title}</DialogTitle>
-        <DialogContent>
+        <DialogContent sx={{ minWidth: "250px" }}>
           <DialogContentText>{message}</DialogContentText>
         </DialogContent>
         <DialogActions>

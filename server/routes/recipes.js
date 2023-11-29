@@ -39,7 +39,11 @@ module.exports = {
         result = await db.all(
           `SELECT * FROM Recipes WHERE RecipeID IN ${queryString}`,
         );
-        for (var i = 0; i < result.length; i++) result[i]["Score"] = scores[i];
+
+        for (var i = 0; i < recipeIDs.length; i++) {
+          result[i]["Score"] = scores[recipeIDs.indexOf(result[i].RecipeID)];
+        }
+        result.sort((a, b) => b.Score - a.Score);
       }
       res.send({ result, count });
       await db.close();

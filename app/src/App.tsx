@@ -4,10 +4,7 @@ import Login from "./screens/Login/Login";
 import Signup from "./screens/Signup/Signup";
 import Dashboard from "./screens/Dashboard/Dashboard";
 import Ingredients from "./screens/Ingredients/Ingredients";
-<<<<<<< HEAD
 import Recipe from "./screens/Recipe/Recipe";
-=======
->>>>>>> 962597b (Remove settings page from sidebar and rename the account page to presets)
 import Presets from "./screens/Presets/Presets";
 import Sidebar from "./components/SideBar/Sidebar";
 import Header from "./components/Header/Header";
@@ -41,7 +38,6 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-<<<<<<< HEAD
           <Route path="/loading" element={<Loading />} />
           <Route
             path="/dashboard"
@@ -63,13 +59,6 @@ function App() {
             path="/presets"
             element={<ProtectedRoute element={<Presets />} />}
           />
-=======
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/ingredients" element={<Ingredients />} />
-          <Route path="/recipes/:recipeid" element={<Recipe />} />
-          <Route path="/recipes/page/:pageNumber" element={<Recipes />} />
-          <Route path="/presets" element={<Presets />} />
->>>>>>> 962597b (Remove settings page from sidebar and rename the account page to presets)
         </Routes>
       </div>
     </div>

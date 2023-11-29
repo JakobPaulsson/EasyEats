@@ -4,8 +4,7 @@ import Login from "./screens/Login/Login";
 import Signup from "./screens/Signup/Signup";
 import Dashboard from "./screens/Dashboard/Dashboard";
 import Ingredients from "./screens/Ingredients/Ingredients";
-
-
+import Recipe from "./screens/Recipe/Recipe";
 import Presets from "./screens/Presets/Presets";
 import Sidebar from "./components/SideBar/Sidebar";
 import Header from "./components/Header/Header";
@@ -39,11 +38,28 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/ingredients" element={<Ingredients />} />
-          <Route path="/recipes/:recipeid" element={<Recipe />} />
-          <Route path="/recipes/page/:pageNumber" element={<Recipes />} />
-          <Route path="/presets" element={<Presets />} />
+          <Route path="/loading" element={<Loading />} />
+          <Route
+            path="/dashboard"
+            element={<ProtectedRoute element={<Dashboard />} />}
+          />
+          <Route
+            path="/ingredients"
+            element={<ProtectedRoute element={<Ingredients />} />}
+          />
+          <Route
+            path="/recipes/:recipeid"
+            element={<ProtectedRoute element={<Recipe />} />}
+          />
+          <Route
+            path="/recipes/page/:pageNumber"
+            element={<ProtectedRoute element={<Recipes />} />}
+          />
+          <Route
+            path="/account"
+            element={<ProtectedRoute element={<Presets />} />}
+          />
+          {/* More protected routes */}
         </Routes>
       </div>
     </div>

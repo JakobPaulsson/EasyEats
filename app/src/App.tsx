@@ -56,10 +56,9 @@ function App() {
             element={<ProtectedRoute element={<Recipes />} />}
           />
           <Route
-            path="/account"
+            path="/presets"
             element={<ProtectedRoute element={<Presets />} />}
           />
-          {/* More protected routes */}
         </Routes>
       </div>
     </div>

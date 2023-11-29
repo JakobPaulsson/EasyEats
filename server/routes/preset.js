@@ -43,11 +43,17 @@ module.exports = {
       if (!missingParameters.length == 0)
         return res.send({ "Missing Parameters": missingParameters });
 
-      const ratingMetric = req.query.ratingMetric
-      const cookingTimeMetric = req.query.cookingTimeMetric
-      const commonIngredientsMetric = req.query.commonIngredientsMetric
-      const numberOfIngredientsMetric = req.query.numberOfIngredientsMetric
-      if (ratingMetric + cookingTimeMetric + commonIngredientsMetric + numberOfIngredientsMetric == 0)
+      const ratingMetric = req.query.ratingMetric;
+      const cookingTimeMetric = req.query.cookingTimeMetric;
+      const commonIngredientsMetric = req.query.commonIngredientsMetric;
+      const numberOfIngredientsMetric = req.query.numberOfIngredientsMetric;
+      if (
+        ratingMetric +
+          cookingTimeMetric +
+          commonIngredientsMetric +
+          numberOfIngredientsMetric ==
+        0
+      )
         return res.send({ error: "ALL_ZERO_METRICS" });
 
       let db = await utility.connect();

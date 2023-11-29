@@ -11,26 +11,17 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-<<<<<<< HEAD
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
-
-=======
->>>>>>> 962597b (Remove settings page from sidebar and rename the account page to presets)
 import LogoutIcon from "@mui/icons-material/Logout";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import KitchenIcon from "@mui/icons-material/Kitchen";
-<<<<<<< HEAD
 import PositionedSnackbar from "../../components/PositionedSnackbar/PositionedSnackbar";
 
 import { AuthContext } from "../../contexts/AuthContext";
 import TuneIcon from "@mui/icons-material/Tune";
 
-=======
-import TuneIcon from "@mui/icons-material/Tune";
-
->>>>>>> 962597b (Remove settings page from sidebar and rename the account page to presets)
 import { useNavigate, useLocation } from "react-router-dom";
 
 const drawerWidth = 240;
@@ -149,7 +140,6 @@ export default function Sidebar() {
                 handleSideBarClick(clickedElement.innerText);
               }}
             >
-<<<<<<< HEAD
               <Backdrop
                 sx={{
                   color: "#fff",
@@ -159,8 +149,6 @@ export default function Sidebar() {
               >
                 <CircularProgress color="inherit" />
               </Backdrop>
-=======
->>>>>>> 962597b (Remove settings page from sidebar and rename the account page to presets)
               <ListItemIcon>
                 <LogoutIcon />
               </ListItemIcon>

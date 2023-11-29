@@ -47,6 +47,10 @@ function CustomPreset({ setPresets }: CustomPresetProps) {
         setOpen(true);
         setPopupTitle("Error");
         setPopupText("Preset already exists with that name.");
+      } else if (data?.data?.error == "ALL_ZERO_METRICS") {
+        setOpen(true);
+        setPopupTitle("Error");
+        setPopupText("All metrics cannot be zero.");
       } else if (data?.data?.error || data === undefined) {
         setOpen(true);
         setPopupTitle("Error");

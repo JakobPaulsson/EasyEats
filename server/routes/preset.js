@@ -43,10 +43,17 @@ module.exports = {
       if (!missingParameters.length == 0)
         return res.send({ "Missing Parameters": missingParameters });
 
+      const ratingMetric = req.query.ratingMetric
+      const cookingTimeMetric = req.query.cookingTimeMetric
+      const commonIngredientsMetric = req.query.commonIngredientsMetric
+      const numberOfIngredientsMetric = req.query.numberOfIngredientsMetric
+      if (ratingMetric + cookingTimeMetric + commonIngredientsMetric + numberOfIngredientsMetric == 0)
+        return res.send({ error: "ALL_ZERO_METRICS" });
+
       let db = await utility.connect();
       try {
         const result = await db.all(
-          `INSERT INTO Presets VALUES (${req.query.userID}, '${req.query.name}', '${req.query.icon}', '${req.query.color}', ${req.query.ratingMetric}, ${req.query.cookingTimeMetric}, ${req.query.commonIngredientsMetric}, ${req.query.numberOfIngredientsMetric});`,
+          `INSERT INTO Presets VALUES (${req.query.userID}, '${req.query.name}', '${req.query.icon}', '${req.query.color}', ${ratingMetric}, ${cookingTimeMetric}, ${commonIngredientsMetric}, ${numberOfIngredientsMetric});`,
         );
         res.send(result);
       } catch (error) {

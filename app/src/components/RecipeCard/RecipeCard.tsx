@@ -125,7 +125,6 @@ const RecipeCard = ({ recipes, navigateToRecipe }: RecipeCardProps) => {
                 </span>
               }
               followCursor
-              onMouseOver={() => console.log("cock")}
             >
               <Box>{cardIcon(recipe)}</Box>
             </Tooltip>

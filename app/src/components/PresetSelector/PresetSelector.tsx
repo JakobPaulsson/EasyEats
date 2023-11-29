@@ -3,7 +3,21 @@ import { Box, Paper, Button, Typography, Divider } from "@mui/material";
 import { PresetIcons } from "../../types/icons.interface";
 import PaperHeader from "../../components/PaperHeader/PaperHeader";
 
-export const PresetSelector = ({ presets }: any) => {
+interface Preset {
+  Name: string;
+  Icon: string;
+  Color: string;
+}
+
+export interface PresetSelectorProps {
+  presets: Array<Preset>;
+  deletePreset: any;
+}
+
+export const PresetSelector = ({
+  presets,
+  deletePreset,
+}: PresetSelectorProps) => {
   return (
     <Paper
       elevation={5}
@@ -22,7 +36,7 @@ export const PresetSelector = ({ presets }: any) => {
           marginBottom: "50px",
         }}
       >
-        {presets?.map((preset: any) => {
+        {presets?.map((preset: Preset) => {
           for (const key in PresetIcons) {
             if (preset.Icon == PresetIcons[key].name) {
               const Icon = PresetIcons[key].value;
@@ -53,6 +67,7 @@ export const PresetSelector = ({ presets }: any) => {
                       {preset.Name}
                     </Typography>
                     <Button
+                      onClick={() => deletePreset(preset)}
                       sx={{
                         marginLeft: "auto",
                       }}

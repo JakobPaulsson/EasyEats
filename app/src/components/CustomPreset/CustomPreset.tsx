@@ -8,14 +8,14 @@ import OkDialog from "../../components/OkDialog/OkDialog";
 import Box from "@mui/material/Box";
 import { getPresets } from "../../services/PresetService";
 
-interface PresetResponse {
+interface Preset {
   Name: string;
   Icon: string;
   Color: string;
 }
 
 interface CustomPresetProps {
-  setPresets(array: Array<PresetResponse>): void;
+  setPresets(array: Array<Preset>): void;
 }
 
 function CustomPreset({ setPresets }: CustomPresetProps) {

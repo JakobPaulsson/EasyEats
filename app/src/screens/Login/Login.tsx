@@ -70,7 +70,7 @@ function Login() {
       const response = await loginUser(username, encryptedPassword);
       setTimeout(() => {
         if (response && response.data && !response.data.error) {
-          setUserID(response.data.userID);
+          setUserID(response.data.userID.UserID);
           setOpen(false);
           navigate("/Loading");
         } else {

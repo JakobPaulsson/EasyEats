@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./Presets.css";
 import CustomPreset from "../../components/CustomPreset/CustomPreset";
 import { PresetSelector } from "../../components/PresetSelector/PresetSelector";
 import Box from "@mui/material/Box";
 import { getPresets, removePreset } from "../../services/PresetService";
+import { AuthContext } from "../../contexts/AuthContext";
 
 interface Preset {
   Name: string;
@@ -13,10 +14,16 @@ interface Preset {
 
 function Presets() {
   const [presets, setPresets] = React.useState<any>();
+  const authContext = useContext(AuthContext);
+  if (!authContext) {
+    throw new Error("Authcontext in Presets");
+  }
+
+  const { currentUserID } = authContext;
 
   const deletePreset = (preset: Preset) => {
-    removePreset(1, preset.Name).then(() => {
-      getPresets(1).then((data) => {
+    removePreset(currentUserID, preset.Name).then(() => {
+      getPresets(currentUserID).then((data) => {
         if (data) {
           setPresets(data.data.query);
         }
@@ -25,7 +32,7 @@ function Presets() {
   };
 
   React.useEffect(() => {
-    getPresets(1).then((data) => {
+    getPresets(currentUserID).then((data) => {
       if (data) {
         setPresets(data.data.query);
       }

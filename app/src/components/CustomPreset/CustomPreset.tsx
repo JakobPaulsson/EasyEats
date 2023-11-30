@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./CustomPreset.css";
 import PresetIcon from "../../components/PresetIcon/PresetIcon";
 import { addPreset } from "../../services/PresetService";
@@ -7,6 +7,7 @@ import PaperHeader from "../../components/PaperHeader/PaperHeader";
 import OkDialog from "../../components/OkDialog/OkDialog";
 import Box from "@mui/material/Box";
 import { getPresets } from "../../services/PresetService";
+import { AuthContext } from "../../contexts/AuthContext";
 
 interface Preset {
   Name: string;
@@ -32,9 +33,14 @@ function CustomPreset({ setPresets }: CustomPresetProps) {
   const [fewIngredientsSlider, setFewIngredientsSlider] =
     React.useState<number>(0.0);
 
+  const authContext = useContext(AuthContext);
+  if (!authContext) {
+    throw new Error("Authcontext in Presets");
+  }
+  const { currentUserID } = authContext;
   const addNewPreset = () => {
     addPreset(
-      1,
+      currentUserID,
       presetName,
       icon,
       color,
@@ -59,7 +65,7 @@ function CustomPreset({ setPresets }: CustomPresetProps) {
         setOpen(true);
         setPopupTitle("Success");
         setPopupText("Preset added.");
-        getPresets(1).then((data) => {
+        getPresets(currentUserID).then((data) => {
           if (data) {
             setPresets(data!.data!.query);
           }

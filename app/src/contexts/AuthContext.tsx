@@ -22,6 +22,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const login = () => {
     setIsLoggedIn(true);
+    localStorage.setItem("userLoggedIn", "true");
   };
 
   const logout = () => {

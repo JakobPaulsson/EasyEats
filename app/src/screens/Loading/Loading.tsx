@@ -16,13 +16,12 @@ export default function Loading() {
     throw new Error("AuthContext broken in Loading.tsx");
   }
 
-  const { login, setUserID } = authContext;
+  const { login } = authContext;
   const navigate = useNavigate();
 
   useEffect(() => {
     setTimeout(() => {
       login();
-      setUserID(1);
       setSnackbarOpen(false);
       setOpen(false);
       navigate("/dashboard");

@@ -34,10 +34,6 @@ function Recipes() {
   const [selected, setSelected] = React.useState("Skiing");
 
   useEffect(() => {
-    console.log(selected);
-  }, [selected]);
-
-  useEffect(() => {
     if (search) {
       fetchSearchResults(search, page).then(function response(data) {
         if (data) {
@@ -62,7 +58,6 @@ function Recipes() {
 
   const handlePresetClick = (item: any) => {
     setSelectedPreset(1, item.Name).then(() => {
-      console.log(page);
       updateScores(1).then(() => {
         fetchScored(page).then(function response(data) {
           if (data) {
@@ -76,7 +71,6 @@ function Recipes() {
 
   const getAndSetPresetIcons = () => {
     getPresets(1).then(function response(data) {
-      console.log(selected);
       const query = data?.data?.query;
       setPresetIcons(
         query.map((item: any) => {
@@ -193,7 +187,6 @@ function Recipes() {
     _: React.MouseEvent<HTMLElement>,
     newAlignment: string | null,
   ) => {
-    console.log(newAlignment);
     setSelected(newAlignment || "0");
   };
   return (

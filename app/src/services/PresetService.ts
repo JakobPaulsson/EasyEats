@@ -32,11 +32,23 @@ export const getPresets = async (userID: number) => {
       `http://localhost:8080/preset?userID=${userID}`,
     );
     if (response && response.data) {
-      console.log("response", response);
       localStorage.setItem("presets", JSON.stringify(response));
       return response;
     }
   } catch (error) {
     console.error("Failed to fetch add preset", error);
+  }
+};
+
+export const removePreset = async (userID: number, presetName: string) => {
+  try {
+    const response = await axios.delete(
+      `http://localhost:8080/preset?userID=${userID}&name=${presetName}`,
+    );
+    if (response && response.data) {
+      return response;
+    }
+  } catch (error) {
+    console.error("Failed to fetch search query", error);
   }
 };

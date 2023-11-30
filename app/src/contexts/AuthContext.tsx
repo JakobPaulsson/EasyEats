@@ -18,7 +18,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(
     localStorage.getItem("userLoggedIn") === "true",
   );
-  console.log(localStorage.getItem("userLoggedIn"));
   const [currentUserID, setCurrentUserID] = useState<number>(1);
 
   const login = () => {

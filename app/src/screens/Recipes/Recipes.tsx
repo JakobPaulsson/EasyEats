@@ -9,7 +9,8 @@ import { updateScores } from "../../services/ScoreService";
 import { Paper, Box, Container, Pagination, Tooltip } from "@mui/material";
 import Search from "../../components/Search/Search";
 import { Recipe } from "../../types/recipe.interface";
-import React from "react";
+import React, { useContext } from "react";
+import { AuthContext } from "../../contexts/AuthContext";
 import PedalBikeIcon from "@mui/icons-material/PedalBike";
 import BeachAccessIcon from "@mui/icons-material/BeachAccess";
 import DownhillSkiingIcon from "@mui/icons-material/DownhillSkiing";
@@ -33,6 +34,12 @@ function Recipes() {
   const navigate = useNavigate();
   const [selected, setSelected] = React.useState("Skiing");
 
+  const authContext = React.useContext(AuthContext);
+  if (!authContext) {
+    throw new Error("AuthContext must be used within App");
+  }
+
+  const { currentUserID } = authContext;
   useEffect(() => {
     if (search) {
       fetchSearchResults(search, page).then(function response(data) {
@@ -57,8 +64,8 @@ function Recipes() {
   };
 
   const handlePresetClick = (item: any) => {
-    setSelectedPreset(1, item.Name).then(() => {
-      updateScores(1).then(() => {
+    setSelectedPreset(currentUserID, item.Name).then(() => {
+      updateScores(currentUserID).then(() => {
         fetchScored(page).then(function response(data) {
           if (data) {
             setRecipes(data.data.result);
@@ -70,7 +77,7 @@ function Recipes() {
   };
 
   const getAndSetPresetIcons = () => {
-    getPresets(1).then(function response(data) {
+    getPresets(currentUserID).then(function response(data) {
       const query = data?.data?.query;
       setPresetIcons(
         query.map((item: any) => {
@@ -148,7 +155,7 @@ function Recipes() {
             default:
               return null;
           }
-        }),
+        })
       );
     });
   };
@@ -185,7 +192,7 @@ function Recipes() {
 
   const handleSelected = (
     _: React.MouseEvent<HTMLElement>,
-    newAlignment: string | null,
+    newAlignment: string | null
   ) => {
     setSelected(newAlignment || "0");
   };

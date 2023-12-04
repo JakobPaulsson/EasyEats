@@ -14,19 +14,20 @@ import Loading from "./screens/Loading/Loading";
 import { getIngredients } from "./services/IngredientService";
 
 import { Route, Routes } from "react-router-dom";
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 
 function App() {
-  useEffect(() => {
-    getIngredients(1).then(function response(data) {
-      localStorage.setItem("ingredients", JSON.stringify(data));
-    });
-  });
-
   const authContext = React.useContext(AuthContext);
   if (!authContext) {
     throw new Error("AuthContext must be used within App");
   }
+
+  const { currentUserID } = authContext;
+  useEffect(() => {
+    getIngredients(currentUserID).then(function response(data) {
+      localStorage.setItem("ingredients", JSON.stringify(data));
+    });
+  });
 
   const { isLoggedIn } = authContext;
 

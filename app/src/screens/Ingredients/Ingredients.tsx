@@ -10,17 +10,24 @@ import {
 } from "../../services/IngredientService";
 import { updateScores } from "../../services/ScoreService";
 import { imperialToMetric } from "../../services/ConversionService";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import React from "react";
 import { IngredientItem } from "../../types/ingredient.interface"; // Adjust the import path
 import Tab from "@mui/material/Tab";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
+import { AuthContext } from "../../contexts/AuthContext";
 
 function Ingredients() {
   const [ingredients, setIngredients] = useState<IngredientItem[]>([]);
+  const authContext = useContext(AuthContext);
+  if (!authContext) {
+    throw new Error("Authcontext in Presets");
+  }
+
+  const { currentUserID } = authContext;
 
   const getAndSetIngredients = () => {
-    getIngredients(1).then(function response(data) {
+    getIngredients(currentUserID).then(function response(data) {
       const currentIngredients: IngredientItem[] = [];
       if (data && data.data) {
         for (let i = 0; i < data.data.ingredients.length; i++) {
@@ -64,19 +71,21 @@ function Ingredients() {
       return;
     const [amount, unit] = imperialToMetric(
       +ingredient.amount,
-      ingredient.unit,
+      ingredient.unit
     );
-    addIngredient(1, ingredient.name, amount, unit).then(function response() {
-      getAndSetIngredients();
-      updateScores(1);
-    });
+    addIngredient(currentUserID, ingredient.name, amount, unit).then(
+      function response() {
+        getAndSetIngredients();
+        updateScores(currentUserID);
+      }
+    );
   };
 
   // TODO: Hardcoded for userID 1
   const handleIngredientRemove = (name: string) => {
-    removeIngredient(1, name).then(function response() {
+    removeIngredient(currentUserID, name).then(function response() {
       getAndSetIngredients();
-      updateScores(1);
+      updateScores(currentUserID);
     });
   };
 

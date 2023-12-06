@@ -67,7 +67,7 @@ export default function Sidebar() {
       localStorage.setItem("userLoggedIn", JSON.stringify(false));
       navigate("/");
       setLoading(false);
-    }, 1500);
+    }, 500);
   };
 
   const [loading, setLoading] = React.useState(false);

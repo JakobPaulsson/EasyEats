@@ -10,7 +10,7 @@ interface SearchData {
 export const getSearchSuggestions = async (searchTerm: string) => {
   try {
     const response: SearchResponse = await axios.get(
-      `http://localhost:8080/suggestions?searchInput=${searchTerm}`,
+      `${process.env.REACT_APP_HOST}/suggestions?searchInput=${searchTerm}`,
     );
     if (response && response.data) {
       return response;

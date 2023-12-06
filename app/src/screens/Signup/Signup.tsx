@@ -26,12 +26,12 @@ function Signup() {
         setSnackbarOpen(true);
         setTimeout(() => {
           setSnackbarOpen(false);
-        }, 2000);
+        }, 500);
       } else {
         setOpen(true);
         setTimeout(() => {
           navigate("/", { state: { signup: true } });
-        }, 1000);
+        }, 500);
       }
     });
   };

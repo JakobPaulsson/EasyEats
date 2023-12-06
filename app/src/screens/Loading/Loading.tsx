@@ -25,7 +25,7 @@ export default function Loading() {
       setSnackbarOpen(false);
       setOpen(false);
       navigate("/dashboard");
-    }, 3000);
+    }, 500);
   }, []);
   return (
     <>

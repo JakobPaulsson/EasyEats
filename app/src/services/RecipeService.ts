@@ -8,7 +8,7 @@ export const fetchSearchResults = async (
   try {
     const ingredientsQuery = `title=${ingredients}`;
     const response = await axios.get(
-      `http://localhost:8080/recipes/search?page=${page}&${ingredientsQuery}`,
+      `${process.env.REACT_APP_HOST}/recipes/search?page=${page}&${ingredientsQuery}`,
     );
     if (response && response.data) {
       return response;
@@ -21,7 +21,7 @@ export const fetchSearchResults = async (
 export const fetchScored = async (page: string | undefined) => {
   try {
     const response = await axios.get(
-      `http://localhost:8080/recipes?userID=1&page=${page}`,
+      `${process.env.REACT_APP_HOST}/recipes?userID=1&page=${page}`,
     );
     if (response && response.data) {
       return response;

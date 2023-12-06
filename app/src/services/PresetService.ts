@@ -12,7 +12,9 @@ export const addPreset = async (
 ) => {
   try {
     const response = await axios.post(
-      `http://localhost:8080/preset?userID=${userID}&name=${name}&icon=${icon}&color=${color.replace(
+      `${
+        process.env.REACT_APP_HOST
+      }/preset?userID=${userID}&name=${name}&icon=${icon}&color=${color.replace(
         "#",
         "",
       )}&ratingMetric=${ratingMetric}&cookingTimeMetric=${cookingTimeMetric}&commonIngredientsMetric=${commonIngredientsMetric}&numberOfIngredientsMetric=${numberOfIngredientsMetric}`,
@@ -29,7 +31,7 @@ export const addPreset = async (
 export const getPresets = async (userID: number) => {
   try {
     const response = await axios.get(
-      `http://localhost:8080/preset?userID=${userID}`,
+      `${process.env.REACT_APP_HOST}/preset?userID=${userID}`,
     );
     if (response && response.data) {
       localStorage.setItem("presets", JSON.stringify(response));

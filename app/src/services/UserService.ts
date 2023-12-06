@@ -3,7 +3,7 @@ import axios from "axios";
 export const setSelectedPreset = async (userID: number, name: string) => {
   try {
     const response = await axios.post(
-      `http://localhost:8080/user/preset?userID=${userID}&name=${name}`,
+      `${process.env.REACT_APP_HOST}/user/preset?userID=${userID}&name=${name}`,
     );
     if (response && response.data) {
       return response;
@@ -16,7 +16,7 @@ export const setSelectedPreset = async (userID: number, name: string) => {
 export const registerUser = async (username: string, password: string) => {
   try {
     const response = await axios.post(
-      `http://localhost:8080/user?username=${username}&password=${password}`,
+      `${process.env.REACT_APP_HOST}/user?username=${username}&password=${password}`,
     );
     if (response && response.data) {
       return response;
@@ -29,7 +29,7 @@ export const registerUser = async (username: string, password: string) => {
 export const loginUser = async (username: string, password: string) => {
   try {
     const response = await axios.get(
-      `http://localhost:8080/user/login?username=${username}&password=${password}`,
+      `${process.env.REACT_APP_HOST}/user/login?username=${username}&password=${password}`,
     );
     if (response && response.data) {
       return response;

@@ -83,7 +83,6 @@ function Recipe() {
       const currentAmount = parseFloat(userIngredients[i][1]);
       const unit = userIngredients[i][2];
       const usedAmount = parseFloat(userIngredients[i][3]);
-      setTimeout;
       if (currentAmount - usedAmount <= 0) {
         await removeIngredient(1, name);
       } else {

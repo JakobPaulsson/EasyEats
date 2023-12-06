@@ -39,26 +39,26 @@ function Login() {
       setOpen(true);
       setTimeout(() => {
         setSuccessfulLogin(true);
-      }, 1000);
+      }, 500);
 
       setTimeout(() => {
         setOpen(false);
         navigate("/Loading");
         setSuccessfulLogin(false);
-      }, 2000);
+      }, 500);
     }
     if (state?.failed) {
       setUnauthorizedRoute(true);
       setTimeout(() => {
         setUnauthorizedRoute(false);
-      }, 2000);
+      }, 500);
     }
 
     if (state?.signup) {
       setSuccessfulSignup(true);
       setTimeout(() => {
         setSuccessfulSignup(false);
-      }, 2000);
+      }, 500);
     }
   }, [isLoggedIn, navigate]);
 
@@ -77,7 +77,7 @@ function Login() {
           setFailedLogin(true);
           setOpen(false);
         }
-      }, 1500);
+      }, 500);
     } catch (error) {
       setOpen(false);
     }

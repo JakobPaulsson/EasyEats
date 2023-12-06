@@ -18,10 +18,10 @@ export const fetchSearchResults = async (
   }
 };
 
-export const fetchScored = async (page: string | undefined) => {
+export const fetchScored = async (page: string | undefined, userID: number) => {
   try {
     const response = await axios.get(
-      `${process.env.REACT_APP_HOST}/recipes?userID=1&page=${page}`,
+      `${process.env.REACT_APP_HOST}/recipes?userID=${userID}&page=${page}`,
     );
     if (response && response.data) {
       return response;

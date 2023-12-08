@@ -10,9 +10,9 @@ const root = ReactDOM.createRoot(rootElement);
 root.render(
   <React.StrictMode>
     <AuthProvider>
-      <BrowserRouter>
+      <BrowserRouter basename="/platepilot">
         <App />
       </BrowserRouter>
     </AuthProvider>
-  </React.StrictMode>,
+  </React.StrictMode>
 );

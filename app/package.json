@@ -1,5 +1,5 @@
 {
-  "name": "app",
+  "name": "PlatePilot",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -30,7 +30,7 @@
     "test": "npm run init_db && concurrently \"npm run server\" \"BROWSER=none npm run client \" \"npx cypress run\"",
     "client": "react-scripts -r @cypress/instrument-cra start",
     "server": "node ../server/server.js",
-    "build": "react-scripts build",
+    "build": "PUBLIC_URL=/platepilot react-scripts build",
     "eject": "react-scripts eject",
     "prepare": "cd .. && husky install app/.husky",
     "precommit": "npx prettier . --write && npm run lint"

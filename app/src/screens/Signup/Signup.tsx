@@ -136,7 +136,7 @@ function Signup() {
                 }}
               >
                 Already have an account? &nbsp;
-                <Link variant="body1" href="/">
+                <Link variant="body1" onClick={() => navigate("/")} href="#">
                   Login
                 </Link>
               </Typography>

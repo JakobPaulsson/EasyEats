@@ -16,7 +16,7 @@ import DownhillSkiingIcon from "@mui/icons-material/DownhillSkiing";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
 import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
 import RecipeCard from "../../components/RecipeCard/RecipeCard";
-import { Divider } from "@mui/material";
+import { Divider, Typography } from "@mui/material";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
@@ -106,7 +106,7 @@ function Recipes() {
               </ToggleButton>
             </Tooltip>
           );
-        }),
+        })
       );
     });
   };
@@ -160,7 +160,10 @@ function Recipes() {
           <Box
             sx={{
               display: "flex",
-              flexDirection: "column",
+              flexDirection: "row",
+              textAlign: "center",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
             <ToggleButtonGroup
@@ -172,6 +175,15 @@ function Recipes() {
             >
               {presetIcons}
             </ToggleButtonGroup>
+            <Typography
+              variant="subtitle1"
+              sx={{
+                color: "rgba(0, 0, 0, 0.54)",
+                ml: 1,
+              }}
+            >
+              Presets
+            </Typography>
           </Box>
           <Search
             currentSearch={search}

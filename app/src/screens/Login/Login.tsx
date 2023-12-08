@@ -185,7 +185,11 @@ function Login() {
                 }}
               >
                 Don't have an account? &nbsp;
-                <Link variant="body1" href="/signup">
+                <Link
+                  variant="body1"
+                  onClick={() => navigate("/signup")}
+                  href="#"
+                >
                   Sign up
                 </Link>
               </Typography>
@@ -214,7 +218,6 @@ function Login() {
         severity="success"
         message="Signup successful"
       />
-      ;
     </>
   );
 }

@@ -1,8 +1,8 @@
 import Box from "@mui/material/Box";
 import AddIngredient from "../../components/AddIngredient/AddIngredient";
 import InventoryDisplay from "../../components/InventoryDisplay/InventoryDisplay";
+import PaperHeader from "../../components/PaperHeader/PaperHeader";
 import Paper from "@mui/material/Paper";
-import Divider from "@mui/material/Divider";
 import {
   addIngredient,
   getIngredients,
@@ -71,13 +71,13 @@ function Ingredients() {
       return;
     const [amount, unit] = imperialToMetric(
       +ingredient.amount,
-      ingredient.unit
+      ingredient.unit,
     );
     addIngredient(currentUserID, ingredient.name, amount, unit).then(
       function response() {
         getAndSetIngredients();
         updateScores(currentUserID);
-      }
+      },
     );
   };
 
@@ -99,33 +99,23 @@ function Ingredients() {
         borderRadius: "10px",
       }}
     >
-      <TabContext value={tabValue}>
-        <Divider />
-        <Box>
-          <TabList onChange={handleTabSwitch}>
-            <Tab label="Inventory" value="1" />
-          </TabList>
-          <Divider />
-        </Box>
-        <TabPanel value="1">
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <AddIngredient
-              handleIngredientAdd={handleIngredientAdd}
-            ></AddIngredient>
-            <InventoryDisplay
-              inventory={ingredients}
-              handleIngredientRemove={handleIngredientRemove}
-            ></InventoryDisplay>
-          </Box>
-        </TabPanel>
-      </TabContext>
+      <PaperHeader title="Ingredients" />
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <AddIngredient
+          handleIngredientAdd={handleIngredientAdd}
+        ></AddIngredient>
+        <InventoryDisplay
+          inventory={ingredients}
+          handleIngredientRemove={handleIngredientRemove}
+        ></InventoryDisplay>
+      </Box>
     </Paper>
   );
 }

@@ -33,7 +33,7 @@ export const PresetSelector = ({
           display: "flex",
           flexDirection: "column",
           gap: "10px",
-          marginBottom: "50px",
+          minHeight: "162.5px",
         }}
       >
         {presets?.map((preset: Preset) => {

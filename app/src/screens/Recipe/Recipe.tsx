@@ -21,27 +21,61 @@ function Recipe() {
   const [userIngredientElements, setUserIngredientElements] =
     React.useState<any>();
   const navigate = useNavigate();
-
-  if (!useLocation().state) return <RecipeError />;
-
   const authContext = React.useContext(AuthContext);
   if (!authContext) {
     throw new Error("Authcontext in Presets");
   }
 
-  const { currentUserID } = authContext;
+  const zip = (...arr: Array<any>) =>
+    Array.from({ length: Math.max(...arr.map((a) => a.length)) }, (_, i) =>
+      arr.map((a) => a[i]),
+    );
 
-  const recipe = useLocation().state.recipe;
-  const imperialIngredients = recipe["Ingredients"]
-    .replaceAll("'", "")
-    .split("**");
+  const { currentUserID } = authContext;
+  React.useEffect(() => {
+    const newUserIngredients: Array<Array<any>> = [];
+    getIngredients(currentUserID).then(function response(data) {
+      if (data && data.data) {
+        const cleanIngredients = recipe["CleanIngredients"].split(",");
+        const ingredientAmounts = recipe["IngredientAmount"]
+          .toString()
+          .split(",");
+
+        let zippedData = zip(
+          data!.data!.ingredients,
+          data!.data!.ingredientAmounts,
+          data!.data!.ingredientUnit,
+        );
+
+        // Filter these out so later, the index from the mapping function
+        // can be used in the handleSliderChange function
+        zippedData = zippedData.filter((data) =>
+          cleanIngredients.includes(data[0]),
+        );
+
+        zippedData.map((data) => {
+          const name = data[0];
+          const amount = data[1];
+          const unit = data[2];
+          const defaultValue: number = parseInt(
+            ingredientAmounts[cleanIngredients.indexOf(name)],
+          );
+          newUserIngredients.push([name, amount, unit, defaultValue]);
+        });
+
+        setUserIngredients(newUserIngredients);
+      }
+    });
+  }, []);
+
+  const recipe = useLocation().state?.recipe;
+  if (!recipe) return <RecipeError />;
+
+  const ingredients = recipe["Ingredients"].replaceAll("'", "").split("**");
   const instructions = recipe["Instructions"]
     .replaceAll("'", "")
     .split("**")
     .slice(0, -1);
-  const cleanIngredients = recipe["CleanIngredients"].split(",");
-  const ingredientAmounts = recipe["IngredientAmount"].toString().split(",");
-  const ingredients = imperialIngredients;
 
   const handleSliderChange = (i: number, sliderValue: number) => {
     const tmpUserIngredients = [...userIngredients];
@@ -49,12 +83,10 @@ function Recipe() {
     setUserIngredients(tmpUserIngredients);
   };
 
-  const zip = (...arr: Array<any>) =>
-    Array.from({ length: Math.max(...arr.map((a) => a.length)) }, (_, i) =>
-      arr.map((a) => a[i])
-    );
-
   const getUserIngredients = () => {
+    const cleanIngredients = recipe["CleanIngredients"].split(",");
+    const ingredientAmounts = recipe["IngredientAmount"].toString().split(",");
+
     setCompleted(true);
     const ingredientElements = userIngredients.map((elements, index) => {
       const name = elements[0];
@@ -69,7 +101,7 @@ function Recipe() {
             aria-label="Custom marks"
             valueLabelDisplay="auto"
             defaultValue={parseInt(
-              ingredientAmounts[cleanIngredients.indexOf(name)]
+              ingredientAmounts[cleanIngredients.indexOf(name)],
             )}
             marks={[
               { value: 0, label: "0" },
@@ -100,37 +132,6 @@ function Recipe() {
     updateScores(currentUserID);
     navigate("/recipes/page/1");
   };
-
-  React.useEffect(() => {
-    const newUserIngredients: Array<Array<any>> = [];
-    getIngredients(currentUserID).then(function response(data) {
-      if (data && data.data) {
-        let zippedData = zip(
-          data!.data!.ingredients,
-          data!.data!.ingredientAmounts,
-          data!.data!.ingredientUnit
-        );
-
-        // Filter these out so later, the index from the mapping function
-        // can be used in the handleSliderChange function
-        zippedData = zippedData.filter((data) =>
-          cleanIngredients.includes(data[0])
-        );
-
-        zippedData.map((data) => {
-          const name = data[0];
-          const amount = data[1];
-          const unit = data[2];
-          const defaultValue: number = parseInt(
-            ingredientAmounts[cleanIngredients.indexOf(name)]
-          );
-          newUserIngredients.push([name, amount, unit, defaultValue]);
-        });
-
-        setUserIngredients(newUserIngredients);
-      }
-    });
-  }, []);
 
   return (
     <div className="recipe">
@@ -192,7 +193,7 @@ function Recipe() {
               (instruction: string, index: number) => ({
                 label: `Step ${index + 1}`,
                 description: `${instruction}`,
-              })
+              }),
             )}
           />
         </div>

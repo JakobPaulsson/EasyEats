@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./Dashboard.css";
 import {
   Card,
@@ -11,10 +11,16 @@ import {
 import { fetchScored } from "../../services/RecipeService";
 import { Recipe } from "../../types/recipe.interface";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../contexts/AuthContext";
 
 function Dashboard() {
   const [recipes, setRecipes] = React.useState<any>([]);
   const navigate = useNavigate();
+  const authContext = useContext(AuthContext);
+  if (!authContext) {
+    throw new Error("Authcontext in Presets");
+  }
+  const { currentUserID } = authContext;
 
   const navigateToRecipe = (recipe: Recipe) => {
     navigate(`/recipes/${encodeURIComponent(recipe.Title)}`, {
@@ -61,7 +67,7 @@ function Dashboard() {
   };
 
   React.useEffect(() => {
-    fetchScored("0").then(function response(data) {
+    fetchScored("0", currentUserID).then(function response(data) {
       if (data) {
         setRecipes(createRecipeElements(data.data.result.slice(0, 3)));
       }

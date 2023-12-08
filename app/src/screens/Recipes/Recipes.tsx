@@ -23,6 +23,12 @@ import { TabContext, TabList } from "@mui/lab";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
+interface ItemInterface {
+  Name: string;
+  Icon: string;
+  Color: string;
+}
+
 function Recipes() {
   const { pageNumber } = useParams();
   const [page, setPage] = useState<string | undefined>(pageNumber);
@@ -49,7 +55,7 @@ function Recipes() {
         }
       });
     } else {
-      fetchScored(page).then(function response(data) {
+      fetchScored(page, currentUserID).then(function response(data) {
         if (data) {
           setRecipes(data.data.result);
           setSearchCount(data.data.count);
@@ -66,7 +72,7 @@ function Recipes() {
   const handlePresetClick = (item: any) => {
     setSelectedPreset(currentUserID, item.Name).then(() => {
       updateScores(currentUserID).then(() => {
-        fetchScored(page).then(function response(data) {
+        fetchScored(page, currentUserID).then(function response(data) {
           if (data) {
             setRecipes(data.data.result);
             setSearchCount(data.data.count);
@@ -80,82 +86,35 @@ function Recipes() {
     getPresets(currentUserID).then(function response(data) {
       const query = data?.data?.query;
       setPresetIcons(
-        query.map((item: any) => {
-          switch (item.Icon) {
-            case "PedalBikeIcon":
-              return (
-                <ToggleButton value="Pedal" aria-label="yeah">
-                  <PedalBikeIcon
-                    sx={{
-                      cursor: "pointer",
-                      fontSize: 40,
-                      color: `#${item.Color}`,
-                    }}
-                    onClick={() => handlePresetClick(item)}
-                  />
-                </ToggleButton>
-              );
-            case "BeachAccessIcon":
-              return (
-                <ToggleButton
-                  value="Beach"
-                  sx={{
-                    width: "10px",
-                  }}
-                >
-                  <BeachAccessIcon
-                    sx={{
-                      cursor: "pointer",
-                      fontSize: 40,
-                      color: `#${item.Color}`,
-                    }}
-                    onClick={() => handlePresetClick(item)}
-                  />
-                </ToggleButton>
-              );
-            case "DownhillSkiingIcon":
-              return (
-                <ToggleButton value="Skiing" aria-label="">
-                  <DownhillSkiingIcon
-                    sx={{
-                      cursor: "pointer",
-                      fontSize: 40,
-                      color: `#${item.Color}`,
-                    }}
-                    onClick={() => handlePresetClick(item)}
-                  />
-                </ToggleButton>
-              );
-            case "RestaurantIcon":
-              return (
-                <ToggleButton value="Restaurant">
-                  <RestaurantIcon
-                    sx={{
-                      cursor: "pointer",
-                      fontSize: 40,
-                      color: `#${item.Color}`,
-                    }}
-                    onClick={() => handlePresetClick(item)}
-                  />
-                </ToggleButton>
-              );
-            case "RestaurantMenuIcon":
-              return (
-                <ToggleButton value="RestaurantMenu">
-                  <RestaurantMenuIcon
-                    sx={{
-                      cursor: "pointer",
-                      fontSize: 40,
-                      color: `#${item.Color}`,
-                    }}
-                    onClick={() => handlePresetClick(item)}
-                  />
-                </ToggleButton>
-              );
-            default:
-              return null;
-          }
-        })
+        query.map((item: ItemInterface) => {
+          const propPack = {
+            sx: {
+              cursor: "pointer",
+              fontSize: 40,
+              color: `#${item.Color}`,
+            },
+          };
+
+          const iconMapping: Record<string, JSX.Element> = {
+            PedalBikeIcon: <PedalBikeIcon {...propPack} />,
+            BeachAccessIcon: <BeachAccessIcon {...propPack} />,
+            DownhillSkiingIcon: <DownhillSkiingIcon {...propPack} />,
+            RestaurantIcon: <RestaurantIcon {...propPack} />,
+            RestaurantMenuIcon: <RestaurantMenuIcon {...propPack} />,
+          };
+
+          return (
+            <Tooltip title={item.Name}>
+              <ToggleButton
+                value="Pedal"
+                aria-label="yeah"
+                onClick={() => handlePresetClick(item)}
+              >
+                {iconMapping[item.Icon]}
+              </ToggleButton>
+            </Tooltip>
+          );
+        }),
       );
     });
   };
@@ -190,12 +149,6 @@ function Recipes() {
     navigate(`/recipes/page/${1}?search=${value}`);
   };
 
-  const handleSelected = (
-    _: React.MouseEvent<HTMLElement>,
-    newAlignment: string | null
-  ) => {
-    setSelected(newAlignment || "0");
-  };
   return (
     <div className="container">
       <Paper
@@ -226,18 +179,15 @@ function Recipes() {
               flexDirection: "column",
             }}
           >
-            <Tooltip title="Select preset">
-              <ToggleButtonGroup
-                value={selected}
-                onChange={handleSelected}
-                exclusive
-                sx={{
-                  height: "48px",
-                }}
-              >
-                {presetIcons}
-              </ToggleButtonGroup>
-            </Tooltip>
+            <ToggleButtonGroup
+              value={selected}
+              exclusive
+              sx={{
+                height: "48px",
+              }}
+            >
+              {presetIcons}
+            </ToggleButtonGroup>
           </Box>
           <Search
             currentSearch={search}

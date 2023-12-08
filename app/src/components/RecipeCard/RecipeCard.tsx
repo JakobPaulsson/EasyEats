@@ -167,7 +167,7 @@ const RecipeCard = ({ recipes, navigateToRecipe }: RecipeCardProps) => {
               {recipeElements.length > 0 ? (
                 recipeElements
               ) : (
-                <p>No recipes found.</p>
+                <p>Loading Recipes...</p>
               )}
             </div>
           </Container>

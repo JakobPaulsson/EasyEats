@@ -5,11 +5,10 @@ import { fetchSearchResults, fetchScored } from "../../services/RecipeService";
 import { getPresets } from "../../services/PresetService";
 import { setSelectedPreset } from "../../services/UserService";
 import { updateScores } from "../../services/ScoreService";
-
 import { Paper, Box, Container, Pagination, Tooltip } from "@mui/material";
 import Search from "../../components/Search/Search";
 import { Recipe } from "../../types/recipe.interface";
-import React, { useContext } from "react";
+import React from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import PedalBikeIcon from "@mui/icons-material/PedalBike";
 import BeachAccessIcon from "@mui/icons-material/BeachAccess";
@@ -18,8 +17,6 @@ import RestaurantIcon from "@mui/icons-material/Restaurant";
 import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
 import RecipeCard from "../../components/RecipeCard/RecipeCard";
 import { Divider } from "@mui/material";
-import Tab from "@mui/material/Tab";
-import { TabContext, TabList } from "@mui/lab";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
@@ -63,11 +60,6 @@ function Recipes() {
       });
     }
   }, [search, page]); // Add ingredients to the dependency array
-
-  const [tabValue, setTabValue] = React.useState("1");
-  const handleTabSwitch = (_: React.SyntheticEvent, newValue: string) => {
-    setTabValue(newValue);
-  };
 
   const handlePresetClick = (item: any) => {
     setSelectedPreset(currentUserID, item.Name).then(() => {
@@ -165,14 +157,6 @@ function Recipes() {
             justifyContent: "space-between",
           }}
         >
-          <TabContext value={tabValue}>
-            <Box>
-              <TabList onChange={handleTabSwitch}>
-                <Tab label="All Recipes" value="1" />
-                <Tab label="Matches" value="2" />
-              </TabList>
-            </Box>
-          </TabContext>
           <Box
             sx={{
               display: "flex",

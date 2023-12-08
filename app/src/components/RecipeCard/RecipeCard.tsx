@@ -6,10 +6,8 @@ import {
   Box,
   CardContent,
   CardMedia,
-  Container,
   Typography,
   Tooltip,
-  Paper,
 } from "@mui/material";
 import { Recipe } from "../../types/recipe.interface";
 import { FaGrinStars } from "react-icons/fa";
@@ -154,25 +152,9 @@ const RecipeCard = ({ recipes, navigateToRecipe }: RecipeCardProps) => {
 
   return (
     <div className="container">
-      <Paper
-        elevation={12}
-        sx={{
-          height: "100%",
-          borderRadius: "10px",
-        }}
-      >
-        <>
-          <Container>
-            <div className="cardsContainer">
-              {recipeElements.length > 0 ? (
-                recipeElements
-              ) : (
-                <p>Loading Recipes...</p>
-              )}
-            </div>
-          </Container>
-        </>
-      </Paper>
+      <div className="cardsContainer">
+        {recipeElements.length > 0 ? recipeElements : <p>Loading Recipes...</p>}
+      </div>
     </div>
   );
 };

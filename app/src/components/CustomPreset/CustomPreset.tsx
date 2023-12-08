@@ -78,7 +78,7 @@ function CustomPreset({ setPresets }: CustomPresetProps) {
     <Paper
       elevation={5}
       sx={{
-        width: 650,
+        width: "70%",
         height: 800,
         borderRadius: "10px",
         mt: 3,

@@ -65,21 +65,21 @@ const PresetIcon = ({ setIconParent, setColorParent }: PresetIconProps) => {
   return (
     <Paper
       elevation={3}
-      square={false}
       sx={{
-        width: 200,
-        height: 250,
+        width: 220,
+        height: 200,
         borderRadius: 4,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
       }}
     >
-      <PaperHeader title="Select Icon" />
       <Box
         sx={{
           display: "flex",
           flexDirection: "row",
           justifyContent: "center",
           alignItems: "center",
-          mt: 1,
           gap: 1.5,
         }}
       >
@@ -133,10 +133,8 @@ const PresetIcon = ({ setIconParent, setColorParent }: PresetIconProps) => {
         sx={{
           display: "flex",
           flexDirection: "row",
-          justifyContent: "space-between",
-          marginTop: 3.5,
-          marginLeft: 1,
-          marginRight: 1,
+          justifyContent: "center",
+          gap: 1,
         }}
       >
         {renderColorSelector("#65D663")}

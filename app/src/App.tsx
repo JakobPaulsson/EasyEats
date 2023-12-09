@@ -65,7 +65,7 @@ function App() {
                 element={<ProtectedRoute element={<Ingredients />} />}
               />
               <Route
-                path="/recipes/:recipeid"
+                path="/recipe"
                 element={<ProtectedRoute element={<Recipe />} />}
               />
               <Route

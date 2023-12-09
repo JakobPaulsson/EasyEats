@@ -62,13 +62,7 @@ export default function Sidebar() {
   const { logout } = authContext;
 
   const handleLogout = () => {
-    setLoading(true);
-    setTimeout(() => {
-      logout();
-      localStorage.setItem("userLoggedIn", JSON.stringify(false));
-      navigate("/");
-      setLoading(false);
-    }, 500);
+    logout();
   };
 
   const [loading, setLoading] = React.useState(false);

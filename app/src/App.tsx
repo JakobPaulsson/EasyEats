@@ -29,6 +29,7 @@ function App() {
 
   const { currentUserID } = authContext;
   useEffect(() => {
+    if (!currentUserID) return;
     getIngredients(currentUserID).then(function response(data) {
       localStorage.setItem("ingredients", JSON.stringify(data));
     });

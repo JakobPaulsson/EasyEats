@@ -34,6 +34,7 @@
     "client": "react-scripts -r @cypress/instrument-cra start",
     "server": "node ../server/server.js",
     "build": "NODE_ENV=production PUBLIC_URL=/platepilot react-scripts build",
+    "build:publish": "npm run build && scp -r ./build/* root@martinis.dev:/var/www/martinis.dev/platepilot/html",
     "eject": "react-scripts eject",
     "prepare": "cd .. && husky install app/.husky",
     "precommit": "npx prettier . --write && npm run lint"

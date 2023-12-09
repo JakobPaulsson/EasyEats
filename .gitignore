@@ -33,3 +33,5 @@ yarn-error.log*
 
 db/recipes.db
 Session.vim
+
+server/.env

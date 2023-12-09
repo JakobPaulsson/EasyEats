@@ -1,4 +1,5 @@
-import React, { createContext, useState, FunctionComponent } from "react";
+import React, { createContext, useState, useEffect } from "react";
+import * as UserService from "../services/UserService";
 
 interface AuthContextType {
   isLoggedIn: boolean;
@@ -15,18 +16,34 @@ interface AuthProviderProps {
 const AuthContext = createContext<AuthContextType | null>(null);
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(
-    localStorage.getItem("userLoggedIn") === "true",
-  );
-  const [currentUserID, setCurrentUserID] = useState<number>(1);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [currentUserID, setCurrentUserID] = useState<number>(0);
+
+  useEffect(() => {
+    const checkCurrentUser = async () => {
+      const currentUser = await UserService.currentUser();
+      if (currentUser) {
+        setIsLoggedIn(true);
+        setCurrentUserID(currentUser.data.userID);
+      } else {
+        setIsLoggedIn(false);
+      }
+    };
+
+    checkCurrentUser();
+  }, []);
 
   const login = () => {
     setIsLoggedIn(true);
-    localStorage.setItem("userLoggedIn", "true");
   };
 
-  const logout = () => {
-    setIsLoggedIn(false);
+  const logout = async () => {
+    const loggedout = await UserService.logoutUser(currentUserID);
+    if (loggedout) {
+      setCurrentUserID(0);
+      setIsLoggedIn(false);
+    }
+    return loggedout;
   };
 
   const setUserID = (id: number) => {

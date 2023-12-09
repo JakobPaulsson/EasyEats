@@ -1,4 +1,5 @@
 import axios from "axios";
+axios.defaults.withCredentials = true;
 
 export interface IngredientResponse {
   data: IngredientData | undefined;
@@ -12,7 +13,7 @@ export interface IngredientData {
 export const getIngredients = async (userID: number) => {
   try {
     const response: IngredientResponse = await axios.get(
-      `${process.env.REACT_APP_HOST}/ingredient?userID=${userID}`,
+      `${process.env.REACT_APP_HOST}/ingredient?userID=${userID}`
     );
     if (response && response.data) {
       localStorage.setItem("ingredients", JSON.stringify(response));
@@ -27,11 +28,11 @@ export const addIngredient = async (
   userID: number,
   ingredient: string,
   ingredientAmount: number,
-  ingredientUnit: string,
+  ingredientUnit: string
 ) => {
   try {
     await axios.post(
-      `${process.env.REACT_APP_HOST}/ingredient?userID=${userID}&ingredient=${ingredient}&ingredientAmount=${ingredientAmount}&ingredientUnit=${ingredientUnit}`,
+      `${process.env.REACT_APP_HOST}/ingredient?userID=${userID}&ingredient=${ingredient}&ingredientAmount=${ingredientAmount}&ingredientUnit=${ingredientUnit}`
     );
   } catch (error) {
     console.error("Failed to fetch search query", error);
@@ -43,7 +44,7 @@ export const addIngredient = async (
 export const removeIngredient = async (userID: number, ingredient: string) => {
   try {
     const response = await axios.delete(
-      `${process.env.REACT_APP_HOST}/ingredient?userID=${userID}&ingredient=${ingredient}`,
+      `${process.env.REACT_APP_HOST}/ingredient?userID=${userID}&ingredient=${ingredient}`
     );
     if (response && response.data) {
       return response;

@@ -6,7 +6,7 @@ module.exports = {
       let expectedValues = ["page"];
       let missingParameters = utility.missingParameters(
         expectedValues,
-        req.query,
+        req.query
       );
       if (!missingParameters.length == 0)
         return res.send({ "Missing Parameters": missingParameters });
@@ -15,8 +15,8 @@ module.exports = {
       const page = req.query.page;
       let scoreQuery = await db.all(
         `SELECT RecipeID, Score FROM Scores ORDER BY score DESC LIMIT 8 OFFSET ${
-          (page - 1) * 8
-        }`,
+          page * 8
+        }`
       );
       let count = await db.all(`SELECT COUNT(*) FROM recipes`);
       count = count[0]["COUNT(*)"];
@@ -29,7 +29,7 @@ module.exports = {
       let result;
       if (recipeIDs.length === 0) {
         result = await db.all(
-          `SELECT * FROM Recipes LIMIT 8 OFFSET ${((page - 1) * 8, page * 8)}`,
+          `SELECT * FROM Recipes LIMIT 8 OFFSET ${((page - 1) * 8, page * 8)}`
         );
       } else {
         let queryString = "(";
@@ -37,7 +37,7 @@ module.exports = {
           queryString += `${recipeIDs[i]}, `;
         queryString = queryString.slice(0, -2) + `)`;
         result = await db.all(
-          `SELECT * FROM Recipes WHERE RecipeID IN ${queryString}`,
+          `SELECT * FROM Recipes WHERE RecipeID IN ${queryString}`
         );
 
         for (var i = 0; i < recipeIDs.length; i++) {
@@ -53,7 +53,7 @@ module.exports = {
       let expectedValues = ["page"];
       let missingParameters = utility.missingParameters(
         expectedValues,
-        req.query,
+        req.query
       );
       if (!missingParameters.length == 0)
         return res.send({ "Missing Parameters": missingParameters });
@@ -64,11 +64,11 @@ module.exports = {
       let limit = parseInt(req.query.limit, 8) || 8; // Default to 8 if no limit provided
       const result = await db.all(
         `SELECT * FROM recipes WHERE Title LIKE ? LIMIT ? OFFSET ? `,
-        ["%" + titleContains + "%", limit, (page - 1) * 8],
+        ["%" + titleContains + "%", limit, (page - 1) * 8]
       );
       const countQuery = await db.all(
         `SELECT COUNT(*) FROM recipes WHERE Title LIKE? LIMIT?`,
-        ["%" + titleContains + "%", limit],
+        ["%" + titleContains + "%", limit]
       );
       const count = countQuery[0]["COUNT(*)"];
       res.send({ result, count });

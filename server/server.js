@@ -58,7 +58,7 @@ app.use(
     secret: process.env.SECRET_KEY, // Replace with your secret key
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false, expires:false }, // Set to true if using HTTPS
+    cookie: { secure: false, expires: false }, // Set to true if using HTTPS
   }),
 );
 

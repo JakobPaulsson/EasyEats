@@ -23,9 +23,8 @@ function Dashboard() {
   const { currentUserID } = authContext;
 
   const navigateToRecipe = (recipe: Recipe) => {
-    navigate(`/recipes/${encodeURIComponent(recipe.Title)}`, {
-      state: { recipe },
-    });
+    localStorage.setItem("recipe", JSON.stringify(recipe));
+    navigate(`/recipe`);
   };
 
   const createRecipeElements = (recipes: Array<Recipe>) => {

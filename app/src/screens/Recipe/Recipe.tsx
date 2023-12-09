@@ -68,9 +68,11 @@ function Recipe() {
     });
   }, []);
 
-  const recipe = useLocation().state?.recipe;
-  if (!recipe) return <RecipeError />;
+  const recipeLocalStorage = localStorage.getItem("recipe");
+  if (!recipeLocalStorage || recipeLocalStorage.length === 0)
+    return <RecipeError />;
 
+  const recipe = JSON.parse(recipeLocalStorage);
   const ingredients = recipe["Ingredients"].replaceAll("'", "").split("**");
   const instructions = recipe["Instructions"]
     .replaceAll("'", "")

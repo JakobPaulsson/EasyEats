@@ -120,9 +120,8 @@ function Recipes() {
   }, []);
 
   const navigateToRecipe = (recipe: Recipe) => {
-    navigate(`/recipes/${encodeURIComponent(recipe.Title)}`, {
-      state: { recipe },
-    });
+    localStorage.setItem("recipe", JSON.stringify(recipe));
+    navigate(`/recipe`);
   };
 
   const handlePageChange = (page: number) => {

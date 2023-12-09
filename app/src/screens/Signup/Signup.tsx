@@ -1,4 +1,5 @@
 import "./Signup.css";
+import logo from "../../assets/logo.png";
 import { useState } from "react";
 import React from "react";
 import { Button, TextField, Box, Paper, Link, Typography } from "@mui/material";
@@ -56,7 +57,7 @@ function Signup() {
             rowGap: "20px",
           }}
         >
-          <img src={"/logo.png"} alt="logo" style={{ width: "300px" }} />
+          <img src={logo} alt="logo" style={{ width: "300px" }} />
           <Box
             sx={{
               display: "flex",
@@ -135,7 +136,7 @@ function Signup() {
                 }}
               >
                 Already have an account? &nbsp;
-                <Link variant="body1" href="/">
+                <Link variant="body1" onClick={() => navigate("/")} href="#">
                   Login
                 </Link>
               </Typography>

@@ -15,6 +15,12 @@ module.exports = {
       const query = await db.get(
         `SELECT Ingredients, IngredientAmount, IngredientUnit FROM Users WHERE userID=${req.query.userID};`,
       );
+      if (query == undefined)
+        return res.send({
+          ingredients: [],
+          ingredientAmounts: [],
+          ingredientUnit: [],
+        });
       if (query["Ingredients"].includes(",")) {
         const ingredients = query["Ingredients"].split(",");
         const ingredientAmounts = query["IngredientAmount"].split(",");

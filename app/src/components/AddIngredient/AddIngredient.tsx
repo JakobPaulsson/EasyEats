@@ -21,6 +21,7 @@ import { IngredientItem } from "../../types/ingredient.interface"; // Adjust the
 import { UnitTypes, UnitCategory } from "../../types/units.interface";
 import OkDialog from "../../components/OkDialog/OkDialog";
 import PaperHeader from "../../components/PaperHeader/PaperHeader";
+import { AuthContext } from "../../contexts/AuthContext";
 
 type AddIngredientProps = {
   handleIngredientAdd: (ingredient: IngredientItem) => void;
@@ -33,9 +34,15 @@ const AddIngredient = ({ handleIngredientAdd }: AddIngredientProps) => {
   const [options, setOptions] = useState<[string] | []>([]);
   const [unitType, setUnitType] = React.useState<UnitCategory>("fluid");
   const [open, setOpen] = React.useState(false);
+  const authContext = React.useContext(AuthContext);
+  if (!authContext) {
+    throw new Error("AuthContext must be used within App");
+  }
+
+  const { currentUserID } = authContext;
 
   const fetchSuggestions = async (searchTerm: string) => {
-    const data = await getSearchSuggestions(searchTerm);
+    const data = await getSearchSuggestions(searchTerm, currentUserID);
     if (data) setOptions(data.data.searchResults);
   };
 

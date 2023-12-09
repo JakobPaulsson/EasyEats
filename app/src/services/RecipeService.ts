@@ -1,5 +1,6 @@
 import axios from "axios";
 import { RecipeResponse } from "../types/responses.interface";
+axios.defaults.withCredentials = true;
 
 export const fetchSearchResults = async (
   ingredients: string,

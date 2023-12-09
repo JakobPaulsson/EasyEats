@@ -1,4 +1,5 @@
 import * as React from "react";
+import logo from "../../assets/logo.png";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -61,13 +62,7 @@ export default function Sidebar() {
   const { logout } = authContext;
 
   const handleLogout = () => {
-    setLoading(true);
-    setTimeout(() => {
-      logout();
-      localStorage.setItem("userLoggedIn", JSON.stringify(false));
-      navigate("/");
-      setLoading(false);
-    }, 500);
+    logout();
   };
 
   const [loading, setLoading] = React.useState(false);
@@ -107,7 +102,7 @@ export default function Sidebar() {
         variant="permanent"
         anchor="left"
       >
-        <img src={"/logo.png"} alt="logo" />
+        <img src={logo} alt="logo" />
         <Divider />
         <List>
           {["Dashboard", "Recipes", "Ingredients", "Presets"].map((text) => (

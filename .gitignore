@@ -9,6 +9,7 @@ screenshots
 
 # production
 /build
+build
 
 # database
 *.db
@@ -32,3 +33,5 @@ yarn-error.log*
 
 db/recipes.db
 Session.vim
+
+server/.env

@@ -61,7 +61,6 @@ module.exports = {
         );
         res.send({ userID: max });
       } catch (error) {
-        console.log(error);
         res.send({ error: error });
       } finally {
         await db.close();
@@ -85,10 +84,35 @@ module.exports = {
       if (userID === undefined) {
         res.send({ error: "Invalid username or password!" });
       } else {
+        req.session.userID = userID["UserID"];
         res.send({ userID: userID });
       }
 
       await db.close();
+    });
+
+    app.get("/user/currentUser", async (req, res) => {
+      if (req.session.userID) {
+        res.send({ userID: req.session.userID });
+      }
+    });
+
+    app.post("/user/logout", async (req, res) => {
+      let expectedValues = ["userID"];
+      let missingParameters = utility.missingParameters(
+        expectedValues,
+        req.query,
+      );
+
+      if (!missingParameters.length == 0)
+        return res.send({ "Missing Parameters": missingParameters });
+
+      if (req.query.userID == req.session.userID) {
+        req.session.destroy();
+        res.send({ success: "Logged out!" });
+      } else {
+        res.send({ error: "Invalid user!" });
+      }
     });
   },
 };

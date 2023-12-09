@@ -1,4 +1,5 @@
 import "./Login.css";
+import logo from "../../assets/logo.png";
 import { useState, useContext, useEffect } from "react";
 import React from "react";
 import {
@@ -107,7 +108,7 @@ function Login() {
             rowGap: "20px",
           }}
         >
-          <img src={"/logo.png"} alt="logo" style={{ width: "300px" }} />
+          <img src={logo} alt="logo" style={{ width: "300px" }} />
           <Box
             sx={{
               display: "flex",
@@ -184,7 +185,11 @@ function Login() {
                 }}
               >
                 Don't have an account? &nbsp;
-                <Link variant="body1" href="/signup">
+                <Link
+                  variant="body1"
+                  onClick={() => navigate("/signup")}
+                  href="#"
+                >
                   Sign up
                 </Link>
               </Typography>
@@ -213,7 +218,6 @@ function Login() {
         severity="success"
         message="Signup successful"
       />
-      ;
     </>
   );
 }

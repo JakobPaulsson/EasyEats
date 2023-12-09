@@ -15,7 +15,7 @@ module.exports = {
       const page = req.query.page;
       let scoreQuery = await db.all(
         `SELECT RecipeID, Score FROM Scores ORDER BY score DESC LIMIT 8 OFFSET ${
-          (page - 1) * 8
+          page * 8
         }`,
       );
       let count = await db.all(`SELECT COUNT(*) FROM recipes`);

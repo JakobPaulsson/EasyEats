@@ -6,14 +6,14 @@ module.exports = {
       let expectedValues = ["userID"];
       let missingParameters = utility.missingParameters(
         expectedValues,
-        req.query
+        req.query,
       );
       if (!missingParameters.length == 0)
         return res.send({ "Missing Parameters": missingParameters });
 
       let db = await utility.connect();
       const selectedPreset = await db.get(
-        `SELECT SelectedPreset FROM Users WHERE UserID=${req.query.userID};`
+        `SELECT SelectedPreset FROM Users WHERE UserID=${req.query.userID};`,
       );
       res.send(selectedPreset);
       await db.close();
@@ -23,14 +23,14 @@ module.exports = {
       let expectedValues = ["userID", "name"];
       let missingParameters = utility.missingParameters(
         expectedValues,
-        req.query
+        req.query,
       );
       if (!missingParameters.length == 0)
         return res.send({ "Missing Parameters": missingParameters });
 
       let db = await utility.connect();
       const selectedPreset = await db.get(
-        `UPDATE Users SET SelectedPreset='${req.query.name}' WHERE UserID=${req.query.userID};`
+        `UPDATE Users SET SelectedPreset='${req.query.name}' WHERE UserID=${req.query.userID};`,
       );
       res.send(selectedPreset);
       await db.close();
@@ -40,7 +40,7 @@ module.exports = {
       let expectedValues = ["username", "password"];
       let missingParameters = utility.missingParameters(
         expectedValues,
-        req.query
+        req.query,
       );
       if (!missingParameters.length == 0)
         return res.send({ "Missing Parameters": missingParameters });
@@ -48,7 +48,7 @@ module.exports = {
       let db = await utility.connect();
       let max = await db.get(`SELECT MAX(UserID) FROM Users;`);
       let checkIfUserExists = await db.get(
-        `SELECT UserID FROM Users WHERE Username='${req.query.username}';`
+        `SELECT UserID FROM Users WHERE Username='${req.query.username}';`,
       );
       if (checkIfUserExists !== undefined) {
         res.send({ error: "User already exists!" });
@@ -57,7 +57,7 @@ module.exports = {
       max = max["MAX(UserID)"] + 1;
       try {
         await db.all(
-          `INSERT INTO Users VALUES (${max}, '${req.query.username}', '${req.query.password}', '', '', '', '', '', '', '');`
+          `INSERT INTO Users VALUES (${max}, '${req.query.username}', '${req.query.password}', '', '', '', '', '', '', '');`,
         );
         res.send({ userID: max });
       } catch (error) {
@@ -71,7 +71,7 @@ module.exports = {
       let expectedValues = ["username", "password"];
       let missingParameters = utility.missingParameters(
         expectedValues,
-        req.query
+        req.query,
       );
 
       if (!missingParameters.length == 0)
@@ -79,7 +79,7 @@ module.exports = {
 
       let db = await utility.connect();
       let userID = await db.get(
-        `SELECT UserID FROM Users WHERE Username='${req.query.username}' AND Password='${req.query.password}';`
+        `SELECT UserID FROM Users WHERE Username='${req.query.username}' AND Password='${req.query.password}';`,
       );
       if (userID === undefined) {
         res.send({ error: "Invalid username or password!" });
@@ -101,7 +101,7 @@ module.exports = {
       let expectedValues = ["userID"];
       let missingParameters = utility.missingParameters(
         expectedValues,
-        req.query
+        req.query,
       );
 
       if (!missingParameters.length == 0)

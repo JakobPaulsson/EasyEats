@@ -6,14 +6,14 @@ module.exports = {
       let expectedValues = ["userID"];
       let missingParameters = utility.missingParameters(
         expectedValues,
-        req.query
+        req.query,
       );
       if (!missingParameters.length == 0)
         return res.send({ "Missing Parameters": missingParameters });
 
       let db = await utility.connect();
       const query = await db.get(
-        `SELECT Ingredients, IngredientAmount, IngredientUnit FROM Users WHERE userID=${req.query.userID};`
+        `SELECT Ingredients, IngredientAmount, IngredientUnit FROM Users WHERE userID=${req.query.userID};`,
       );
       if (query == undefined)
         return res.send({
@@ -39,14 +39,14 @@ module.exports = {
       let expectedValues = ["userID", "ingredient"];
       let missingParameters = utility.missingParameters(
         expectedValues,
-        req.query
+        req.query,
       );
       if (!missingParameters.length == 0)
         return res.send({ "Missing Parameters": missingParameters });
 
       let db = await utility.connect();
       const query = await db.get(
-        `SELECT Ingredients, IngredientAmount, IngredientUnit FROM Users WHERE userID=${req.query.userID};`
+        `SELECT Ingredients, IngredientAmount, IngredientUnit FROM Users WHERE userID=${req.query.userID};`,
       );
       let ingredients = [],
         ingredientAmounts = [],
@@ -65,7 +65,7 @@ module.exports = {
       ingredientAmounts.splice(removeIndex, 1);
       ingredientUnits.splice(removeIndex, 1);
       const result = await db.run(
-        `UPDATE Users SET Ingredients="${ingredients}", IngredientAmount="${ingredientAmounts}", IngredientUnit="${ingredientUnits}" WHERE userId=${req.query.userID}`
+        `UPDATE Users SET Ingredients="${ingredients}", IngredientAmount="${ingredientAmounts}", IngredientUnit="${ingredientUnits}" WHERE userId=${req.query.userID}`,
       );
       res.send({ result });
       await db.close();
@@ -80,14 +80,14 @@ module.exports = {
       ];
       let missingParameters = utility.missingParameters(
         expectedValues,
-        req.query
+        req.query,
       );
       if (!missingParameters.length == 0)
         return res.send({ "Missing Parameters": missingParameters });
 
       let db = await utility.connect();
       const query = await db.get(
-        `SELECT Ingredients, IngredientAmount, IngredientUnit FROM Users WHERE userID=${req.query.userID};`
+        `SELECT Ingredients, IngredientAmount, IngredientUnit FROM Users WHERE userID=${req.query.userID};`,
       );
       let ingredients = [],
         ingredientAmounts = [],
@@ -98,7 +98,7 @@ module.exports = {
 
       if (query["Ingredients"].length == 0) {
         await db.run(
-          `UPDATE Users SET Ingredients="${ingredient}", IngredientAmount="${amount}", IngredientUnit="${unit}" WHERE userId=${req.query.userID}`
+          `UPDATE Users SET Ingredients="${ingredient}", IngredientAmount="${amount}", IngredientUnit="${unit}" WHERE userId=${req.query.userID}`,
         );
         res.send({});
         return await db.close();
@@ -119,14 +119,14 @@ module.exports = {
         ingredientAmounts.push(amount);
         ingredientUnits.push(unit);
         await db.run(
-          `UPDATE Users SET Ingredients="${ingredients}", IngredientAmount="${ingredientAmounts}", IngredientUnit="${ingredientUnits}" WHERE userId=${req.query.userID}`
+          `UPDATE Users SET Ingredients="${ingredients}", IngredientAmount="${ingredientAmounts}", IngredientUnit="${ingredientUnits}" WHERE userId=${req.query.userID}`,
         );
       } else {
         ingredientAmounts[ingredientIndex] = (
           parseFloat(ingredientAmounts[ingredientIndex]) + parseFloat(amount)
         ).toString();
         await db.run(
-          `UPDATE Users SET IngredientAmount="${ingredientAmounts}" WHERE userId=${req.query.userID}`
+          `UPDATE Users SET IngredientAmount="${ingredientAmounts}" WHERE userId=${req.query.userID}`,
         );
       }
       res.send({});

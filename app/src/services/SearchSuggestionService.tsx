@@ -10,11 +10,11 @@ interface SearchData {
 }
 export const getSearchSuggestions = async (
   searchTerm: string,
-  userID: number
+  userID: number,
 ) => {
   try {
     const response: SearchResponse = await axios.get(
-      `${process.env.REACT_APP_HOST}/suggestions?searchInput=${searchTerm}&userID=${userID}`
+      `${process.env.REACT_APP_HOST}/suggestions?searchInput=${searchTerm}&userID=${userID}`,
     );
     if (response && response.data) {
       return response;

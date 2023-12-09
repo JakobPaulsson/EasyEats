@@ -106,7 +106,7 @@ function Recipes() {
               </ToggleButton>
             </Tooltip>
           );
-        })
+        }),
       );
     });
   };

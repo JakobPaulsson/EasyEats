@@ -57,7 +57,7 @@ const AddIngredient = ({ handleIngredientAdd }: AddIngredientProps) => {
   const ToggleIngredientUnit = () => {
     const handleChange = (
       _: React.MouseEvent<HTMLElement>,
-      newAlignment: string
+      newAlignment: string,
     ) => {
       if (newAlignment) {
         setUnitType(newAlignment as UnitCategory);

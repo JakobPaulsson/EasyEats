@@ -10,9 +10,15 @@ const ingredient = require("./routes/ingredient");
 const recipes = require("./routes/recipes");
 const suggestions = require("./routes/suggestions");
 const preset = require("./routes/preset");
+
+node_env = process.env.NODE_ENV;
+
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin:
+      node_env === "production"
+        ? "https://www.martinis.dev"
+        : "http://localhost:3000",
     credentials: true,
   })
 );
@@ -21,7 +27,12 @@ app.options("/*", (_, res) => {
 });
 
 app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.header(
+    "Access-Control-Allow-Origin",
+    node_env === "production"
+      ? "https://www.martinis.dev/platepilot"
+      : "http://localhost:3000"
+  );
   res.header("Access-Control-Allow-Credentials", true);
   res.header(
     "Access-Control-Allow-Headers",

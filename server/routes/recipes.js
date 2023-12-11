@@ -3,7 +3,7 @@ const utility = require("./utility");
 module.exports = {
   initializeRecipesRoute: function (app) {
     app.get("/recipes", async (req, res) => {
-      let expectedValues = ["page"];
+      let expectedValues = ["page", "userID"];
       let missingParameters = utility.missingParameters(
         expectedValues,
         req.query,
@@ -14,8 +14,7 @@ module.exports = {
       let db = await utility.connect();
       const page = req.query.page;
       let scoreQuery = await db.all(
-        `SELECT RecipeID, Score FROM Scores ORDER BY score DESC LIMIT 8 OFFSET ${
-          page * 8
+        `SELECT RecipeID, Score FROM Scores WHERE UserID=${req.query.userID} ORDER BY score DESC LIMIT 8 OFFSET ${page * 8
         }`,
       );
       let count = await db.all(`SELECT COUNT(*) FROM recipes`);

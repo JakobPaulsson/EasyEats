@@ -14,8 +14,9 @@ module.exports = {
       let db = await utility.connect();
       const page = req.query.page;
       let scoreQuery = await db.all(
-        `SELECT RecipeID, Score FROM Scores WHERE UserID=${req.query.userID} ORDER BY score DESC LIMIT 8 OFFSET ${page * 8
-        }`,
+        `SELECT RecipeID, Score FROM Scores WHERE UserID=${
+          req.query.userID
+        } ORDER BY score DESC LIMIT 8 OFFSET ${page * 8}`,
       );
       let count = await db.all(`SELECT COUNT(*) FROM recipes`);
       count = count[0]["COUNT(*)"];

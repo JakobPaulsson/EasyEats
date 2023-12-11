@@ -46,7 +46,7 @@ export const getPresets = async (userID: number) => {
 export const removePreset = async (userID: number, presetName: string) => {
   try {
     const response = await axios.delete(
-      `http://localhost:8080/preset?userID=${userID}&name=${presetName}`,
+      `${process.env.REACT_APP_HOST}/preset?userID=${userID}&name=${presetName}`,
     );
     if (response && response.data) {
       return response;

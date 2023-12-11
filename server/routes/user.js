@@ -94,9 +94,8 @@ module.exports = {
     app.get("/user/currentUser", async (req, res) => {
       if (req.session.userID) {
         res.send({ userID: req.session.userID });
-      }
-      else {
-        res.send(undefined)
+      } else {
+        res.send(undefined);
       }
     });
 

@@ -11,16 +11,16 @@ import {
 import { fetchScored } from "../../services/RecipeService";
 import { Recipe } from "../../types/recipe.interface";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../contexts/AuthContext";
+import { UserContext } from "../../contexts/UserContext";
 
 function Dashboard() {
   const [recipes, setRecipes] = React.useState<any>([]);
   const navigate = useNavigate();
-  const authContext = useContext(AuthContext);
-  if (!authContext) {
+  const userContext = useContext(UserContext);
+  if (!userContext) {
     throw new Error("Authcontext in Presets");
   }
-  const { currentUserID } = authContext;
+  const { currentUserID } = userContext;
 
   const navigateToRecipe = (recipe: Recipe) => {
     localStorage.setItem("recipe", JSON.stringify(recipe));

@@ -7,7 +7,7 @@ import PaperHeader from "../../components/PaperHeader/PaperHeader";
 import OkDialog from "../../components/OkDialog/OkDialog";
 import Box from "@mui/material/Box";
 import { getPresets } from "../../services/PresetService";
-import { AuthContext } from "../../contexts/AuthContext";
+import { UserContext } from "../../contexts/UserContext";
 
 interface Preset {
   Name: string;
@@ -33,11 +33,11 @@ function CustomPreset({ setPresets }: CustomPresetProps) {
   const [fewIngredientsSlider, setFewIngredientsSlider] =
     React.useState<number>(0.0);
 
-  const authContext = useContext(AuthContext);
-  if (!authContext) {
+  const userContext = useContext(UserContext);
+  if (!userContext) {
     throw new Error("Authcontext in Presets");
   }
-  const { currentUserID } = authContext;
+  const { currentUserID } = userContext;
   const addNewPreset = () => {
     addPreset(
       currentUserID,
@@ -47,7 +47,7 @@ function CustomPreset({ setPresets }: CustomPresetProps) {
       ratingSlider,
       cookTimeSlider,
       ingredientsInInventorySlider,
-      fewIngredientsSlider,
+      fewIngredientsSlider
     ).then((data) => {
       if (data?.data?.error?.code == "SQLITE_CONSTRAINT") {
         setOpen(true);

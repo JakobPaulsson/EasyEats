@@ -11,7 +11,7 @@ import {
 } from "../../services/IngredientService";
 import { updateScores } from "../../services/ScoreService";
 import Slider from "@mui/material/Slider";
-import { AuthContext } from "../../contexts/AuthContext";
+import { UserContext } from "../../contexts/UserContext";
 
 function Recipe() {
   const [completed, setCompleted] = React.useState<boolean>(false);
@@ -21,17 +21,17 @@ function Recipe() {
   const [userIngredientElements, setUserIngredientElements] =
     React.useState<any>();
   const navigate = useNavigate();
-  const authContext = React.useContext(AuthContext);
-  if (!authContext) {
+  const userContext = React.useContext(UserContext);
+  if (!userContext) {
     throw new Error("Authcontext in Presets");
   }
 
   const zip = (...arr: Array<any>) =>
     Array.from({ length: Math.max(...arr.map((a) => a.length)) }, (_, i) =>
-      arr.map((a) => a[i]),
+      arr.map((a) => a[i])
     );
 
-  const { currentUserID } = authContext;
+  const { currentUserID } = userContext;
   React.useEffect(() => {
     const newUserIngredients: Array<Array<any>> = [];
     getIngredients(currentUserID).then(function response(data) {
@@ -44,13 +44,13 @@ function Recipe() {
         let zippedData = zip(
           data!.data!.ingredients,
           data!.data!.ingredientAmounts,
-          data!.data!.ingredientUnit,
+          data!.data!.ingredientUnit
         );
 
         // Filter these out so later, the index from the mapping function
         // can be used in the handleSliderChange function
         zippedData = zippedData.filter((data) =>
-          cleanIngredients.includes(data[0]),
+          cleanIngredients.includes(data[0])
         );
 
         zippedData.map((data) => {
@@ -58,7 +58,7 @@ function Recipe() {
           const amount = data[1];
           const unit = data[2];
           const defaultValue: number = parseInt(
-            ingredientAmounts[cleanIngredients.indexOf(name)],
+            ingredientAmounts[cleanIngredients.indexOf(name)]
           );
           newUserIngredients.push([name, amount, unit, defaultValue]);
         });
@@ -103,7 +103,7 @@ function Recipe() {
             aria-label="Custom marks"
             valueLabelDisplay="auto"
             defaultValue={parseInt(
-              ingredientAmounts[cleanIngredients.indexOf(name)],
+              ingredientAmounts[cleanIngredients.indexOf(name)]
             )}
             marks={[
               { value: 0, label: "0" },
@@ -195,7 +195,7 @@ function Recipe() {
               (instruction: string, index: number) => ({
                 label: `Step ${index + 1}`,
                 description: `${instruction}`,
-              }),
+              })
             )}
           />
         </div>

@@ -9,7 +9,7 @@ import { Paper, Box, Container, Pagination, Tooltip } from "@mui/material";
 import Search from "../../components/Search/Search";
 import { Recipe } from "../../types/recipe.interface";
 import React from "react";
-import { AuthContext } from "../../contexts/AuthContext";
+import { UserContext } from "../../contexts/UserContext";
 import PedalBikeIcon from "@mui/icons-material/PedalBike";
 import BeachAccessIcon from "@mui/icons-material/BeachAccess";
 import DownhillSkiingIcon from "@mui/icons-material/DownhillSkiing";
@@ -37,12 +37,12 @@ function Recipes() {
   const navigate = useNavigate();
   const [selected, setSelected] = React.useState("Skiing");
 
-  const authContext = React.useContext(AuthContext);
-  if (!authContext) {
-    throw new Error("AuthContext must be used within App");
+  const userContext = React.useContext(UserContext);
+  if (!userContext) {
+    throw new Error("UserContext must be used within App");
   }
 
-  const { currentUserID } = authContext;
+  const { currentUserID } = userContext;
   useEffect(() => {
     if (search) {
       fetchSearchResults(search, page).then(function response(data) {
@@ -62,6 +62,7 @@ function Recipes() {
   }, [search, page]); // Add ingredients to the dependency array
 
   const handlePresetClick = (item: any) => {
+    setSelected(item.Name);
     setSelectedPreset(currentUserID, item.Name).then(() => {
       updateScores(currentUserID).then(() => {
         fetchScored(page, currentUserID).then(function response(data) {
@@ -95,18 +96,17 @@ function Recipes() {
             RestaurantMenuIcon: <RestaurantMenuIcon {...propPack} />,
           };
 
+          console.log(item);
           return (
-            <Tooltip title={item.Name}>
-              <ToggleButton
-                value="Pedal"
-                aria-label="yeah"
-                onClick={() => handlePresetClick(item)}
-              >
-                {iconMapping[item.Icon]}
-              </ToggleButton>
-            </Tooltip>
+            <ToggleButton
+              value={item.Name}
+              aria-label="yeah"
+              onClick={() => handlePresetClick(item)}
+            >
+              <Tooltip title={item.Name}>{iconMapping[item.Icon]}</Tooltip>
+            </ToggleButton>
           );
-        }),
+        })
       );
     });
   };

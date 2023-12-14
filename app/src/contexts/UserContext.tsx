@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect } from "react";
 import * as UserService from "../services/UserService";
 
-interface AuthContextType {
+interface UserContextType {
   isLoggedIn: boolean;
   currentUserID: number;
   setUserID: (id: number) => void;
@@ -9,13 +9,13 @@ interface AuthContextType {
   logout: () => void;
 }
 
-interface AuthProviderProps {
+interface UserContextProps {
   children: React.ReactNode;
 }
 
-const AuthContext = createContext<AuthContextType | null>(null);
+const UserContext = createContext<UserContextType | null>(null);
 
-const AuthProvider = ({ children }: AuthProviderProps) => {
+const UserProvider = ({ children }: UserContextProps) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [currentUserID, setCurrentUserID] = useState<number>(0);
 
@@ -51,12 +51,12 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   return (
-    <AuthContext.Provider
+    <UserContext.Provider
       value={{ isLoggedIn, login, logout, currentUserID, setUserID }}
     >
       {children}
-    </AuthContext.Provider>
+    </UserContext.Provider>
   );
 };
 
-export { AuthProvider, AuthContext };
+export { UserProvider, UserContext };

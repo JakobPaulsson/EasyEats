@@ -6,17 +6,17 @@ import CircularProgress from "@mui/material/CircularProgress";
 import PositionedSnackbar from "../../components/PositionedSnackbar/PositionedSnackbar";
 import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../contexts/AuthContext";
+import { UserContext } from "../../contexts/UserContext";
 
 export default function Loading() {
   const [snackbarOpen, setSnackbarOpen] = useState(true);
   const [open, setOpen] = React.useState(true);
-  const authContext = useContext(AuthContext);
-  if (!authContext) {
-    throw new Error("AuthContext broken in Loading.tsx");
+  const userContext = useContext(UserContext);
+  if (!userContext) {
+    throw new Error("UserContext broken in Loading.tsx");
   }
 
-  const { login } = authContext;
+  const { login } = userContext;
   const navigate = useNavigate();
 
   useEffect(() => {

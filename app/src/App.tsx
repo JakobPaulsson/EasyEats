@@ -9,7 +9,7 @@ import Presets from "./screens/Presets/Presets";
 import Sidebar from "./components/SideBar/Sidebar";
 import Header from "./components/Header/Header";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
-import { AuthContext } from "./contexts/AuthContext";
+import { UserContext } from "./contexts/UserContext";
 import Loading from "./screens/Loading/Loading";
 import { getIngredients } from "./services/IngredientService";
 import { Helmet } from "react-helmet";
@@ -22,12 +22,12 @@ import { Route, Routes } from "react-router-dom";
 import React, { useEffect } from "react";
 
 function App() {
-  const authContext = React.useContext(AuthContext);
-  if (!authContext) {
-    throw new Error("AuthContext must be used within App");
+  const userContext = React.useContext(UserContext);
+  if (!userContext) {
+    throw new Error("UserContext must be used within App");
   }
 
-  const { currentUserID } = authContext;
+  const { currentUserID } = userContext;
   useEffect(() => {
     if (!currentUserID) return;
     getIngredients(currentUserID).then(function response(data) {
@@ -35,7 +35,7 @@ function App() {
     });
   });
 
-  const { isLoggedIn } = authContext;
+  const { isLoggedIn } = userContext;
 
   return (
     <>

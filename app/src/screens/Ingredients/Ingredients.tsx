@@ -13,18 +13,16 @@ import { imperialToMetric } from "../../services/ConversionService";
 import { useEffect, useState, useContext } from "react";
 import React from "react";
 import { IngredientItem } from "../../types/ingredient.interface"; // Adjust the import path
-import Tab from "@mui/material/Tab";
-import { TabContext, TabList, TabPanel } from "@mui/lab";
-import { AuthContext } from "../../contexts/AuthContext";
+import { UserContext } from "../../contexts/UserContext";
 
 function Ingredients() {
   const [ingredients, setIngredients] = useState<IngredientItem[]>([]);
-  const authContext = useContext(AuthContext);
-  if (!authContext) {
+  const userContext = useContext(UserContext);
+  if (!userContext) {
     throw new Error("Authcontext in Presets");
   }
 
-  const { currentUserID } = authContext;
+  const { currentUserID } = userContext;
 
   const getAndSetIngredients = () => {
     getIngredients(currentUserID).then(function response(data) {
@@ -71,13 +69,13 @@ function Ingredients() {
       return;
     const [amount, unit] = imperialToMetric(
       +ingredient.amount,
-      ingredient.unit,
+      ingredient.unit
     );
     addIngredient(currentUserID, ingredient.name, amount, unit).then(
       function response() {
         getAndSetIngredients();
         updateScores(currentUserID);
-      },
+      }
     );
   };
 

@@ -20,7 +20,7 @@ import MenuBookIcon from "@mui/icons-material/MenuBook";
 import KitchenIcon from "@mui/icons-material/Kitchen";
 import PositionedSnackbar from "../../components/PositionedSnackbar/PositionedSnackbar";
 
-import { AuthContext } from "../../contexts/AuthContext";
+import { UserContext } from "../../contexts/UserContext";
 import TuneIcon from "@mui/icons-material/Tune";
 
 import { useNavigate, useLocation } from "react-router-dom";
@@ -54,12 +54,12 @@ export default function Sidebar() {
         break;
     }
   };
-  const authContext = React.useContext(AuthContext);
-  if (!authContext) {
-    throw new Error("AuthContext broken in Sidebar.tsx");
+  const userContext = React.useContext(UserContext);
+  if (!userContext) {
+    throw new Error("UserContext broken in Sidebar.tsx");
   }
 
-  const { logout } = authContext;
+  const { logout } = userContext;
 
   const handleLogout = () => {
     logout();

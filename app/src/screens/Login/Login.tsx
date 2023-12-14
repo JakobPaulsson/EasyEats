@@ -15,7 +15,7 @@ import {
 import PositionedSnackbar from "../../components/PositionedSnackbar/PositionedSnackbar";
 import { useNavigate, useLocation } from "react-router-dom";
 import { sha256 } from "js-sha256";
-import { AuthContext } from "../../contexts/AuthContext";
+import { UserContext } from "../../contexts/UserContext";
 import { loginUser } from "../../services/UserService";
 import { MdLockOutline } from "react-icons/md";
 
@@ -24,12 +24,12 @@ function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [open, setOpen] = React.useState(false);
-  const authContext = useContext(AuthContext);
-  if (!authContext) {
-    throw new Error("AuthContext must be used within an AuthProvider");
+  const userContext = useContext(UserContext);
+  if (!userContext) {
+    throw new Error("UserContext must be used within an AuthProvider");
   }
 
-  const { isLoggedIn, setUserID } = authContext;
+  const { isLoggedIn, setUserID } = userContext;
   const [successfulLogin, setSuccessfulLogin] = useState(false);
   const [unAuthorizedRoute, setUnauthorizedRoute] = useState(false);
   const [failedLogin, setFailedLogin] = useState(false);

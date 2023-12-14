@@ -1,21 +1,19 @@
 // ProtectedRoute.tsx
 import React, { useContext } from "react";
 import { Navigate } from "react-router-dom";
-import { AuthContext } from "../../contexts/AuthContext"; // Adjust the import path as needed
-import PositionedSnackbar from "../PositionedSnackbar/PositionedSnackbar";
+import { UserContext } from "../../contexts/UserContext"; // Adjust the import path as needed
 
 interface ProtectedRouteProps {
   element: React.ReactElement;
 }
-
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element }) => {
-  const authContext = useContext(AuthContext);
+  const userContext = useContext(UserContext);
 
-  if (!authContext) {
-    throw new Error("AuthContext must be used within an AuthProvider");
+  if (!userContext) {
+    throw new Error("UserContext must be used within an AuthProvider");
   }
 
-  const { isLoggedIn } = authContext;
+  const { isLoggedIn } = userContext;
 
   return isLoggedIn ? element : <Navigate to="/" state={{ failed: true }} />;
 };

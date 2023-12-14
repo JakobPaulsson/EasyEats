@@ -51,7 +51,7 @@ const AddIngredient = ({ handleIngredientAdd }: AddIngredientProps) => {
       setOpen(true);
       return;
     }
-    handleIngredientAdd({ name: ingredient, amount: amount, unit: unit });
+    handleIngredientAdd({ name: ingredient, amount: amount, unit: unit.split(' ')[0] });
   };
 
   const ToggleIngredientUnit = () => {

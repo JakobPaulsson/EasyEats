@@ -86,17 +86,17 @@ async function calculateScores(db, userID, coefficients, recipeIDs) {
     }
 
     const coefficient_sum =
-      (coefficients.commonIngredients*5) +
+      coefficients.commonIngredients * 5 +
       coefficients.rating +
       coefficients.cookingTime +
       coefficients.numberOfIngredients;
     const metricSum =
-      (coefficients.commonIngredients*5) * commonIngredientsScore +
+      coefficients.commonIngredients * 5 * commonIngredientsScore +
       coefficients.rating * ratingScore +
       coefficients.cookingTime * cookingTimeScore +
       coefficients.numberOfIngredients * numberOfIngredientsScore;
 
-    scores[i] = Math.round((100 * metricSum) / (coefficient_sum));
+    scores[i] = Math.round((100 * metricSum) / coefficient_sum);
   }
   return scores;
 }

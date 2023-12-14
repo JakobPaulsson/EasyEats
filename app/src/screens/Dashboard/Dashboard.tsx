@@ -20,7 +20,7 @@ function Dashboard() {
   if (!userContext) {
     throw new Error("Authcontext in Presets");
   }
-  const { currentUserID } = userContext;
+  const { currentUser } = userContext;
 
   const navigateToRecipe = (recipe: Recipe) => {
     localStorage.setItem("recipe", JSON.stringify(recipe));
@@ -66,7 +66,8 @@ function Dashboard() {
   };
 
   React.useEffect(() => {
-    fetchScored("0", currentUserID).then(function response(data) {
+    if (!currentUser) return;
+    fetchScored("0", currentUser.UserID).then(function response(data) {
       if (data) {
         setRecipes(createRecipeElements(data.data.result.slice(0, 3)));
       }

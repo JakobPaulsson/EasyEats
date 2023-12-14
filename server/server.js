@@ -20,7 +20,7 @@ app.use(
         ? "https://www.martinis.dev"
         : "http://localhost:3000",
     credentials: true,
-  }),
+  })
 );
 app.options("/*", (_, res) => {
   res.sendStatus(200);
@@ -31,18 +31,18 @@ app.use(function (req, res, next) {
     "Access-Control-Allow-Origin",
     node_env === "production"
       ? "https://www.martinis.dev/platepilot"
-      : "http://localhost:3000",
+      : "http://localhost:3000"
   );
   res.header("Access-Control-Allow-Credentials", true);
   res.header(
     "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept",
+    "Origin, X-Requested-With, Content-Type, Accept"
   );
   next();
 });
 
 function checkUserID(req, res, next) {
-  if (+req.session.userID !== +req.query.userID) {
+  if (+req.session.user.UserID !== +req.query.userID) {
     return res.status(403).send({ error: "Unauthorized access" });
   }
 
@@ -59,7 +59,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: { secure: false, expires: false }, // Set to true if using HTTPS
-  }),
+  })
 );
 
 user.initializeUserRoute(app);

@@ -37,10 +37,11 @@ function CustomPreset({ setPresets }: CustomPresetProps) {
   if (!userContext) {
     throw new Error("Authcontext in Presets");
   }
-  const { currentUserID } = userContext;
+  const { currentUser } = userContext;
   const addNewPreset = () => {
+    if (!currentUser) return;
     addPreset(
-      currentUserID,
+      currentUser.UserID,
       presetName,
       icon,
       color,
@@ -65,7 +66,7 @@ function CustomPreset({ setPresets }: CustomPresetProps) {
         setOpen(true);
         setPopupTitle("Success");
         setPopupText("Preset added.");
-        getPresets(currentUserID).then((data) => {
+        getPresets(currentUser.UserID).then((data) => {
           if (data) {
             setPresets(data!.data!.query);
           }

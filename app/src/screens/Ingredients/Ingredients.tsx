@@ -22,10 +22,11 @@ function Ingredients() {
     throw new Error("Authcontext in Presets");
   }
 
-  const { currentUserID } = userContext;
+  const { currentUser } = userContext;
 
   const getAndSetIngredients = () => {
-    getIngredients(currentUserID).then(function response(data) {
+    if (!currentUser) return;
+    getIngredients(currentUser.UserID).then(function response(data) {
       const currentIngredients: IngredientItem[] = [];
       if (data && data.data) {
         for (let i = 0; i < data.data.ingredients.length; i++) {
@@ -61,6 +62,7 @@ function Ingredients() {
 
   // TODO: Hardcoded for userID 1
   const handleIngredientAdd = (ingredient: IngredientItem): void => {
+    if (!currentUser) return;
     if (
       ingredient.name === "" ||
       ingredient.amount === "" ||
@@ -71,19 +73,20 @@ function Ingredients() {
       +ingredient.amount,
       ingredient.unit
     );
-    addIngredient(currentUserID, ingredient.name, amount, unit).then(
+    addIngredient(currentUser.UserID, ingredient.name, amount, unit).then(
       function response() {
         getAndSetIngredients();
-        updateScores(currentUserID);
+        updateScores(currentUser.UserID);
       }
     );
   };
 
   // TODO: Hardcoded for userID 1
   const handleIngredientRemove = (name: string) => {
-    removeIngredient(currentUserID, name).then(function response() {
+    if (!currentUser) return;
+    removeIngredient(currentUser.UserID, name).then(function response() {
       getAndSetIngredients();
-      updateScores(currentUserID);
+      updateScores(currentUser.UserID);
     });
   };
 

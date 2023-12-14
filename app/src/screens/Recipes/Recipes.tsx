@@ -28,6 +28,7 @@ interface ItemInterface {
 
 function Recipes() {
   const { pageNumber } = useParams();
+  const [isLoading, setLoading] = useState(false);
   const [page, setPage] = useState<string | undefined>(pageNumber);
   const [searchCount, setSearchCount] = useState(0);
   const [searchParams] = useSearchParams();
@@ -42,30 +43,41 @@ function Recipes() {
     throw new Error("UserContext must be used within App");
   }
 
-  const { currentUserID } = userContext;
+  const { currentUser } = userContext;
   useEffect(() => {
+    setLoading(true);
     if (search) {
-      fetchSearchResults(search, page).then(function response(data) {
-        if (data) {
-          setRecipes(data.data.result);
-          setSearchCount(data.data.count);
-        }
-      });
+      fetchSearchResults(search, page)
+        .then(function response(data) {
+          if (data) {
+            setRecipes(data.data.result);
+            setSearchCount(data.data.count);
+          }
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     } else {
-      fetchScored(page, currentUserID).then(function response(data) {
-        if (data) {
-          setRecipes(data.data.result);
-          setSearchCount(data.data.count);
-        }
-      });
+      if (!currentUser) return;
+      fetchScored(page, currentUser.UserID)
+        .then(function response(data) {
+          if (data) {
+            setRecipes(data.data.result);
+            setSearchCount(data.data.count);
+          }
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     }
-  }, [search, page]); // Add ingredients to the dependency array
+  }, [page]); // Add ingredients to the dependency array
 
   const handlePresetClick = (item: any) => {
+    if (!currentUser) return;
     setSelected(item.Name);
-    setSelectedPreset(currentUserID, item.Name).then(() => {
-      updateScores(currentUserID).then(() => {
-        fetchScored(page, currentUserID).then(function response(data) {
+    setSelectedPreset(currentUser.UserID, item.Name).then(() => {
+      updateScores(currentUser.UserID).then(() => {
+        fetchScored(page, currentUser.UserID).then(function response(data) {
           if (data) {
             setRecipes(data.data.result);
             setSearchCount(data.data.count);
@@ -76,7 +88,8 @@ function Recipes() {
   };
 
   const getAndSetPresetIcons = () => {
-    getPresets(currentUserID).then(function response(data) {
+    if (!currentUser) return;
+    getPresets(currentUser?.UserID).then(function response(data) {
       const query = data?.data?.query;
       setPresetIcons(
         query.map((item: ItemInterface) => {
@@ -96,7 +109,6 @@ function Recipes() {
             RestaurantMenuIcon: <RestaurantMenuIcon {...propPack} />,
           };
 
-          console.log(item);
           return (
             <ToggleButton
               value={item.Name}
@@ -223,7 +235,11 @@ function Recipes() {
                 onChange={(_, page: number) => handlePageChange(page)}
               />
             </Box>
-            <RecipeCard recipes={recipes} navigateToRecipe={navigateToRecipe} />
+            <RecipeCard
+              recipes={recipes}
+              navigateToRecipe={navigateToRecipe}
+              isLoading={isLoading}
+            />
           </Container>
         </>
       </Paper>

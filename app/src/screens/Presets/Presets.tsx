@@ -19,11 +19,12 @@ function Presets() {
     throw new Error("Authcontext in Presets");
   }
 
-  const { currentUserID } = userContext;
+  const { currentUser } = userContext;
 
   const deletePreset = (preset: Preset) => {
-    removePreset(currentUserID, preset.Name).then(() => {
-      getPresets(currentUserID).then((data) => {
+    if (!currentUser) return;
+    removePreset(currentUser?.UserID, preset.Name).then(() => {
+      getPresets(currentUser?.UserID).then((data) => {
         if (data) {
           setPresets(data.data.query);
         }
@@ -32,7 +33,8 @@ function Presets() {
   };
 
   React.useEffect(() => {
-    getPresets(currentUserID).then((data) => {
+    if (!currentUser) return;
+    getPresets(currentUser.UserID).then((data) => {
       if (data) {
         setPresets(data.data.query);
       }

@@ -31,10 +31,11 @@ function Recipe() {
       arr.map((a) => a[i])
     );
 
-  const { currentUserID } = userContext;
+  const { currentUser } = userContext;
   React.useEffect(() => {
+    if (!currentUser) return;
     const newUserIngredients: Array<Array<any>> = [];
-    getIngredients(currentUserID).then(function response(data) {
+    getIngredients(currentUser.UserID).then(function response(data) {
       if (data && data.data) {
         const cleanIngredients = recipe["CleanIngredients"].split(",");
         const ingredientAmounts = recipe["IngredientAmount"]
@@ -118,6 +119,7 @@ function Recipe() {
   };
 
   const handleRemoveIngredients = async () => {
+    if (!currentUser) return;
     setCompleted(false);
 
     for (let i = 0; i < userIngredients.length; i++) {
@@ -126,12 +128,12 @@ function Recipe() {
       const unit = userIngredients[i][2];
       const usedAmount = parseFloat(userIngredients[i][3]);
       if (currentAmount - usedAmount <= 0) {
-        await removeIngredient(currentUserID, name);
+        await removeIngredient(currentUser.UserID, name);
       } else {
-        await addIngredient(currentUserID, name, -usedAmount, unit);
+        await addIngredient(currentUser.UserID, name, -usedAmount, unit);
       }
     }
-    updateScores(currentUserID);
+    updateScores(currentUser.UserID);
     navigate("/recipes/page/1");
   };
 

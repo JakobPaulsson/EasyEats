@@ -1,10 +1,11 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useMemo } from "react";
+import { User } from "../types/user.interface";
 import * as UserService from "../services/UserService";
 
 interface UserContextType {
   isLoggedIn: boolean;
-  currentUserID: number;
-  setUserID: (id: number) => void;
+  currentUser: User | undefined;
+  setUser: (user: User) => void;
   login: () => void;
   logout: () => void;
 }
@@ -17,17 +18,18 @@ const UserContext = createContext<UserContextType | null>(null);
 
 const UserProvider = ({ children }: UserContextProps) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [currentUserID, setCurrentUserID] = useState<number>(0);
+  const [currentUser, setCurrentUser] = useState<User | undefined>();
 
   useEffect(() => {
     const checkCurrentUser = async () => {
-      const currentUser = await UserService.currentUser();
-      if (currentUser) {
-        setIsLoggedIn(true);
-        setCurrentUserID(currentUser.data.userID);
-      } else {
-        setIsLoggedIn(false);
-      }
+      await UserService.currentUser().then((response) => {
+        if (response && response.data) {
+          setIsLoggedIn(true);
+          setCurrentUser(response.data.user);
+        } else {
+          setIsLoggedIn(false);
+        }
+      });
     };
 
     checkCurrentUser();
@@ -38,25 +40,31 @@ const UserProvider = ({ children }: UserContextProps) => {
   };
 
   const logout = async () => {
-    const loggedout = await UserService.logoutUser(currentUserID);
+    if (!currentUser) return false;
+    const loggedout = await UserService.logoutUser(currentUser.UserID);
     if (loggedout) {
-      setCurrentUserID(0);
+      setCurrentUser(undefined);
       setIsLoggedIn(false);
     }
     return loggedout;
   };
 
-  const setUserID = (id: number) => {
-    setCurrentUserID(id);
+  const setUser = (user: User) => {
+    setCurrentUser(user);
   };
 
-  return (
-    <UserContext.Provider
-      value={{ isLoggedIn, login, logout, currentUserID, setUserID }}
-    >
-      {children}
-    </UserContext.Provider>
+  const value = useMemo(
+    () => ({
+      currentUser,
+      isLoggedIn,
+      login,
+      logout,
+      setUser,
+    }),
+    [currentUser, isLoggedIn]
   );
+
+  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
 
 export { UserProvider, UserContext };

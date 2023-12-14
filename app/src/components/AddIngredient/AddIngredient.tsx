@@ -39,10 +39,11 @@ const AddIngredient = ({ handleIngredientAdd }: AddIngredientProps) => {
     throw new Error("UserContext must be used within App");
   }
 
-  const { currentUserID } = userContext;
+  const { currentUser } = userContext;
 
   const fetchSuggestions = async (searchTerm: string) => {
-    const data = await getSearchSuggestions(searchTerm, currentUserID);
+    if (!currentUser) return;
+    const data = await getSearchSuggestions(searchTerm, currentUser.UserID);
     if (data) setOptions(data.data.searchResults);
   };
 

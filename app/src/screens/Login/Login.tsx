@@ -29,7 +29,7 @@ function Login() {
     throw new Error("UserContext must be used within an AuthProvider");
   }
 
-  const { isLoggedIn, setUserID } = userContext;
+  const { isLoggedIn, setUser } = userContext;
   const [successfulLogin, setSuccessfulLogin] = useState(false);
   const [unAuthorizedRoute, setUnauthorizedRoute] = useState(false);
   const [failedLogin, setFailedLogin] = useState(false);
@@ -71,7 +71,7 @@ function Login() {
       const response = await loginUser(username, encryptedPassword);
       setTimeout(() => {
         if (response && response.data && !response.data.error) {
-          setUserID(response.data.userID.UserID);
+          setUser(response.data.user);
           setOpen(false);
           navigate("/Loading");
         } else {

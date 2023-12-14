@@ -28,6 +28,7 @@ import { FaSadCry } from "react-icons/fa";
 interface RecipeCardProps {
   recipes: Recipe[];
   navigateToRecipe: (recipe: Recipe) => void;
+  isLoading: boolean;
 }
 
 const checkIfIngriedientsMatch = (recipe: Recipe) => {
@@ -100,7 +101,11 @@ const RecipeCard = ({ recipes, navigateToRecipe }: RecipeCardProps) => {
   const recipeElements = recipes.map((recipe) => (
     <Card variant="outlined" sx={{ maxWidth: 245 }}>
       <CardActionArea onClick={() => navigateToRecipe(recipe)}>
-        <CardMedia sx={{ height: 140 }} image={recipe["ImageSrc"]}></CardMedia>
+        <CardMedia
+          sx={{ height: 140 }}
+          component="img"
+          image={recipe["ImageSrc"]}
+        ></CardMedia>
         <CardContent>
           <Box
             sx={{
@@ -152,9 +157,7 @@ const RecipeCard = ({ recipes, navigateToRecipe }: RecipeCardProps) => {
 
   return (
     <div className="container">
-      <div className="cardsContainer">
-        {recipeElements.length > 0 ? recipeElements : <p>Loading Recipes...</p>}
-      </div>
+      <div className="cardsContainer">{recipeElements}</div>
     </div>
   );
 };

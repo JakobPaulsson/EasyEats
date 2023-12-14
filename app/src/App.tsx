@@ -27,10 +27,10 @@ function App() {
     throw new Error("UserContext must be used within App");
   }
 
-  const { currentUserID } = userContext;
+  const { currentUser } = userContext;
   useEffect(() => {
-    if (!currentUserID) return;
-    getIngredients(currentUserID).then(function response(data) {
+    if (!currentUser) return;
+    getIngredients(currentUser.UserID).then(function response(data) {
       localStorage.setItem("ingredients", JSON.stringify(data));
     });
   });

@@ -9,7 +9,7 @@ export const addPreset = async (
   ratingMetric: number,
   cookingTimeMetric: number,
   commonIngredientsMetric: number,
-  numberOfIngredientsMetric: number,
+  numberOfIngredientsMetric: number
 ) => {
   try {
     const response = await axios.post(
@@ -17,8 +17,8 @@ export const addPreset = async (
         process.env.REACT_APP_HOST
       }/preset?userID=${userID}&name=${name}&icon=${icon}&color=${color.replace(
         "#",
-        "",
-      )}&ratingMetric=${ratingMetric}&cookingTimeMetric=${cookingTimeMetric}&commonIngredientsMetric=${commonIngredientsMetric}&numberOfIngredientsMetric=${numberOfIngredientsMetric}`,
+        ""
+      )}&ratingMetric=${ratingMetric}&cookingTimeMetric=${cookingTimeMetric}&commonIngredientsMetric=${commonIngredientsMetric}&numberOfIngredientsMetric=${numberOfIngredientsMetric}`
     );
     if (response && response.data) {
       getPresets(userID);
@@ -32,10 +32,9 @@ export const addPreset = async (
 export const getPresets = async (userID: number) => {
   try {
     const response = await axios.get(
-      `${process.env.REACT_APP_HOST}/preset?userID=${userID}`,
+      `${process.env.REACT_APP_HOST}/preset?userID=${userID}`
     );
     if (response && response.data) {
-      localStorage.setItem("presets", JSON.stringify(response));
       return response;
     }
   } catch (error) {
@@ -46,7 +45,7 @@ export const getPresets = async (userID: number) => {
 export const removePreset = async (userID: number, presetName: string) => {
   try {
     const response = await axios.delete(
-      `${process.env.REACT_APP_HOST}/preset?userID=${userID}&name=${presetName}`,
+      `${process.env.REACT_APP_HOST}/preset?userID=${userID}&name=${presetName}`
     );
     if (response && response.data) {
       return response;

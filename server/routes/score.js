@@ -24,10 +24,10 @@ async function getCoefficients(db, userID) {
   const presetName = presetQuery.SelectedPreset;
 
   let coefficients = {
-    rating: 1,
-    cookingTime: 1,
+    rating: 0,
+    cookingTime: 0,
     commonIngredients: 1,
-    numberOfIngredients: 1,
+    numberOfIngredients: 0.5,
   };
 
   if (presetName != "") {
@@ -86,17 +86,17 @@ async function calculateScores(db, userID, coefficients, recipeIDs) {
     }
 
     const coefficient_sum =
-      coefficients.commonIngredients +
+      (coefficients.commonIngredients*5) +
       coefficients.rating +
       coefficients.cookingTime +
       coefficients.numberOfIngredients;
     const metricSum =
-      coefficients.commonIngredients * commonIngredientsScore +
+      (coefficients.commonIngredients*5) * commonIngredientsScore +
       coefficients.rating * ratingScore +
       coefficients.cookingTime * cookingTimeScore +
       coefficients.numberOfIngredients * numberOfIngredientsScore;
 
-    scores[i] = Math.round((100 * metricSum) / coefficient_sum);
+    scores[i] = Math.round((100 * metricSum) / (coefficient_sum));
   }
   return scores;
 }

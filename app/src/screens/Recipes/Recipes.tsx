@@ -52,7 +52,10 @@ function Recipes() {
         }
       });
     } else {
-      fetchScored(page, currentUserID).then(function response(data) {
+      fetchScored(
+        (parseInt(page as string) - 1).toString(),
+        currentUserID,
+      ).then(function response(data) {
         if (data) {
           setRecipes(data.data.result);
           setSearchCount(data.data.count);
@@ -64,7 +67,10 @@ function Recipes() {
   const handlePresetClick = (item: any) => {
     setSelectedPreset(currentUserID, item.Name).then(() => {
       updateScores(currentUserID).then(() => {
-        fetchScored(page, currentUserID).then(function response(data) {
+        fetchScored(
+          (parseInt(page as string) - 1).toString(),
+          currentUserID,
+        ).then(function response(data) {
           if (data) {
             setRecipes(data.data.result);
             setSearchCount(data.data.count);

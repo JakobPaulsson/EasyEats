@@ -10,7 +10,7 @@ export enum FluidUnit {
 }
 
 export enum WeightUnit {
-  Pinch = "pinch (0.1 g)",
+  Pinch = "pinch (0.0 g)",
   Ounce = "ounce (28.3 g)",
   Pound = "pound (453.6 g)",
 }

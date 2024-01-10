@@ -5,6 +5,7 @@ axios.defaults.withCredentials = true;
 export const fetchSearchResults = async (
   ingredients: string,
   page: string | undefined,
+  userID: number,
 ): Promise<RecipeResponse | undefined> => {
   try {
     const ingredientsQuery = `title=${ingredients}`;

@@ -45,12 +45,14 @@ function Recipes() {
   const { currentUserID } = authContext;
   useEffect(() => {
     if (search) {
-      fetchSearchResults(search, page).then(function response(data) {
-        if (data) {
-          setRecipes(data.data.result);
-          setSearchCount(data.data.count);
-        }
-      });
+      fetchSearchResults(search, page, currentUserID).then(
+        function response(data) {
+          if (data) {
+            setRecipes(data.data.result);
+            setSearchCount(data.data.count);
+          }
+        },
+      );
     } else {
       fetchScored(
         (parseInt(page as string) - 1).toString(),

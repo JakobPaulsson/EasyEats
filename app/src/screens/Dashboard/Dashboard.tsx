@@ -53,7 +53,6 @@ function Dashboard() {
             }}
           >
             <Typography gutterBottom>{recipe.Title}</Typography>
-            <Typography gutterBottom>{"todo"}</Typography>
           </Container>
           <CardMedia
             sx={{ height: 140, width: 140 }}
